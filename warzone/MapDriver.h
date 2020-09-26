@@ -6,8 +6,10 @@ namespace MapDriver {
 	int main();
 
 	Map* getValidMap();
-	Map* getUnconnectedMap();
-	Map* getUnconnectedContinentMap();
+	Map* getMapUnconnected();
+	Map* getMapUnconnectedContinent();
+	Map* getMapCountryInNoContinents();
+	Map* getMapCountryInTwoContinents();
 	
 	void validateMap(Map* map);
 	void checkMapIsConnectedGraph(Map* map);
@@ -18,4 +20,6 @@ namespace MapDriver {
 
 	static const std::string UNCONNECTED_MAP_ERROR = "Map is not a connected graph.";
 	static const std::string UNCONNECTED_CONTINENT_ERROR = "Continent is not a connected subgraph";
+	static const std::string COUNTRY_IN_TWO_CONTINENTS_ERROR = "Country is in two different continents";
+	static const std::string COUNTRY_IN_ZERO_CONTINENTS_ERROR = "Country is in zero continents";
 }
