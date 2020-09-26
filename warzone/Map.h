@@ -5,15 +5,15 @@
 
 class Continent;
 
-class Country {
+class Territory {
 public:
-	Country(std::string name, Continent* continent, int x, int y);
-	Country(Country* other);
+	Territory(std::string name, Continent* continent, int x, int y);
+	Territory(Territory* other);
 
-	~Country();
+	~Territory();
 
-	void addBorders(std::vector<Country*>* borders);
-	const std::vector<Country*>* getBorders();
+	void addBorders(std::vector<Territory*>* borders);
+	const std::vector<Territory*>* getBorders();
 	Continent* getContinent();
 	
 private:
@@ -21,21 +21,22 @@ private:
 	Continent* continent;
 	int* x;
 	int* y;
-	std::vector<Country*>* borders;
+	std::vector<Territory*>* borders;
 };
 
 class Continent {
 public:
 	Continent(std::string name, std::string colour, int value);
+	Continent(Continent* other);
 	~Continent();
-	void addCountry(Country* country);
-	const std::vector<Country*>* getCountries();
+	void addTerritory(Territory* territory);
+	const std::vector<Territory*>* getTerritories();
 
 private:
 	std::string* name;
 	std::string* colour;
 	int* value; // The number of bonus troops a player earns for controlling the continent
-	std::vector<Country*>* countries;
+	std::vector<Territory*>* territories;
 };
 
 class Map {
@@ -44,16 +45,16 @@ public:
 	~Map();
 
 	void addContinent(Continent* continent);
-	void addCountry(Country* country);
-	void addBorder(int country, std::vector<Country*>* neighbors);
+	void addTerritory(Territory* territory);
+	void addBorder(int territory, std::vector<Territory*>* neighbors);
 
 	Continent* getContinent(int continentId);
-	Country* getCountry(int countryId);
+	Territory* getTerritory(int territoryId);
 
 	const std::vector<Continent*>* getContinents();
-	const std::vector<Country*>* getCountries();
+	const std::vector<Territory*>* getTerritories();
 
 private:
 	std::vector<Continent*>* continents;
-	std::vector<Country*>* countries;
+	std::vector<Territory*>* territories;
 };

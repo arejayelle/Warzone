@@ -1,23 +1,23 @@
 #include "Map.h"
 
-Country::Country(std::string name, Continent* continent, int x, int y)
+Territory::Territory(std::string name, Continent* continent, int x, int y)
 {
 	this->name = new std::string(name);
 	this->continent = continent;
 	this->x = new int(x);
 	this->y = new int(y);
-	this->borders = new std::vector<Country*>();
+	this->borders = new std::vector<Territory*>();
 }
 
-Country::Country(Country* other) {
+Territory::Territory(Territory* other) {
 	name = new std::string(*other->name);
 	continent = other->continent;
 	x = new int(*other->x);
 	y = new int(*other->y);
-	this->borders = new std::vector<Country*>(*other->borders);
+	this->borders = new std::vector<Territory*>(*other->borders);
 }
 
-Country::~Country() {
+Territory::~Territory() {
 	delete name;
 	delete continent;
 	delete x;
@@ -26,18 +26,18 @@ Country::~Country() {
 	delete borders;
 }
 
-void Country::addBorders(std::vector<Country*>* borders) {
-	for (std::vector<Country*>::iterator it = borders->begin(); it != borders->end(); ++it) {
+void Territory::addBorders(std::vector<Territory*>* borders) {
+	for (std::vector<Territory*>::iterator it = borders->begin(); it != borders->end(); ++it) {
 		this->borders->push_back(*it);
 	}
 }
 
-const std::vector<Country*>* Country::getBorders()
+const std::vector<Territory*>* Territory::getBorders()
 {
 	return borders;
 }
 
-Continent* Country::getContinent() {
+Continent* Territory::getContinent() {
 	return this->continent;
 }
 
@@ -45,34 +45,41 @@ Continent::Continent(std::string name, std::string colour, int value) {
 	this->name = new std::string(name);
 	this->colour = new std::string(colour);
 	this->value = new int(value);
-	this->countries = new std::vector<Country*>();
+	this->territories = new std::vector<Territory*>();
+}
+
+Continent::Continent(Continent* continent) {
+	name = new std::string(*continent->name);
+	colour = new std::string(*continent->name);
+	this->value = new int(*continent->value);
+	this->territories = new std::vector<Territory*>(*continent->territories);
 }
 
 Continent::~Continent() {
 	delete name;
 	delete colour;
 	delete value;
-	delete countries;
+	delete territories;
 }
 
-void Continent::addCountry(Country* country)
+void Continent::addTerritory(Territory* territory)
 {
-	countries->push_back(country);
+	territories->push_back(territory);
 }
 
-const std::vector<Country*>* Continent::getCountries() {
-	return countries;
+const std::vector<Territory*>* Continent::getTerritories() {
+	return territories;
 }
 
 Map::Map()
 {
-	countries = new std::vector<Country*>();
+	territories = new std::vector<Territory*>();
 	continents = new std::vector<Continent*>();
 }
 
 Map::~Map() {
-	countries->clear();
-	delete countries;
+	territories->clear();
+	delete territories;
 
 	continents->clear();
 	delete continents;
@@ -83,16 +90,16 @@ void Map::addContinent(Continent* continent)
 	continents->push_back(continent);
 }
 
-void Map::addCountry(Country* country)
+void Map::addTerritory(Territory* territory)
 {
-	countries->push_back(country);
-	country->getContinent()->addCountry(country);
+	territories->push_back(territory);
+	territory->getContinent()->addTerritory(territory);
 }
 
-void Map::addBorder(int countryId, std::vector<Country*>* neighbors)
+void Map::addBorder(int territoryId, std::vector<Territory*>* neighbors)
 {
-	Country* country = countries->at(countryId);
-	country->addBorders(neighbors);
+	Territory* territory = territories->at(territoryId);
+	territory->addBorders(neighbors);
 }
 
 Continent* Map::getContinent(int continentId)
@@ -100,9 +107,9 @@ Continent* Map::getContinent(int continentId)
 	return continents->at(continentId);
 }
 
-Country* Map::getCountry(int countryId)
+Territory* Map::getTerritory(int territoryId)
 {
-	return countries->at(countryId);
+	return territories->at(territoryId);
 }
 
 const std::vector<Continent*>* Map::getContinents()
@@ -110,7 +117,7 @@ const std::vector<Continent*>* Map::getContinents()
 	return continents;
 }
 
-const std::vector<Country*>* Map::getCountries()
+const std::vector<Territory*>* Map::getTerritories()
 {
-	return countries;
+	return territories;
 }
