@@ -5,12 +5,13 @@
 
 class Country {
 public:
-	Country(std::string* name, int* continent, int* x, int* y);
+	Country(std::string name, int continent, int x, int y);
 	Country(Country* other);
 
 	~Country();
 
 	void addBorders(std::vector<int>* borders);
+	std::vector<int>* getBorders();
 	int* getContinent();
 	
 private:
@@ -23,7 +24,7 @@ private:
 
 class Continent {
 public:
-	Continent(std::string* name, std::string* colour, int* value);
+	Continent(std::string name, std::string colour, int value);
 	~Continent();
 	void addCountry(Country* country);
 
@@ -41,7 +42,12 @@ public:
 
 	void addContinent(Continent* continent);
 	void addCountry(Country* country);
-	void addBorder(int* country, std::vector<int>* neighbors);
+	void addBorder(int country, std::vector<int>* neighbors);
+
+	Continent* getContinent(int continentId);
+	Country* getCountry(int countryId);
+
+	const std::vector<Country*>* getCountries();
 
 private:
 	std::vector<Continent*>* continents;
