@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Map">
       <UniqueIdentifier>{f23f4042-9505-4d0b-a10d-0e33c91ff168}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{23e2fdfe-db01-4578-9f71-aa18e9ae36ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Player">
+      <UniqueIdentifier>{8e231fa2-961b-4ec9-bb9e-0065e696f236}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
@@ -27,6 +33,9 @@
     <ClInclude Include="MapDriver.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Map.cpp">
@@ -34,6 +43,9 @@
     </ClCompile>
     <ClCompile Include="MapDriver.cpp">
       <Filter>Source Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

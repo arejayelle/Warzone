@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include "Player.h"
 
 class Continent;
 
@@ -9,7 +10,6 @@ class Territory {
 public:
 	Territory(std::string name, Continent* continent, int x, int y);
 	Territory(Territory* other);
-
 	~Territory();
 
 	void addBorders(std::vector<Territory*>* borders);
@@ -19,6 +19,8 @@ public:
 private:
 	std::string* name;
 	Continent* continent;
+	Player* owner;
+	int* armies;
 	int* x;
 	int* y;
 	std::vector<Territory*>* borders;
@@ -42,6 +44,7 @@ private:
 class Map {
 public:
 	Map();
+	Map(Map* other);
 	~Map();
 
 	void addContinent(Continent* continent);
@@ -54,7 +57,20 @@ public:
 	const std::vector<Continent*>* getContinents();
 	const std::vector<Territory*>* getTerritories();
 
+	void validate();
+	void checkMapIsConnectedGraph();
+	void checkContinentsAreConnectedSubgraphs();
+	void checkTerritoriesBelongToExactlyOneContinent();
+
+	static const std::string UNCONNECTED_MAP_ERROR;
+	static const std::string UNCONNECTED_CONTINENT_ERROR;
+	static const std::string TERRITORY_IN_TWO_CONTINENTS_ERROR;
+	static const std::string TERRITORY_IN_ZERO_CONTINENTS_ERROR;
+
 private:
 	std::vector<Continent*>* continents;
 	std::vector<Territory*>* territories;
+
+	void visitTerritory(Territory* territoryId, std::vector<Territory*>* visitedTerritories);
+	void visitTerritoryInContinent(Territory* territory, Continent* continent, std::vector<Territory*>* visitedTerritories);
 };

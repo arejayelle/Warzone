@@ -11,38 +11,38 @@ int main() {
 int MapDriver::main()
 {
 	Map* validMap = getValidMap();
-	validateMap(validMap);
+	validMap->validate();
 
 	Map* unconnectedMap = getMapUnconnected();
 	try {
-		checkMapIsConnectedGraph(unconnectedMap);
+		unconnectedMap->checkMapIsConnectedGraph();
 	}
 	catch (std::string exception) {
-		assert(exception.compare(UNCONNECTED_MAP_ERROR) == 0);
+		assert(exception.compare(Map::UNCONNECTED_MAP_ERROR) == 0);
 	}
 
 	Map* unconnectedContinentMap = getMapUnconnectedContinent();
 	try {
-		checkContinentsAreConnectedSubgraphs(unconnectedContinentMap);
+		unconnectedContinentMap->checkContinentsAreConnectedSubgraphs();
 	}
 	catch (std::string exception) {
-		assert(exception.compare(UNCONNECTED_CONTINENT_ERROR) == 0);
+		assert(exception.compare(Map::UNCONNECTED_CONTINENT_ERROR) == 0);
 	}
 
 	Map* mapWithTerritoryInNoContinents = getMapTerritoryInNoContinents();
 	try {
-		checkTerritoriesBelongToExactlyOneContinent(mapWithTerritoryInNoContinents);
+		mapWithTerritoryInNoContinents->checkTerritoriesBelongToExactlyOneContinent();
 	}
 	catch (std::string exception) {
-		assert(exception.compare(TERRITORY_IN_ZERO_CONTINENTS_ERROR) == 0);
+		assert(exception.compare(Map::TERRITORY_IN_ZERO_CONTINENTS_ERROR) == 0);
 	}
 
 	Map* mapWithTerritoryInTwoContinents = getMapTerritoryInTwoContinents();
 	try {
-		checkTerritoriesBelongToExactlyOneContinent(mapWithTerritoryInTwoContinents);
+		mapWithTerritoryInTwoContinents->checkTerritoriesBelongToExactlyOneContinent();
 	}
 	catch (std::string exception) {
-		assert(exception.compare(TERRITORY_IN_TWO_CONTINENTS_ERROR) == 0);
+		assert(exception.compare(Map::TERRITORY_IN_TWO_CONTINENTS_ERROR) == 0);
 	}
 
 	std::cout << "Validation successful" << std::endl;
@@ -157,127 +157,4 @@ Map* MapDriver::getMapTerritoryInTwoContinents() {
 	neighborFromContinentTwo->addBorders(&neighborBorders);
 
 	return map;
-}
-
-void MapDriver::validateMap(Map* map) {
-	checkMapIsConnectedGraph(map);
-	checkContinentsAreConnectedSubgraphs(map);
-	checkTerritoriesBelongToExactlyOneContinent(map);
-}
-
-/*
-Checks that the graph is connected.
-Start at node 0. Perform a depth-first search of the graph, visiting every node that is connected to the starting node. 
-Mark each node as visited by adding it to a list. At the end of the search, if every node in the graph is in the list 
-of visited nodes, the graph is connected.
-*/
-void MapDriver::checkMapIsConnectedGraph(Map* map)
-{
-	vector<Territory*> visitedCountries = vector<Territory*>();
-	visitTerritory(map->getTerritory(0), &visitedCountries);
-	
-	const vector<Territory*>* allCountries = map->getTerritories();
-	for (vector<Territory*>::const_iterator it = allCountries->begin(); it != allCountries->end(); ++it) {
-		if (std::find(visitedCountries.begin(), visitedCountries.end(), *it) == visitedCountries.end()) {
-			// Could not find the territory in the list of visited territories, so the graph is not connected
-			throw UNCONNECTED_MAP_ERROR;
-		}
-	}
-}
-
-/*
-Performs a depth-first search recursively from the given territory. If it is not visited, add it to the list
-of visited territories. Then, call this method on each of its neighbors.
-*/
-void MapDriver::visitTerritory(Territory* territory, vector<Territory*>* visitedCountries)
-{
-	if (std::find(visitedCountries->begin(), visitedCountries->end(), territory) != visitedCountries->end()) {
-		// Territory has already been visited (base case)
-		return;
-	}
-	// Territory has not already been visited (recursive case)
-	// Add it to the visited territories, then visit its neighbors
-	visitedCountries->push_back(territory);
-	const vector<Territory*>* borders = territory->getBorders();
-	for (vector<Territory*>::const_iterator it = borders->begin(); it != borders->end(); ++it) {
-		visitTerritory(*it, visitedCountries);
-	}
-}
-
-/*
-Checks that each continent is a connected subgraph.
-For each continent, performs the same algorithm to check for a connected graph, but does not visit or recurse on territories
-that are not in the continent.
-*/
-void MapDriver::checkContinentsAreConnectedSubgraphs(Map* map)
-{
-	const std::vector<Continent*>* continents = map->getContinents();
-
-	for (std::vector<Continent*>::const_iterator it = continents->begin(); it != continents->end(); ++it) {
-		vector<Territory*> visitedCountries = vector<Territory*>();
-		Continent* continent = *it;
-		const std::vector<Territory*>* countriesInContinent = continent->getTerritories();
-
-		visitTerritoryInContinent(continent->getTerritories()->at(0), continent, &visitedCountries);
-
-		for (std::vector<Territory*>::const_iterator it = countriesInContinent->begin(); it != countriesInContinent->end(); ++it) {
-			if (std::find(visitedCountries.begin(), visitedCountries.end(), *it) == visitedCountries.end()) {
-				// Could not find the territory in the list of visited territories, so the continent is not connected
-				throw UNCONNECTED_CONTINENT_ERROR;
-			}
-		}
-	}
-}
-
-/*
-Performs a depth-first search visiting all reachable territories in the same continent.
-*/
-void MapDriver::visitTerritoryInContinent(Territory* territory, Continent* continent, vector<Territory*>* visitedCountries) {
-	if (territory->getContinent() != continent) {
-		// Territory is not in continent (base case)
-		return;
-	}
-	
-	if (std::find(visitedCountries->begin(), visitedCountries->end(), territory) != visitedCountries->end()) {
-		// Territory has already been visited (base case)
-		return;
-	}
-
-	// Territory has not already been visited (recursive case)
-	// Add it to the visited territories, then visit its neighbors
-	visitedCountries->push_back(territory);
-	const vector<Territory*>* borders = territory->getBorders();
-	for (vector<Territory*>::const_iterator it = borders->begin(); it != borders->end(); ++it) {
-		visitTerritoryInContinent(*it, continent, visitedCountries);
-	}
-}
-
-void MapDriver::checkTerritoriesBelongToExactlyOneContinent(Map* map)
-{
-	const std::vector<Continent*>* continents = map->getContinents();
-	
-	std::vector<Territory*> visitedCountries = std::vector<Territory*>();
-
-	for (std::vector<Continent*>::const_iterator continentIt = continents->begin(); continentIt != continents->end(); continentIt++) {
-		const std::vector<Territory*>* countriesInContinent = (*continentIt)->getTerritories();
-		
-		for (std::vector<Territory*>::const_iterator territoryIt = countriesInContinent->begin(); territoryIt != countriesInContinent->end(); territoryIt++) {
-			if (std::find(visitedCountries.begin(), visitedCountries.end(), *territoryIt) != visitedCountries.end()) {
-				//Territory was already found in another continent
-				throw TERRITORY_IN_TWO_CONTINENTS_ERROR;
-			}
-			else {
-				visitedCountries.push_back(*territoryIt);
-			}
-		}
-	}
-
-	const std::vector<Territory*>* territories = map->getTerritories();
-	
-	for (std::vector<Territory*>::const_iterator territoryIt = territories->begin(); territoryIt != territories->end(); territoryIt++) {
-		if (std::find(visitedCountries.begin(), visitedCountries.end(), *territoryIt) == visitedCountries.end()) {
-			// Could not find the territory in the list of visited territories, so it is not in any continent
-			throw TERRITORY_IN_ZERO_CONTINENTS_ERROR;
-		}
-	}
 }
