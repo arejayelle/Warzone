@@ -57,7 +57,11 @@ Continent::~Continent() {
 
 void Continent::addCountry(Country* country)
 {
-	this->countries->push_back(country);
+	countries->push_back(country);
+}
+
+const std::vector<Country*>* Continent::getCountries() {
+	return countries;
 }
 
 Map::Map()
@@ -99,6 +103,11 @@ Continent* Map::getContinent(int continentId)
 Country* Map::getCountry(int countryId)
 {
 	return countries->at(countryId);
+}
+
+const std::vector<Continent*>* Map::getContinents()
+{
+	return continents;
 }
 
 const std::vector<Country*>* Map::getCountries()

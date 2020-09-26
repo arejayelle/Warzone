@@ -29,6 +29,7 @@ public:
 	Continent(std::string name, std::string colour, int value);
 	~Continent();
 	void addCountry(Country* country);
+	const std::vector<Country*>* getCountries();
 
 private:
 	std::string* name;
@@ -49,6 +50,7 @@ public:
 	Continent* getContinent(int continentId);
 	Country* getCountry(int countryId);
 
+	const std::vector<Continent*>* getContinents();
 	const std::vector<Country*>* getCountries();
 
 private:
