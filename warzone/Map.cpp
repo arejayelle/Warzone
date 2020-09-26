@@ -1,20 +1,20 @@
 #include "Map.h"
 
-Country::Country(std::string name, int continent, int x, int y)
+Country::Country(std::string name, Continent* continent, int x, int y)
 {
 	this->name = new std::string(name);
-	this->continent = new int(continent);
+	this->continent = continent;
 	this->x = new int(x);
 	this->y = new int(y);
-	this->borders = new std::vector<int>();
+	this->borders = new std::vector<Country*>();
 }
 
 Country::Country(Country* other) {
 	name = new std::string(*other->name);
-	continent = new int(*other->continent);
+	continent = other->continent;
 	x = new int(*other->x);
 	y = new int(*other->y);
-	this->borders = new std::vector<int>(*other->borders);
+	this->borders = new std::vector<Country*>(*other->borders);
 }
 
 Country::~Country() {
@@ -26,18 +26,18 @@ Country::~Country() {
 	delete borders;
 }
 
-void Country::addBorders(std::vector<int>* borders) {
-	for (std::vector<int>::iterator it = borders->begin(); it != borders->end(); ++it) {
+void Country::addBorders(std::vector<Country*>* borders) {
+	for (std::vector<Country*>::iterator it = borders->begin(); it != borders->end(); ++it) {
 		this->borders->push_back(*it);
 	}
 }
 
-std::vector<int>* Country::getBorders()
+const std::vector<Country*>* Country::getBorders()
 {
 	return borders;
 }
 
-int* Country::getContinent() {
+Continent* Country::getContinent() {
 	return this->continent;
 }
 
@@ -82,13 +82,10 @@ void Map::addContinent(Continent* continent)
 void Map::addCountry(Country* country)
 {
 	countries->push_back(country);
-	
-	int* continentId = country->getContinent();
-	Continent* continent = continents->at(*continentId);
-	continent->addCountry(country);
+	country->getContinent()->addCountry(country);
 }
 
-void Map::addBorder(int countryId, std::vector<int>* neighbors)
+void Map::addBorder(int countryId, std::vector<Country*>* neighbors)
 {
 	Country* country = countries->at(countryId);
 	country->addBorders(neighbors);

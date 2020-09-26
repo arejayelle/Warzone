@@ -11,7 +11,7 @@ namespace MapDriver {
 	
 	void validateMap(Map* map);
 	void checkMapIsConnectedGraph(Map* map);
-	void visitCountry(Map* map, int countryId, std::vector<Country*>* visitedCountries);
+	void visitCountry(Map* map, Country* countryId, std::vector<Country*>* visitedCountries);
 	void checkContinentsAreConnectedSubgraphs(Map* map);
 	void checkCountriesBelongToExactlyOneContinent(Map* map);
 
