@@ -21,7 +21,7 @@ bool MapLoader::validateMap() {
 	std::string myLine;
 	bool valideMap = true;
 
-	int* numberOfValidComponent = new int();
+	int* numberOfValidParts = new int();
 
 	std::cout << "Loading file:  " << *fileName << std::endl;
 
@@ -31,10 +31,14 @@ bool MapLoader::validateMap() {
 	// Use a while loop together with the getline() function to read the file line by line
 	while (getline(myReadFile, myLine)) {
 
+		//Check continents
 		if (myLine == "[continents]") {
 			std::cout << "[continents]\n";
 			getline(myReadFile, myLine);
+
+			//Loop all the lines that are continents
 			while (myLine != "[countries]") {
+				//Check if the continent is good, else exit
 				if (checkContinents(myLine)) {
 					getline(myReadFile, myLine);
 				}
@@ -43,13 +47,18 @@ bool MapLoader::validateMap() {
 					exit(1);
 				}
 			}
-			++* numberOfValidComponent;
+			//Confirm that the continent part is good
+			++* numberOfValidParts;
 		}
 
+		//Check countries
 		if (myLine == "[countries]") {
 			std::cout << "[countries]\n";
 			getline(myReadFile, myLine);
+
+			//Loop all the lines that are countries
 			while (myLine != "[borders]") {
+				//Check if the countries is good, else exit
 				if (checkCountries(myLine)) {
 					getline(myReadFile, myLine);
 				}
@@ -58,13 +67,18 @@ bool MapLoader::validateMap() {
 					exit(1);
 				}
 			}
-			++* numberOfValidComponent;
+			//Confirm that the countries part is good
+			++* numberOfValidParts;
 		}
 
+		//Check borders
 		if (myLine == "[borders]") {
 			std::cout << "[borders]\n";
 			getline(myReadFile, myLine);
+
+			//Loop all the lines that are borders
 			while (!myLine.empty()) {
+				//Check if the borders is good, else exit
 				if (checkBorders(myLine)) {
 					getline(myReadFile, myLine);
 				}
@@ -73,37 +87,41 @@ bool MapLoader::validateMap() {
 					exit(1);
 				}
 			}
-			++* numberOfValidComponent;
+			//Confirm that the borders part is good
+			++* numberOfValidParts;
 		}
 
 		
 	}
 
-	if (valideMap && *numberOfValidComponent == 3) {
+	//Check if all 3 components are valid
+	if (valideMap && *numberOfValidParts == 3) {
 		std::cout << "Map is valid.\n";
 		// Close the file
 		myReadFile.close();
-		delete(numberOfValidComponent);
+		delete(numberOfValidParts);
 		return true;
 	}
 	else {
 		std::cout << "Map is not valid, missing some components.\n";
 		// Close the file
 		myReadFile.close();
-		delete(numberOfValidComponent);
+		delete(numberOfValidParts);
 		return false;
 	}
 
 	
 }
 
-
+//Verify if the continent is good
 bool MapLoader::checkContinents(std::string line) {
 
+	//Counts the number of words in the line
 	size_t numberOfWords = line.empty() || line.back() == ' ' ? 0 : 1;
 	for (size_t s = line.size(); s > 0; --s)
 		if (line[s] == ' ' && line[s - 1] != ' ') ++numberOfWords;
 
+	//Check if its not a good line or an empty line
 	if (!(numberOfWords == 3 || numberOfWords == 0)) {
 		std::cout << "Continents format is not Valid.";
 		return false;
@@ -114,11 +132,15 @@ bool MapLoader::checkContinents(std::string line) {
 	}	
 }
 
+//Verify if the Countries is good
 bool MapLoader::checkCountries(std::string line) {
+
+	//Counts the number of words in the line
 	size_t numberOfWords = line.empty() || line.back() == ' ' ? 0 : 1;
 	for (size_t s = line.size(); s > 0; --s)
 		if (line[s] == ' ' && line[s - 1] != ' ') ++numberOfWords;
 
+	//Check if its not a good line or an empty line
 	if (!(numberOfWords == 5 || numberOfWords == 0)) {
 		std::cout << "Countries format is not Valid.";
 		return false;
@@ -129,11 +151,15 @@ bool MapLoader::checkCountries(std::string line) {
 	}
 }
 
+//Verify if the Borders is good
 bool MapLoader::checkBorders(std::string line) {
+
+	//Counts the number of words in the line
 	size_t numberOfWords = line.empty() || line.back() == ' ' ? 0 : 1;
 	for (size_t s = line.size(); s > 0; --s)
 		if (line[s] == ' ' && line[s - 1] != ' ') ++numberOfWords;
 
+	//Check if its not a good line
 	if (numberOfWords < 2) {
 		std::cout << "Borders format is not Valid.";
 		return false;
