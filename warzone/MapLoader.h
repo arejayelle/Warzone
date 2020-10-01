@@ -12,7 +12,7 @@ public:
 
 private:
 	std::string* fileName;
-	bool checkContinents();
-	bool checkCountries();
-	bool checkBorders();
+	bool checkContinents(std::string continent);
+	bool checkCountries(std::string country);
+	bool checkBorders(std::string border);
 };
