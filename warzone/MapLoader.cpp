@@ -21,6 +21,8 @@ bool MapLoader::validateMap() {
 	std::string myLine;
 	bool valideMap = true;
 
+	int* numberOfValidComponent = new int();
+
 	std::cout << "Loading file:  " << *fileName << std::endl;
 
 	// Read from file
@@ -38,9 +40,10 @@ bool MapLoader::validateMap() {
 				}
 				else {
 					valideMap = false;
-					break;
+					exit(1);
 				}
 			}
+			++* numberOfValidComponent;
 		}
 
 		if (myLine == "[countries]") {
@@ -52,9 +55,10 @@ bool MapLoader::validateMap() {
 				}
 				else {
 					valideMap = false;
-					break;
+					exit(1);
 				}
 			}
+			++* numberOfValidComponent;
 		}
 
 		if (myLine == "[borders]") {
@@ -66,58 +70,76 @@ bool MapLoader::validateMap() {
 				}
 				else {
 					valideMap = false;
-					break;
+					exit(1);
 				}
 			}
+			++* numberOfValidComponent;
 		}
 
 		
 	}
 
-	std::cout << "VALIDE?:" << valideMap << "\n";
+	if (valideMap && *numberOfValidComponent == 3) {
+		std::cout << "Map is valid.\n";
+		// Close the file
+		myReadFile.close();
+		delete(numberOfValidComponent);
+		return true;
+	}
+	else {
+		std::cout << "Map is not valid, missing some components.\n";
+		// Close the file
+		myReadFile.close();
+		delete(numberOfValidComponent);
+		return false;
+	}
 
-	// Close the file
-	myReadFile.close();
-	return false;
+	
 }
 
 
-bool MapLoader::checkContinents(std::string continent) {
-	unsigned int numberOfWords = 0;
-	numberOfWords = std::count(continent.cbegin(), continent.cend(), ' ') + 1;
+bool MapLoader::checkContinents(std::string line) {
 
-	if (numberOfWords != 3) {
-		std::cout << "WRONG LINE" << continent;
+	size_t numberOfWords = line.empty() || line.back() == ' ' ? 0 : 1;
+	for (size_t s = line.size(); s > 0; --s)
+		if (line[s] == ' ' && line[s - 1] != ' ') ++numberOfWords;
+
+	if (!(numberOfWords == 3 || numberOfWords == 0)) {
+		std::cout << "Continents format is not Valid.";
 		return false;
 	}
 	else {
-		std::cout << continent << "\n";
+		std::cout << line << "\n";
 		return true;
 	}	
 }
 
-bool MapLoader::checkCountries(std::string country) {
-	unsigned int numberOfWords = 0;
-	numberOfWords = std::count(country.cbegin(), country.cend(), ' ') + 1;
+bool MapLoader::checkCountries(std::string line) {
+	size_t numberOfWords = line.empty() || line.back() == ' ' ? 0 : 1;
+	for (size_t s = line.size(); s > 0; --s)
+		if (line[s] == ' ' && line[s - 1] != ' ') ++numberOfWords;
 
-	if (numberOfWords != 5) {
+	if (!(numberOfWords == 5 || numberOfWords == 0)) {
+		std::cout << "Countries format is not Valid.";
 		return false;
 	}
 	else {
-		std::cout << country << "\n";
+		std::cout << line << "\n";
 		return true;
 	}
 }
 
-bool MapLoader::checkBorders(std::string border) {
-	unsigned int numberOfWords = 0;
-	numberOfWords = std::count(border.cbegin(), border.cend(), ' ') + 1;
+bool MapLoader::checkBorders(std::string line) {
+	size_t numberOfWords = line.empty() || line.back() == ' ' ? 0 : 1;
+	for (size_t s = line.size(); s > 0; --s)
+		if (line[s] == ' ' && line[s - 1] != ' ') ++numberOfWords;
 
 	if (numberOfWords < 2) {
+		std::cout << "Borders format is not Valid.";
 		return false;
 	}
 	else {
-		std::cout << border << "\n";
+		std::cout << line << "\n";
 		return true;
 	}
 }
