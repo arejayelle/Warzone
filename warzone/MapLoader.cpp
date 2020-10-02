@@ -153,6 +153,8 @@ Map* MapLoader::convertFileToMap()
 			}
 		}
 
+		//std::cout << map->getContinent(0);
+
 		/*//Check territory
 		if (myLine == "[countries]") {
 			getline(myReadFile, myLine);
@@ -160,7 +162,7 @@ Map* MapLoader::convertFileToMap()
 			//Loop all the lines that are territory
 			while (myLine != "[borders]") {
 				//Check if the territory is good, else exit
-				createTerritory(myLine);
+				map->addTerritory(createTerritory(myLine));
 				getline(myReadFile, myLine);
 			}
 		}
@@ -258,13 +260,23 @@ Continent* MapLoader::createContinent(std::string continent)
 	return myContinent;
 }
 
-Territory* MapLoader::createTerritory(std::string country)
+Territory* MapLoader::createTerritory(std::string territory)
 {
+	unsigned int territoryId;
+	std::string name;
+	Continent* continent;
+	unsigned int x;
+	unsigned int y;
+
+	//Territory* myTerritory = new Territory();
+
 	return nullptr;
 }
 
 std::vector<Territory*> MapLoader::createBorder(std::string border)
 {
+	std::vector<Territory*> myBorders;
+
 	return std::vector<Territory*>();
 }
 
