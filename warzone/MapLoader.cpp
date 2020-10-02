@@ -4,9 +4,9 @@
 #include <sstream>
 
 
-MapLoader::MapLoader()
+MapLoader::MapLoader(MapLoader* mapL)
 {
-	this->fileName = NULL;
+	this->fileName = mapL->fileName;
 }
 
 MapLoader::MapLoader(std::string fileName)
@@ -20,7 +20,7 @@ MapLoader::~MapLoader()
 }
 
 
-bool MapLoader::validateMap() 
+bool MapLoader::validateMapFormat() 
 {
 	std::string myLine;
 	bool valideMap = true;
@@ -96,8 +96,6 @@ bool MapLoader::validateMap()
 			//Confirm that the borders part is good
 			++* numberOfValidParts;
 		}
-
-		
 	}
 
 	//Check if all 3 components are valid
@@ -115,8 +113,6 @@ bool MapLoader::validateMap()
 		delete(numberOfValidParts);
 		return false;
 	}
-
-	
 }
 
 Map* MapLoader::convertFileToMap()
@@ -134,7 +130,6 @@ Map* MapLoader::convertFileToMap()
 		return nullptr;
 	}
 
-
 	// Use a while loop together with the getline() function to read the file line by line
 	while (getline(myReadFile, myLine)) {
 
@@ -150,8 +145,6 @@ Map* MapLoader::convertFileToMap()
 			}
 		}
 
-		
-
 		//Create the territories
 		if (myLine == "[countries]") {
 			getline(myReadFile, myLine);
@@ -164,7 +157,6 @@ Map* MapLoader::convertFileToMap()
 			}
 		}
 
-		
 		//Check borders
 		if (myLine == "[borders]") {
 			getline(myReadFile, myLine);
@@ -176,8 +168,6 @@ Map* MapLoader::convertFileToMap()
 				getline(myReadFile, myLine);
 			}
 		}
-
-
 	}
 
 	return map;
@@ -186,14 +176,13 @@ Map* MapLoader::convertFileToMap()
 //Verify if the continent is good
 bool MapLoader::checkContinents(std::string line) 
 {
-
-	//Counts the number of words in the line
-	size_t numberOfWords = line.empty() || line.back() == ' ' ? 0 : 1;
+	//Counts the number of inputs in the line
+	size_t numberOfInputs = line.empty() || line.back() == ' ' ? 0 : 1;
 	for (size_t s = line.size(); s > 0; --s)
-		if (line[s] == ' ' && line[s - 1] != ' ') ++numberOfWords;
+		if (line[s] == ' ' && line[s - 1] != ' ') ++numberOfInputs;
 
 	//Check if its not a good line or an empty line
-	if (!(numberOfWords == 3 || numberOfWords == 0)) {
+	if (!(numberOfInputs == 3 || numberOfInputs == 0)) {
 		std::cout << "Continents format is not Valid.\n";
 		return false;
 	}
@@ -205,14 +194,13 @@ bool MapLoader::checkContinents(std::string line)
 //Verify if the territory is good
 bool MapLoader::checkTerritory(std::string line)
 {
-
-	//Counts the number of words in the line
-	size_t numberOfWords = line.empty() || line.back() == ' ' ? 0 : 1;
+	//Counts the number of inputs in the line
+	size_t numberOfInputs = line.empty() || line.back() == ' ' ? 0 : 1;
 	for (size_t s = line.size(); s > 0; --s)
-		if (line[s] == ' ' && line[s - 1] != ' ') ++numberOfWords;
+		if (line[s] == ' ' && line[s - 1] != ' ') ++numberOfInputs;
 
 	//Check if its not a good line or an empty line
-	if (!(numberOfWords == 5 || numberOfWords == 0)) {
+	if (!(numberOfInputs == 5 || numberOfInputs == 0)) {
 		std::cout << "Territory format is not Valid.\n";
 		return false;
 	}
@@ -224,14 +212,13 @@ bool MapLoader::checkTerritory(std::string line)
 //Verify if the Borders is good
 bool MapLoader::checkBorders(std::string line)
 {
-
-	//Counts the number of words in the line
-	size_t numberOfWords = line.empty() || line.back() == ' ' ? 0 : 1;
+	//Counts the number of inputs in the line
+	size_t numberOfInputs = line.empty() || line.back() == ' ' ? 0 : 1;
 	for (size_t s = line.size(); s > 0; --s)
-		if (line[s] == ' ' && line[s - 1] != ' ') ++numberOfWords;
+		if (line[s] == ' ' && line[s - 1] != ' ') ++numberOfInputs;
 
 	//Check if its not a good line
-	if (numberOfWords < 2) {
+	if (numberOfInputs < 2) {
 		std::cout << "Borders format is not Valid.\n";
 		return false;
 	}

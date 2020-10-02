@@ -5,10 +5,10 @@
 
 class MapLoader {
 public:
-	MapLoader();
+	MapLoader(MapLoader* mapL);
 	MapLoader(std::string fileName);
 	~MapLoader();
-	bool validateMap();
+	bool validateMapFormat();
 	Map* convertFileToMap();
 
 private:
