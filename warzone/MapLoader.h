@@ -16,7 +16,7 @@ private:
 	bool checkContinents(std::string continent);
 	bool checkTerritory(std::string country);
 	bool checkBorders(std::string border);
-	void createContinent(std::string continent);
-	void createTerritory(std::string country);
-	void createBorder(std::string border);
+	Continent* createContinent(std::string continent);
+	Territory* createTerritory(std::string country);
+	std::vector<Territory*> createBorder(std::string border);
 };

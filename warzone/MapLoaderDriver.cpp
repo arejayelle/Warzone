@@ -6,4 +6,5 @@
 int main() {
 	MapLoader* mapL = new MapLoader("bigeurope.map");
 	mapL->validateMap();
+	mapL->convertFileToMap();
 }

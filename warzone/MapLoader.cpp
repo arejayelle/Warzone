@@ -60,7 +60,7 @@ bool MapLoader::validateMap()
 			++* numberOfValidParts;
 		}
 
-		//Check territory
+		//Check territory/Countries
 		if (myLine == "[countries]") {
 			std::cout << "[countries]\n";
 			getline(myReadFile, myLine);
@@ -105,7 +105,7 @@ bool MapLoader::validateMap()
 
 	//Check if all 3 components are valid
 	if (valideMap && *numberOfValidParts == 3) {
-		std::cout << "Map is valid.\n";
+		std::cout << "Map is valid.\n\n";
 		// Close the file
 		myReadFile.close();
 		delete(numberOfValidParts);
@@ -124,9 +124,10 @@ bool MapLoader::validateMap()
 
 Map* MapLoader::convertFileToMap()
 {
+	Map* map = new Map();
 	std::string myLine;
-
 	std::cout << "Loading file:  " << *fileName << std::endl;
+
 
 	// Read from file
 	std::ifstream myReadFile(*fileName);
@@ -135,6 +136,7 @@ Map* MapLoader::convertFileToMap()
 		std::cerr << "Could not open file\n";
 		return nullptr;
 	}
+
 
 	// Use a while loop together with the getline() function to read the file line by line
 	while (getline(myReadFile, myLine)) {
@@ -146,12 +148,12 @@ Map* MapLoader::convertFileToMap()
 			//Loop all the lines that are continents
 			while (myLine != "[countries]") {
 				//Check if the continent is good, else exit
-				createContinent(myLine);
+				map->addContinent(createContinent(myLine));
 				getline(myReadFile, myLine);
 			}
 		}
 
-		//Check territory
+		/*//Check territory
 		if (myLine == "[countries]") {
 			getline(myReadFile, myLine);
 
@@ -173,7 +175,7 @@ Map* MapLoader::convertFileToMap()
 				createBorder(myLine);
 				getline(myReadFile, myLine);
 			}
-		}
+		}*/
 
 
 	}
@@ -241,14 +243,28 @@ bool MapLoader::checkBorders(std::string line)
 	}
 }
 
-void MapLoader::createContinent(std::string continent)
+Continent* MapLoader::createContinent(std::string continent)
 {
+	std::string name;
+	std::string colour;
+	unsigned int value;
+
+	std::stringstream ss(continent);
+	ss >> name;
+	ss >> value;
+	ss >> colour;
+
+	Continent* myContinent = new Continent(name, colour, value);
+	return myContinent;
 }
 
-void MapLoader::createTerritory(std::string country)
+Territory* MapLoader::createTerritory(std::string country)
 {
+	return nullptr;
 }
 
-void MapLoader::createBorder(std::string border)
+std::vector<Territory*> MapLoader::createBorder(std::string border)
 {
+	return std::vector<Territory*>();
 }
+
