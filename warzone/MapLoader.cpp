@@ -42,11 +42,10 @@ bool MapLoader::validateMap()
 
 		//Check continents
 		if (myLine == "[continents]") {
-			std::cout << "[continents]\n";
 			getline(myReadFile, myLine);
 
 			//Loop all the lines that are continents
-			while (myLine != "[countries]") {
+			while (myLine != "[countries]" && !myLine.empty()) {
 				//Check if the continent is good, else exit
 				if (checkContinents(myLine)) {
 					getline(myReadFile, myLine);
@@ -62,11 +61,10 @@ bool MapLoader::validateMap()
 
 		//Check territory/Countries
 		if (myLine == "[countries]") {
-			std::cout << "[countries]\n";
 			getline(myReadFile, myLine);
 
 			//Loop all the lines that are territory
-			while (myLine != "[borders]") {
+			while (myLine != "[borders]" && !myLine.empty()) {
 				//Check if the territory is good, else exit
 				if (checkTerritory(myLine)) {
 					getline(myReadFile, myLine);
@@ -82,7 +80,6 @@ bool MapLoader::validateMap()
 
 		//Check borders
 		if (myLine == "[borders]") {
-			std::cout << "[borders]\n";
 			getline(myReadFile, myLine);
 
 			//Loop all the lines that are borders
@@ -112,7 +109,7 @@ bool MapLoader::validateMap()
 		return true;
 	}
 	else {
-		std::cout << "Map is not valid, missing some components.\n";
+		std::cout << "Map is not valid, missing either the continents, countries or borders. Please verify the syntax is correct\n";
 		// Close the file
 		myReadFile.close();
 		delete(numberOfValidParts);
@@ -141,48 +138,49 @@ Map* MapLoader::convertFileToMap()
 	// Use a while loop together with the getline() function to read the file line by line
 	while (getline(myReadFile, myLine)) {
 
-		//Check continents
+		//Create the continents
 		if (myLine == "[continents]") {
 			getline(myReadFile, myLine);
-
+			
 			//Loop all the lines that are continents
-			while (myLine != "[countries]") {
-				//Check if the continent is good, else exit
+			while (myLine != "[countries]" && !myLine.empty()) {
+				//Call the createContinent method which returns a Continent* and then adds it to the map
 				map->addContinent(createContinent(myLine));
 				getline(myReadFile, myLine);
 			}
 		}
 
-		//std::cout << map->getContinent(0);
+		
 
-		/*//Check territory
+		//Create the territories
 		if (myLine == "[countries]") {
 			getline(myReadFile, myLine);
 
 			//Loop all the lines that are territory
-			while (myLine != "[borders]") {
-				//Check if the territory is good, else exit
-				map->addTerritory(createTerritory(myLine));
+			while (myLine != "[borders]" && !myLine.empty()) {
+				//Call the createTerritory method which returns a Territory* and then adds it to the map
+				map->addTerritory(createTerritory(myLine, map));
 				getline(myReadFile, myLine);
 			}
 		}
 
+		
 		//Check borders
 		if (myLine == "[borders]") {
 			getline(myReadFile, myLine);
 
 			//Loop all the lines that are borders
 			while (!myLine.empty()) {
-				//Check if the borders is good, else exit
-				createBorder(myLine);
+				//Call the createBorder method which returns nothing. It adds to the map in the method, as it requires an id and a vector of territory
+				createBorder(myLine, map);
 				getline(myReadFile, myLine);
 			}
-		}*/
+		}
 
 
 	}
 
-	return nullptr;
+	return map;
 }
 
 //Verify if the continent is good
@@ -196,11 +194,10 @@ bool MapLoader::checkContinents(std::string line)
 
 	//Check if its not a good line or an empty line
 	if (!(numberOfWords == 3 || numberOfWords == 0)) {
-		std::cout << "Continents format is not Valid.";
+		std::cout << "Continents format is not Valid.\n";
 		return false;
 	}
 	else {
-		std::cout << line << "\n";
 		return true;
 	}	
 }
@@ -216,11 +213,10 @@ bool MapLoader::checkTerritory(std::string line)
 
 	//Check if its not a good line or an empty line
 	if (!(numberOfWords == 5 || numberOfWords == 0)) {
-		std::cout << "Territory format is not Valid.";
+		std::cout << "Territory format is not Valid.\n";
 		return false;
 	}
 	else {
-		std::cout << line << "\n";
 		return true;
 	}
 }
@@ -236,47 +232,78 @@ bool MapLoader::checkBorders(std::string line)
 
 	//Check if its not a good line
 	if (numberOfWords < 2) {
-		std::cout << "Borders format is not Valid.";
+		std::cout << "Borders format is not Valid.\n";
 		return false;
 	}
 	else {
-		std::cout << line << "\n";
 		return true;
 	}
 }
 
 Continent* MapLoader::createContinent(std::string continent)
 {
+	//Declare variables that will be used to store the calues from ss
 	std::string name;
 	std::string colour;
 	unsigned int value;
 
+	//Put each input into the right variable. The syntax is always the same, thus we can do that
 	std::stringstream ss(continent);
 	ss >> name;
 	ss >> value;
 	ss >> colour;
+	ss.clear();
 
 	Continent* myContinent = new Continent(name, colour, value);
 	return myContinent;
 }
 
-Territory* MapLoader::createTerritory(std::string territory)
+Territory* MapLoader::createTerritory(std::string territory, Map* map)
 {
+	// Declare variables that will be used to store the calues from ss
 	unsigned int territoryId;
 	std::string name;
+	unsigned int continentNumber;
 	Continent* continent;
 	unsigned int x;
 	unsigned int y;
 
-	//Territory* myTerritory = new Territory();
+	//Put each input into the right variable. The syntax is always the same, thus we can do that
+	std::stringstream ss(territory);
+	ss >> territoryId;
+	ss >> name;
+	ss >> continentNumber;
+	ss >> x;
+	ss >> y;
 
-	return nullptr;
+	ss.clear();
+	
+	continent = map->getContinent(--continentNumber);
+
+	Territory* myTerritory = new Territory(name, continent, x, y);
+
+	return myTerritory;
 }
 
-std::vector<Territory*> MapLoader::createBorder(std::string border)
+void MapLoader::createBorder(std::string border, Map* map)
 {
-	std::vector<Territory*> myBorders;
+	//Declare variables that will be used to store the calues from ss
+	unsigned int territoryNumber;
+	unsigned int currentTerritoryId;
+	std::vector<Territory*> neighbors;
+	Territory* territory;
 
-	return std::vector<Territory*>();
+	//Store the current border id, which is the first input
+	std::stringstream ss(border);
+	ss >> currentTerritoryId;
+
+	//Loop trought all the borders, 
+	while (ss >> territoryNumber) {
+		territory = map->getTerritory(--territoryNumber);
+		neighbors.push_back(territory);
+	}
+
+	//Add the border to the map
+	map->addBorder(--currentTerritoryId, &neighbors);
 }
 

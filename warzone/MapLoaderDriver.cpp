@@ -4,7 +4,8 @@
 #include <iostream>
 
 int main() {
-	MapLoader* mapL = new MapLoader("bigeurope.map");
+	MapLoader* mapL = new MapLoader("bigeuropewrong.map");
 	mapL->validateMap();
-	mapL->convertFileToMap();
+	Map* myMap = mapL->convertFileToMap();
+	myMap->validate();
 }
