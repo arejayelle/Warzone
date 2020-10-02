@@ -4,20 +4,24 @@
 #include <sstream>
 
 
-MapLoader::MapLoader() {
+MapLoader::MapLoader()
+{
 	this->fileName = NULL;
 }
 
-MapLoader::MapLoader(std::string fileName) {
+MapLoader::MapLoader(std::string fileName)
+{
 	this->fileName = new std::string(fileName);
 }
 
-MapLoader::~MapLoader() {
+MapLoader::~MapLoader() 
+{
 	delete	fileName;
 }
 
 
-bool MapLoader::validateMap() {
+bool MapLoader::validateMap() 
+{
 	std::string myLine;
 	bool valideMap = true;
 
@@ -27,6 +31,11 @@ bool MapLoader::validateMap() {
 
 	// Read from file
 	std::ifstream myReadFile(*fileName);
+
+	if (!myReadFile) {
+		std::cerr << "Could not open file\n";
+		return false;
+	}
 
 	// Use a while loop together with the getline() function to read the file line by line
 	while (getline(myReadFile, myLine)) {
@@ -51,15 +60,15 @@ bool MapLoader::validateMap() {
 			++* numberOfValidParts;
 		}
 
-		//Check countries
+		//Check territory
 		if (myLine == "[countries]") {
 			std::cout << "[countries]\n";
 			getline(myReadFile, myLine);
 
-			//Loop all the lines that are countries
+			//Loop all the lines that are territory
 			while (myLine != "[borders]") {
-				//Check if the countries is good, else exit
-				if (checkCountries(myLine)) {
+				//Check if the territory is good, else exit
+				if (checkTerritory(myLine)) {
 					getline(myReadFile, myLine);
 				}
 				else {
@@ -67,7 +76,7 @@ bool MapLoader::validateMap() {
 					exit(1);
 				}
 			}
-			//Confirm that the countries part is good
+			//Confirm that the territory part is good
 			++* numberOfValidParts;
 		}
 
@@ -113,8 +122,68 @@ bool MapLoader::validateMap() {
 	
 }
 
+Map* MapLoader::convertFileToMap()
+{
+	std::string myLine;
+
+	std::cout << "Loading file:  " << *fileName << std::endl;
+
+	// Read from file
+	std::ifstream myReadFile(*fileName);
+
+	if (!myReadFile) {
+		std::cerr << "Could not open file\n";
+		return nullptr;
+	}
+
+	// Use a while loop together with the getline() function to read the file line by line
+	while (getline(myReadFile, myLine)) {
+
+		//Check continents
+		if (myLine == "[continents]") {
+			getline(myReadFile, myLine);
+
+			//Loop all the lines that are continents
+			while (myLine != "[countries]") {
+				//Check if the continent is good, else exit
+				createContinent(myLine);
+				getline(myReadFile, myLine);
+			}
+		}
+
+		//Check territory
+		if (myLine == "[countries]") {
+			getline(myReadFile, myLine);
+
+			//Loop all the lines that are territory
+			while (myLine != "[borders]") {
+				//Check if the territory is good, else exit
+				createTerritory(myLine);
+				getline(myReadFile, myLine);
+			}
+		}
+
+		//Check borders
+		if (myLine == "[borders]") {
+			getline(myReadFile, myLine);
+
+			//Loop all the lines that are borders
+			while (!myLine.empty()) {
+				//Check if the borders is good, else exit
+				createBorder(myLine);
+				getline(myReadFile, myLine);
+			}
+		}
+
+
+	}
+
+	return nullptr;
+}
+
 //Verify if the continent is good
-bool MapLoader::checkContinents(std::string line) {
+bool MapLoader::checkContinents(std::string line) 
+{
 
 	//Counts the number of words in the line
 	size_t numberOfWords = line.empty() || line.back() == ' ' ? 0 : 1;
@@ -132,8 +201,9 @@ bool MapLoader::checkContinents(std::string line) {
 	}	
 }
 
-//Verify if the Countries is good
-bool MapLoader::checkCountries(std::string line) {
+//Verify if the territory is good
+bool MapLoader::checkTerritory(std::string line)
+{
 
 	//Counts the number of words in the line
 	size_t numberOfWords = line.empty() || line.back() == ' ' ? 0 : 1;
@@ -142,7 +212,7 @@ bool MapLoader::checkCountries(std::string line) {
 
 	//Check if its not a good line or an empty line
 	if (!(numberOfWords == 5 || numberOfWords == 0)) {
-		std::cout << "Countries format is not Valid.";
+		std::cout << "Territory format is not Valid.";
 		return false;
 	}
 	else {
@@ -152,7 +222,8 @@ bool MapLoader::checkCountries(std::string line) {
 }
 
 //Verify if the Borders is good
-bool MapLoader::checkBorders(std::string line) {
+bool MapLoader::checkBorders(std::string line)
+{
 
 	//Counts the number of words in the line
 	size_t numberOfWords = line.empty() || line.back() == ' ' ? 0 : 1;
@@ -168,4 +239,16 @@ bool MapLoader::checkBorders(std::string line) {
 		std::cout << line << "\n";
 		return true;
 	}
+}
+
+void MapLoader::createContinent(std::string continent)
+{
+}
+
+void MapLoader::createTerritory(std::string country)
+{
+}
+
+void MapLoader::createBorder(std::string border)
+{
 }
