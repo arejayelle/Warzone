@@ -60,11 +60,11 @@ namespace Cards {
 		void Deck::printDeck()
 		{
 			cout << "Here are the contents of the deck"<< endl;
-			cout << "ID\tName" << endl;
+
 			int i = 0;
 			for (std::vector<Card*>::iterator it = fullDeck->begin(); it != fullDeck->end(); ++it) {
 
-				cout << i++ << '\t' << (*it)->getName() << endl;
+				cout << (*it)->getName() << "\t\tID: " << i++ << endl;
 			}
 			cout << "----end of deck ----" << endl;
 		}
