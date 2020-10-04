@@ -16,7 +16,15 @@ namespace Cards {
 		cout << "this is a basic Card";
 	}
 
+	string Card::getName()
+	{
+		return *name;
+	}
 
+	void Card::print()
+	{
+		cout << this->name;
+	}
 
 
 	SpyCard::SpyCard()
@@ -68,6 +76,7 @@ namespace Cards {
 
 	BlockadeCard::~BlockadeCard()
 	{
+		
 	}
 
 	void BlockadeCard::play()

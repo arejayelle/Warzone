@@ -12,6 +12,8 @@ namespace Cards {
 		Card();
 		~Card();
 		virtual void play(); 
+		string getName();
+		void print();
 	};
 
 	class SpyCard: public Card {
