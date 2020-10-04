@@ -56,4 +56,27 @@ namespace Cards {
 			drawPile->push_back(cardID);
 		}
 
+		void Deck::printDeck()
+		{
+			cout << "Here are the contents of the deck"<< endl;
+			int i = 1;
+			for (std::vector<Card*>::iterator it = fullDeck->begin(); it != fullDeck->end(); ++it) {
+
+				cout << i++ << ' ' << (*it)->getName() << endl;
+			}
+		}
+		void Deck::printDrawpile()
+		{
+			cout << "Here are the contents of the drawpile" << endl;
+			int i = 1;
+			for (std::vector<int*>::iterator it = drawPile->begin(); it != drawPile->end(); ++it) {
+
+				int* cardID = (*it);
+				cout << i++ << ' ' << (int) cardID<< endl;
+			}
+		}
+		void Deck::printFromCatalog(int cardID)
+		{
+			cout<< this->fullDeck->operator[]((size_t)cardID )->getName() << endl;
+		}
 }

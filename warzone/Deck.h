@@ -21,6 +21,9 @@ namespace Cards {
 		int* draw();
 		void returnToDrawPile(int* index);
 
+		void printDeck();
+		void printDrawpile();
+		void printFromCatalog(int cardID);
 	};
 
 }

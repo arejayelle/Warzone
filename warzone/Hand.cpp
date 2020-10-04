@@ -25,4 +25,17 @@ namespace Cards {
 		}
 	}
 
+	void Hand::printHand()
+	{
+		cout << "This is my current hand" << endl;
+
+		for (int i = 0; i < currentHand->size(); i++)
+		{
+			int* cardID = currentHand->operator[](i);
+			Card* card = this->deck->getFromCatalog(cardID);
+
+			cout << i << ' ' << card->getName() << endl;
+		}
+		cout << "---------" << endl;
+	}
 }

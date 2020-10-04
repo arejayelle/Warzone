@@ -17,6 +17,9 @@ namespace Cards {
 		void addCard(int* cardId);
 		void play(int index);
 
+		void printHand();
+
 	};
+
 }
 
