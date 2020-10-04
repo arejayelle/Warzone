@@ -14,6 +14,13 @@ namespace Cards {
 	public:
 		Deck();
 		~Deck();
+
+		void add(Card* card);
+		Card* getFromCatalog(int* cardID);
+
+		int* draw();
+		void returnToDrawPile(int* index);
+
 	};
 
 }
