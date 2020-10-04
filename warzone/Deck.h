@@ -2,6 +2,8 @@
 
 #include <vector>
 #include "Card.h"
+#include <cstdlib>
+#include <ctime>
 
 namespace Cards {
 
@@ -23,7 +25,6 @@ namespace Cards {
 
 		void printDeck();
 		void printDrawpile();
-		void printFromCatalog(int cardID);
 	};
 
 }

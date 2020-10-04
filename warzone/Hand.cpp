@@ -34,7 +34,7 @@ namespace Cards {
 			int* cardID = currentHand->operator[](i);
 			Card* card = this->deck->getFromCatalog(cardID);
 
-			cout << i << ' ' << card->getName() << endl;
+			cout << "ID: " <<(int)cardID << ' ' << card->getName() << endl;
 		}
 		cout << "---------" << endl;
 	}

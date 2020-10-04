@@ -36,6 +36,7 @@ namespace Cards {
 		int* Deck::draw()
 		{
 			// randomly choose a value from the draw pile
+			srand((unsigned int)time(NULL));
 			int drawIndex = rand() % drawPile->size();
 
 			// Retrieve cardID
@@ -59,24 +60,24 @@ namespace Cards {
 		void Deck::printDeck()
 		{
 			cout << "Here are the contents of the deck"<< endl;
-			int i = 1;
+			cout << "ID\tName" << endl;
+			int i = 0;
 			for (std::vector<Card*>::iterator it = fullDeck->begin(); it != fullDeck->end(); ++it) {
 
-				cout << i++ << ' ' << (*it)->getName() << endl;
+				cout << i++ << '\t' << (*it)->getName() << endl;
 			}
+			cout << "----end of deck ----" << endl;
 		}
 		void Deck::printDrawpile()
 		{
 			cout << "Here are the contents of the drawpile" << endl;
-			int i = 1;
+			cout << "index\tCard ID"<< endl;
+
+			int i = 0;
 			for (std::vector<int*>::iterator it = drawPile->begin(); it != drawPile->end(); ++it) {
 
 				int* cardID = (*it);
-				cout << i++ << ' ' << (int) cardID<< endl;
+				cout << i++ << "\t" << (int) cardID<< endl;
 			}
-		}
-		void Deck::printFromCatalog(int cardID)
-		{
-			cout<< this->fullDeck->operator[]((size_t)cardID )->getName() << endl;
 		}
 }

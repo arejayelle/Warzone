@@ -20,17 +20,20 @@ namespace Cards {
         cout << "Checking Draw pile" << endl;
         deck->printDrawpile();
 
-        cout << "Drawing 5 cards" << endl;
+        cout << "Drawing 5 random cards" << endl;
         int handSize = 5;
         Hand* hand = new Hand(deck);
-
         populateHand(deck, hand, handSize);
         hand->printHand();
     
         cout << "Checking Draw pile" << endl;
         deck->printDrawpile();
 
+        cout << "Playing all cards in hand" << endl;
         playAllHand(hand, handSize);
+
+        cout << "Checking Draw pile" << endl;
+        deck->printDrawpile();
 
         return 0;
 }
@@ -45,7 +48,7 @@ namespace Cards {
         DiplomacyCard* diplomacyCard = new DiplomacyCard();
 
         // add cards
-        for (int i = 0; i < 2; i++) {        
+        for (int i = 0; i < 4; i++) {        
             deck->add(spyCard);
             deck->add(bombCard);
             deck->add(reinforcementCard);
@@ -63,9 +66,7 @@ namespace Cards {
         {
             int* cardID = deck->draw();
             hand->addCard(cardID);
-            cout << "Adding Card w/ ID " << (int) cardID << " to hand ";
-            int cardIDValue = (int)cardID;
-            deck->printFromCatalog(cardIDValue);
+            cout << "Adding " << deck->getFromCatalog(cardID)->getName()<<" ID " << (int) cardID << endl;
         }
     }
 

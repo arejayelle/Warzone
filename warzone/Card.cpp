@@ -13,7 +13,7 @@ namespace Cards {
 	
 	void Card::play()
 	{
-		cout << "this is a basic Card";
+		cout << "this is a basic Card" <<endl;
 	}
 
 	string Card::getName()
@@ -38,7 +38,7 @@ namespace Cards {
 
 	void SpyCard::play()
 	{
-		cout << "I am a SpyCard";
+		cout << "Playing SpyCard" << endl;
 	}
 
 	BombCard::BombCard()
@@ -52,7 +52,7 @@ namespace Cards {
 
 	void BombCard::play()
 	{
-		cout << "I am a BombCard";
+		cout << "Playing BombCard" << endl;
 	}
 
 	ReinforcementCard::ReinforcementCard()
@@ -66,7 +66,7 @@ namespace Cards {
 
 	void ReinforcementCard::play()
 	{
-		cout << "I am a ReinforcementCard";
+		cout << "Playing ReinforcementCard" << endl;
 	}
 
 	BlockadeCard::BlockadeCard()
@@ -81,7 +81,7 @@ namespace Cards {
 
 	void BlockadeCard::play()
 	{
-		cout << "I am a BlockadeCard";
+		cout << "Playing BlockadeCard" << endl;
 	}
 		
 	AirliftCard::AirliftCard()
@@ -96,7 +96,7 @@ namespace Cards {
 
 	void AirliftCard::play()
 	{
-		cout << "I am a AirliftCard";
+		cout << "Playing AirliftCard" << endl;
 	}
 
 	DiplomacyCard::DiplomacyCard()
@@ -111,6 +111,6 @@ namespace Cards {
 
 	void DiplomacyCard::play()
 	{
-		cout << "I am a DiplomacyCard";
+		cout << "Playing DiplomacyCard" << endl;
 	}
 }
