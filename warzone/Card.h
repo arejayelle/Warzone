@@ -2,34 +2,64 @@
 #include <iostream>
 using namespace std;
 
-class Card
-{
-public: 
-	virtual void play() = 0; 
-};
+namespace Cards {
 
-class SpyCard: Card {
-	void play();
-};
+	class Card
+	{
+	protected:
+		string* name;
+	public: 
+		Card();
+		~Card();
+		virtual void play(); 
+	};
 
-class BombCard: Card {
-	void play();
-};
+	class SpyCard: public Card {
+	public: 
+		SpyCard();
+		~SpyCard();
+	
+		void play();
+	};
 
-class ReinforcementCard: Card {
-	void play();
-};
+	class BombCard:public Card {
+	public:
+		BombCard();
+		~BombCard();
+		void play();
+	};
 
-class BlockadeCard: Card {
-	void play();
-};
+	class ReinforcementCard :public Card {
+	public:
+		ReinforcementCard();
+		~ReinforcementCard();
 
-class AirliftCard: Card {
-	void play();
-};
+		void play();
+	};
+
+	class BlockadeCard :public Card {
+	public:
+		BlockadeCard();
+		~BlockadeCard();
+
+		void play();
+	};
+
+	class AirliftCard :public Card {
+	public:
+		AirliftCard();
+		~AirliftCard();
+
+		void play();
+	};
 
 
-class DiplomacyCard: Card {
-	void play();
-};
+	class DiplomacyCard :public Card {
+	public:
+		DiplomacyCard();
+		~DiplomacyCard();
 
+		void play();
+	};
+
+}
