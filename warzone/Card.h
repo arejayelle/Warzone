@@ -55,7 +55,6 @@ namespace Cards {
 		void play();
 	};
 
-
 	class DiplomacyCard :public Card {
 	public:
 		DiplomacyCard();
