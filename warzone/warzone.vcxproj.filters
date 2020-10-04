@@ -28,6 +28,9 @@
     <Filter Include="Source Files\Card">
       <UniqueIdentifier>{157971de-e3ff-4fd1-8221-be0659dd3d80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Card">
+      <UniqueIdentifier>{1c27fb3b-a7e4-42ab-968b-f95be972a438}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
@@ -40,7 +43,16 @@
       <Filter>Header Files\Player</Filter>
     </ClInclude>
     <ClInclude Include="Card.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="CardDriver.h">
+      <Filter>Header Files\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="Deck.h">
+      <Filter>Header Files\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="Hand.h">
+      <Filter>Header Files\Card</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -53,8 +65,17 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Player</Filter>
     </ClCompile>
+    <ClCompile Include="CardDriver.cpp">
+      <Filter>Source Files\Card</Filter>
+    </ClCompile>
+    <ClCompile Include="Deck.cpp">
+      <Filter>Source Files\Card</Filter>
+    </ClCompile>
+    <ClCompile Include="Hand.cpp">
+      <Filter>Source Files\Card</Filter>
+    </ClCompile>
     <ClCompile Include="Card.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Card</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

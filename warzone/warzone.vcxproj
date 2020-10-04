@@ -140,12 +140,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Card.cpp" />
+    <ClCompile Include="CardDriver.cpp" />
+    <ClCompile Include="Deck.cpp" />
+    <ClCompile Include="Hand.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapDriver.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Card.h" />
+    <ClInclude Include="CardDriver.h" />
+    <ClInclude Include="Deck.h" />
+    <ClInclude Include="Hand.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapDriver.h" />
     <ClInclude Include="Player.h" />
