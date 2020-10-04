@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="CardDriver.cpp" />
+    <ClCompile Include="Cards.cpp" />
     <ClCompile Include="Deck.cpp" />
     <ClCompile Include="Hand.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -151,6 +152,7 @@
   <ItemGroup>
     <ClInclude Include="Card.h" />
     <ClInclude Include="CardDriver.h" />
+    <ClInclude Include="Cards.h" />
     <ClInclude Include="Deck.h" />
     <ClInclude Include="Hand.h" />
     <ClInclude Include="Main.h" />

@@ -1,7 +1,5 @@
 #pragma once
-#include "Card.h"
-#include "Deck.h"
-#include "Hand.h"
+#include "Cards.h"
 
 namespace Cards {
 	int main();
