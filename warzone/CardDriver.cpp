@@ -11,11 +11,27 @@ namespace Cards {
         Deck* deck = new Deck();
  
         cout << "Creating Deck"<<endl;
+        deck->printDeck();
         
         cout << "Populating Deck"<<endl;
+        populateDeck(deck);
+        deck->printDeck();
+
         cout << "Checking Draw pile" << endl;
+        deck->printDrawpile();
+
         cout << "Drawing 5 cards" << endl;
+        int handSize = 5;
+        Hand* hand = new Hand(deck);
+
+        populateHand(deck, hand, handSize);
+        hand->printHand();
+    
         cout << "Checking Draw pile" << endl;
+        deck->printDrawpile();
+
+        playAllHand(hand, handSize);
+
         return 0;
 }
 
@@ -43,6 +59,14 @@ namespace Cards {
 
     void populateHand(Deck* deck, Hand* hand, int handSize) 
     {
+        for (int i = 0;i < handSize;i++) 
+        {
+            int* cardID = deck->draw();
+            hand->addCard(cardID);
+            cout << "Adding Card w/ ID " << (int) cardID << " to hand ";
+            int cardIDValue = (int)cardID;
+            deck->printFromCatalog(cardIDValue);
+        }
     }
 
     void playAllHand(Hand* hand, int handSize)
