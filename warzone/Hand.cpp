@@ -21,6 +21,7 @@ namespace Cards {
 			std::vector<int*>::iterator it = currentHand->begin() + index;
 			Card* aCard = this->deck->getFromCatalog((*it));
 			aCard->play();
+			deck->returnToDrawPile(*it);
 			currentHand->erase(it);
 		}
 	}

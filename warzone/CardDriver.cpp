@@ -29,7 +29,7 @@ namespace Cards {
         cout << "Checking Draw pile" << endl;
         deck->printDrawpile();
 
-        cout << "Playing all cards in hand" << endl;
+        cout << "\nPlaying all cards in hand" << endl;
         playAllHand(hand, handSize);
 
         cout << "Checking Draw pile" << endl;
@@ -66,7 +66,6 @@ namespace Cards {
         {
             int* cardID = deck->draw();
             hand->addCard(cardID);
-            cout << "Adding " << deck->getFromCatalog(cardID)->getName()<<" ID " << (int) cardID << endl;
         }
     }
 
