@@ -1,9 +1,5 @@
 #include "CardDriver.h"
 
-int main()
-{
-    return Cards::main();
-}
 namespace Cards {
 
     int main()
