@@ -4,6 +4,8 @@
 
 using namespace std;
 
+class Player;
+
 class Order {
 public:
 	Order();
@@ -13,12 +15,13 @@ public:
 
 	virtual bool validate();
 	virtual bool execute();
-	friend ostream& operator << (ostream& outStream, const Order& order);
+	friend ostream& operator<<(ostream& outStream, const Order& order);
 
 private:
 	Player* player;  // The player who created the order.
 };
 
+// Each type of order is a subclass of Order.
 class DeployOrder : public Order { };
 
 class AdvanceOrder : public Order { };
@@ -34,7 +37,7 @@ class NegotiateOrder : public Order { };
 class OrdersList {
 public:
 	void add(Order* order);
-	void remove(int index);  // This is the delete function, but delete is a keyword so I'm calling it remove.
+	void remove(int index);  // This is the delete function, but delete is a reserved word so I'm calling it remove.
 	void move(Order* order, int newIndex);
 
 private:
