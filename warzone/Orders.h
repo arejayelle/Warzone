@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -42,4 +43,8 @@ public:
 
 private:
 	vector<Order> orders;
+};
+
+class Orders
+{
 };

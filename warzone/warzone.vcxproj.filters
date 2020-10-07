@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Player">
       <UniqueIdentifier>{8e231fa2-961b-4ec9-bb9e-0065e696f236}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Orders">
+      <UniqueIdentifier>{b2d242c8-95e5-4ca3-ac6e-17f26e42e92a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Orders">
+      <UniqueIdentifier>{053d0fe5-6620-4c7d-8041-c45b0b8c3da1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
@@ -36,6 +42,9 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Orders.h">
+      <Filter>Header Files\Orders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Map.cpp">
@@ -46,6 +55,9 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Orders.cpp">
+      <Filter>Source Files\Orders</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
