@@ -25,7 +25,7 @@ namespace Cards {
 	ostream& operator<<(ostream& out, const Card& card)
 	{
 		string name = (string) *card.name;
-		out << name<< endl;
+		out << name;
 		return out;
 	}
 
@@ -186,7 +186,7 @@ namespace Cards {
 		int i = 0;
 		for (std::vector<Card*>::iterator it = deck.fullDeck->begin(); it != deck.fullDeck->end(); ++it) {
 
-			out << (*it) << "\t\tID: " << i++ << endl;
+			out << *(*it) << "\t\tID: " << i++ << endl;
 		}
 		out << "----end of deck ----" << endl;
 
@@ -236,9 +236,9 @@ namespace Cards {
 			currentHand->erase(it);
 		}
 	}
-
-	void Hand::printHand()
+	vector<int*>* Hand::getCurrentHand()
 	{
+		return this->currentHand;
 	}
 	ostream& operator<<(ostream& out, const Hand& hand)
 	{

@@ -106,7 +106,5 @@ namespace Cards {
 		vector<int*>* getCurrentHand();
 		
 		friend ostream& operator<< (ostream& out, const Hand& hand);
-		void printHand();
-
 	};
 }
