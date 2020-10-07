@@ -152,6 +152,7 @@ namespace Cards {
 		{
 			return this->fullDeck->at((size_t)cardID);
 		}
+		return nullptr;
 	}
 
 	int* Deck::draw()
@@ -178,17 +179,20 @@ namespace Cards {
 		drawPile->push_back(cardID);
 	}
 
-	void Deck::printDeck()
+	ostream& operator<<(ostream& out, const Deck& deck)
 	{
-		cout << "Here are the contents of the deck" << endl;
+		out << "Here are the contents of the deck" << endl;
 
 		int i = 0;
-		for (std::vector<Card*>::iterator it = fullDeck->begin(); it != fullDeck->end(); ++it) {
+		for (std::vector<Card*>::iterator it = deck.fullDeck->begin(); it != deck.fullDeck->end(); ++it) {
 
-			cout << (*it)->getName() << "\t\tID: " << i++ << endl;
+			out << (*it) << "\t\tID: " << i++ << endl;
 		}
-		cout << "----end of deck ----" << endl;
+		out << "----end of deck ----" << endl;
+
+		return out;
 	}
+	
 	void Deck::printDrawpile()
 	{
 		cout << "Here are the contents of the drawpile" << endl;
@@ -207,6 +211,13 @@ namespace Cards {
 	{
 		this->deck = deck;
 		this->currentHand = new vector<int*>;
+	}
+
+	Hand::~Hand()
+	{
+		delete deck;
+		currentHand->clear();
+		delete  currentHand;
 	}
 
 	void Hand::addCard(int* cardId)
@@ -228,15 +239,21 @@ namespace Cards {
 
 	void Hand::printHand()
 	{
-		cout << "This is my current hand" << endl;
+	}
+	ostream& operator<<(ostream& out, const Hand& hand)
+	{
+		out << "This is my current hand" << endl;
 
-		for (int i = 0; i < currentHand->size(); i++)
+		for (int i = 0; i < hand.currentHand->size(); i++)
 		{
-			int* cardID = currentHand->operator[](i);
-			Card* card = this->deck->getFromCatalog(cardID);
+			int* cardID = hand.currentHand->operator[](i);
+			Card* card = hand.deck->getFromCatalog(cardID);
 
-			cout << "ID: " <<(int)cardID << ' ' << card->getName() << endl;
+			out << "ID: " <<(int)cardID << ' ' << card<< endl;
 		}
-		cout << "---------" << endl;
+		out << "---------" << endl;
+
+		return out;
+
 	}
 }

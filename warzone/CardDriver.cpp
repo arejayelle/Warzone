@@ -7,11 +7,11 @@ namespace Cards {
         Deck* deck = new Deck();
  
         cout << "Creating Deck"<<endl;
-        deck->printDeck();
+        cout << (*deck);
         
         cout << "Populating Deck"<<endl;
         populateDeck(deck);
-        deck->printDeck();
+        cout << (*deck);
 
         cout << "Checking Draw pile" << endl;
         deck->printDrawpile();
