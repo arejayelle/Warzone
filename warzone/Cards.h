@@ -18,7 +18,7 @@ namespace Cards {
 		~Card();
 		virtual void play();
 		string getName();
-		void print();
+		friend ostream& operator<< (ostream& out, const Card& card);
 	};
 
 	class SpyCard : public Card {
@@ -85,7 +85,7 @@ namespace Cards {
 		int* draw();
 		void returnToDrawPile(int* index);
 
-		void printDeck();
+		friend ostream& operator<< (ostream& out, const Deck& deck);
 		void printDrawpile();
 	};
 
@@ -98,9 +98,15 @@ namespace Cards {
 
 	public:
 		Hand(Deck* deck);
+		~Hand();
+
 		void addCard(int* cardId);
 		void play(int index);
-
+		
+		vector<int*>* getCurrentHand();
+		
+		friend ostream& operator<< (ostream& out, const Hand& hand);
 		void printHand();
+
 	};
 }

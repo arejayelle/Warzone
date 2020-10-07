@@ -22,9 +22,11 @@ namespace Cards {
 		return *name;
 	}
 
-	void Card::print()
+	ostream& operator<<(ostream& out, const Card& card)
 	{
-		cout << this->name;
+		string name = (string) *card.name;
+		out << name<< endl;
+		return out;
 	}
 
 	// Spy Cards
