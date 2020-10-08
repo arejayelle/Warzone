@@ -34,6 +34,11 @@ namespace Cards {
 		return out;
 	}
 
+	Card& Card::operator=(const Card& card)
+	{
+		return new Card(card);
+	}
+
 	// Spy Cards
 	SpyCard::SpyCard() : Card()
 	{
@@ -46,6 +51,11 @@ namespace Cards {
 
 	SpyCard::~SpyCard()
 	{
+	}
+
+	SpyCard& SpyCard::operator=(const SpyCard& card)
+	{
+		return new SpyCard(card);
 	}
 
 	void SpyCard::play()
@@ -67,6 +77,11 @@ namespace Cards {
 	{
 	}
 
+	BombCard& BombCard::operator=(const BombCard& card)
+	{
+		return new BombCard(card);
+	}
+
 	void BombCard::play()
 	{
 		cout << "Playing BombCard" << endl;
@@ -86,6 +101,11 @@ namespace Cards {
 	{
 	}
 
+	ReinforcementCard& ReinforcementCard::operator=(const ReinforcementCard& card)
+	{
+		return new ReinforcementCard(card);
+	}
+
 	void ReinforcementCard::play()
 	{
 		cout << "Playing ReinforcementCard" << endl;
@@ -100,6 +120,11 @@ namespace Cards {
 	
 	BlockadeCard::BlockadeCard(BlockadeCard* bCard) : Card(bCard)
 	{
+	}
+
+	BlockadeCard& BlockadeCard::operator=(const BlockadeCard& card)
+	{
+		return new BlockadeCard(card);
 	}
 
 	BlockadeCard::~BlockadeCard()
@@ -127,6 +152,11 @@ namespace Cards {
 
 	}
 
+	AirliftCard& AirliftCard::operator=(const AirliftCard& card)
+	{
+		return new AirliftCard(card);
+	}
+
 	void AirliftCard::play()
 	{
 		cout << "Playing AirliftCard" << endl;
@@ -145,6 +175,11 @@ namespace Cards {
 	DiplomacyCard::~DiplomacyCard()
 	{
 
+	}
+
+	DiplomacyCard& DiplomacyCard::operator=(const DiplomacyCard& card)
+	{
+		return new DiplomacyCard(card);
 	}
 
 	void DiplomacyCard::play()
@@ -181,6 +216,11 @@ namespace Cards {
 		delete fullDeck;
 		drawPile->clear();
 		delete drawPile;
+	}
+
+	Deck& Deck::operator=(const Deck& deck)
+	{
+		return new Deck(deck);
 	}
 
 	void Deck::add(Card* card)
@@ -274,6 +314,11 @@ namespace Cards {
 		delete deck;
 		currentHand->clear();
 		delete  currentHand;
+	}
+
+	Hand& Hand::operator=(const Hand& hand)
+	{
+		return new Hand(hand);
 	}
 
 	void Hand::addCard(int* cardId)

@@ -17,6 +17,8 @@ namespace Cards {
 		Card();
 		Card(Card* card);
 		~Card();
+		Card& operator= (const Card& card);
+
 		virtual void play();
 		string getName();
 		friend ostream& operator<< (ostream& out, const Card& card);
@@ -27,6 +29,7 @@ namespace Cards {
 		SpyCard();
 		SpyCard(SpyCard* spycard);
 		~SpyCard();
+		SpyCard& operator= (const SpyCard& card);
 
 		void play();
 	};
@@ -36,6 +39,8 @@ namespace Cards {
 		BombCard();
 		BombCard(BombCard* bombCard);
 		~BombCard();
+		BombCard& operator= (const BombCard& card);
+
 		void play();
 	};
 
@@ -44,6 +49,7 @@ namespace Cards {
 		ReinforcementCard();
 		ReinforcementCard(ReinforcementCard* rCard);
 		~ReinforcementCard();
+		ReinforcementCard& operator= (const ReinforcementCard& card);
 
 		void play();
 	};
@@ -53,6 +59,7 @@ namespace Cards {
 		BlockadeCard();
 		BlockadeCard(BlockadeCard* bCard);
 		~BlockadeCard();
+		BlockadeCard& operator= (const BlockadeCard& card);
 
 		void play();
 	};
@@ -62,6 +69,7 @@ namespace Cards {
 		AirliftCard();
 		AirliftCard(AirliftCard* aCard);
 		~AirliftCard();
+		AirliftCard& operator= (const AirliftCard& card);
 
 		void play();
 	};
@@ -71,6 +79,7 @@ namespace Cards {
 		DiplomacyCard();
 		DiplomacyCard(DiplomacyCard* dCard);
 		~DiplomacyCard();
+		DiplomacyCard& operator= (const DiplomacyCard& card);
 
 		void play();
 	};
@@ -86,6 +95,7 @@ namespace Cards {
 		Deck();
 		Deck(Deck* deck);
 		~Deck();
+		Deck& operator= (const Deck& deck);
 
 		void add(Card* card);
 		Card* getFromCatalog(int* cardID);
@@ -108,6 +118,7 @@ namespace Cards {
 		Hand(Deck* deck);
 		Hand(Hand* hand);
 		~Hand();
+		Hand& operator= (const Hand& hand);
 
 		void addCard(int* cardId);
 		void play(int index);
