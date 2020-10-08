@@ -3,30 +3,58 @@
 namespace Cards {
 
 	// Card functions
+	
+	/**
+	 * Card Constructor
+	 * 
+	 */
 	Card::Card() {
 		this->name = new string("Basic Card");
 	}
 
+	/**
+	 * Card Copy Constructor
+	 * 
+	 * \param card to be copied
+	 */
 	Card::Card(Card* card)
 	{
 		this->name = &card->getName();
 	}
 
+	/**
+	 * Card Destructor
+	 * 
+	 */
 	Card::~Card()
 	{
 		delete name;
 	}
 
+	/**
+	 * Card Play function
+	 * 
+	 */
 	void Card::play()
 	{
 		cout << "this is a basic Card" << endl;
 	}
 
+	/**
+	 * \return name of this card
+	 */
 	string Card::getName()
 	{
 		return *name;
 	}
 
+	/**
+	 * Stream insertion operator
+	 * 
+	 * \param out
+	 * \param card
+	 * \return 
+	 */
 	ostream& operator<<(ostream& out, const Card& card)
 	{
 		string name = (string) *card.name;
@@ -34,30 +62,59 @@ namespace Cards {
 		return out;
 	}
 
+	/**
+	 * Assignment operator
+	 * 
+	 * \param card
+	 * \return 
+	 */
 	Card& Card::operator=(const Card& card)
 	{
 		return new Card(card);
 	}
 
 	// Spy Cards
+	/**
+	 * Spy Card default Constructor
+	 * 
+	 */
 	SpyCard::SpyCard() : Card()
 	{
 		this->name = new std::string("Spy Card");
 	}
 
+	/**
+	 * Spy Card Copy Constructor
+	 * 
+	 * \param spycard Card to be copied
+	 */
 	SpyCard::SpyCard(SpyCard* spycard) : Card(spycard)
 	{
 	}
 
+	/**
+	 * Spy Card Destructor
+	 * 
+	 */
 	SpyCard::~SpyCard()
 	{
 	}
 
+	/**
+	 * Assignment operator
+	 * 
+	 * \param card
+	 * \return 
+	 */
 	SpyCard& SpyCard::operator=(const SpyCard& card)
 	{
 		return new SpyCard(card);
 	}
 
+	/**
+	 * Play function
+	 * 
+	 */
 	void SpyCard::play()
 	{
 		cout << "Playing SpyCard" << endl;
@@ -82,6 +139,10 @@ namespace Cards {
 		return new BombCard(card);
 	}
 
+	/**
+	 * Play function
+	 *
+	 */
 	void BombCard::play()
 	{
 		cout << "Playing BombCard" << endl;
@@ -106,6 +167,10 @@ namespace Cards {
 		return new ReinforcementCard(card);
 	}
 
+	/**
+	 * Play function
+	 *
+	 */
 	void ReinforcementCard::play()
 	{
 		cout << "Playing ReinforcementCard" << endl;
@@ -132,6 +197,10 @@ namespace Cards {
 
 	}
 
+	/**
+	 * Play function
+	 *
+	 */
 	void BlockadeCard::play()
 	{
 		cout << "Playing BlockadeCard" << endl;
@@ -157,6 +226,10 @@ namespace Cards {
 		return new AirliftCard(card);
 	}
 
+	/**
+	 * Play function
+	 *
+	 */
 	void AirliftCard::play()
 	{
 		cout << "Playing AirliftCard" << endl;
@@ -182,6 +255,10 @@ namespace Cards {
 		return new DiplomacyCard(card);
 	}
 
+	/**
+	 * Play function
+	 *
+	 */
 	void DiplomacyCard::play()
 	{
 		cout << "Playing DiplomacyCard" << endl;
@@ -326,6 +403,11 @@ namespace Cards {
 		currentHand->push_back(cardId);
 	}
 
+	/**
+	 * Plays card at hand index
+	 * 
+	 * \param index Index of the card to be played
+	 */
 	void Hand::play(int index) 
 	{
 		if (index < currentHand->size()) {
