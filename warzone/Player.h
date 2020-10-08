@@ -1,7 +1,9 @@
 #pragma once
 
 using namespace std;
-
+#include "Map.h"
+#include "Hand.h"
+#include "Order.h"
 #include<vector>
 #include<iostream>
 
@@ -9,7 +11,7 @@ using namespace std;
 class Player {
 public:
 	Player(); //constructor 
-	Player(Territory* initialTerritories);  //constructor
+	Player(vector<Territory> territoriesToAdd);  //constructor
 	~Player();   //destructor
 	Player& operator= (const Player* one);  //assignment operator
 	Player(const Player& player);  //copy constructor 
@@ -23,6 +25,6 @@ public:
 	
 private:
 	vector<Territory*>* playerTerritory; //returns player's territories
-//	vector<Order*>* playerOrders; //returns player's orders
-//	Hand* playerHand; //returns player's hand
+	vector<Order*>* playerOrders; //returns player's orders
+	Hand* playerHand; //returns player's hand
 };
