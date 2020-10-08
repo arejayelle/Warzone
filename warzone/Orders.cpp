@@ -14,6 +14,7 @@ Order::~Order() {
 }
 
 bool Order::validate() {
+	// TODO: More checks once we have more details.
 	if (this->player != NULL) {
 		return true;
 	} 
@@ -21,12 +22,16 @@ bool Order::validate() {
 }
 
 bool Order::execute() {
+	cout << "Attempting to execute order...";
+
 	if(!this->validate()) {
-		cout << "Cannot execute order because it is invalid.";
+		cout << "Cannot execute order because it is invalid." << endl;
 		return false;
 	}
 
-	cout << "Order executed.";
+	// TODO: Do actions once we have more details.
+	cout << "Order executed." << endl;
+	return true;
 }
 
 ostream& operator<<(ostream& outStream, const Order& order) {
@@ -42,6 +47,27 @@ DeployOrder::~DeployOrder() {
 	delete player;
 }
 
+bool DeployOrder::validate() {
+	// TODO: More checks once we have more details.
+	if (this->player != NULL) {
+		return true;
+	}
+	return false;
+}
+
+bool DeployOrder::execute() {
+	cout << "Attempting to execute deploy order...";
+
+	if (!this->validate()) {
+		cout << "Cannot execute deploy order because it is invalid." << endl;
+		return false;
+	}
+
+	// TODO: Do actions once we have more details.
+	cout << "Deploy order executed." << endl;
+	return true;
+}
+
 
 AdvanceOrder::AdvanceOrder(Player* player) : Order(player) { }
 
@@ -49,6 +75,27 @@ AdvanceOrder::AdvanceOrder(AdvanceOrder* other) : Order(other) { }
 
 AdvanceOrder::~AdvanceOrder() {
 	delete player;
+}
+
+bool AdvanceOrder::validate() {
+	// TODO: More checks once we have more details.
+	if (this->player != NULL) {
+		return true;
+	}
+	return false;
+}
+
+bool AdvanceOrder::execute() {
+	cout << "Attempting to execute advance order...";
+
+	if (!this->validate()) {
+		cout << "Cannot execute advance order because it is invalid." << endl;
+		return false;
+	}
+
+	// TODO: Do actions once we have more details.
+	cout << "Advance order executed." << endl;
+	return true;
 }
 
 
@@ -60,6 +107,27 @@ BombOrder::~BombOrder() {
 	delete player;
 }
 
+bool BombOrder::validate() {
+	// TODO: More checks once we have more details.
+	if (this->player != NULL) {
+		return true;
+	}
+	return false;
+}
+
+bool BombOrder::execute() {
+	cout << "Attempting to execute bomb order...";
+
+	if (!this->validate()) {
+		cout << "Cannot execute bomb order because it is invalid." << endl;
+		return false;
+	}
+
+	// TODO: Do actions once we have more details.
+	cout << "Bomb order executed." << endl;
+	return true;
+}
+
 
 BlockadeOrder::BlockadeOrder(Player* player) : Order(player) { }
 
@@ -67,6 +135,27 @@ BlockadeOrder::BlockadeOrder(BlockadeOrder* other) : Order(other) { }
 
 BlockadeOrder::~BlockadeOrder() {
 	delete player;
+}
+
+bool BlockadeOrder::validate() {
+	// TODO: More checks once we have more details.
+	if (this->player != NULL) {
+		return true;
+	}
+	return false;
+}
+
+bool BlockadeOrder::execute() {
+	cout << "Attempting to execute blockade order...";
+
+	if (!this->validate()) {
+		cout << "Cannot execute blockade order because it is invalid." << endl;
+		return false;
+	}
+
+	// TODO: Do actions once we have more details.
+	cout << "Blockade order executed." << endl;
+	return true;
 }
 
 
@@ -78,6 +167,27 @@ AirliftOrder::~AirliftOrder() {
 	delete player;
 }
 
+bool AirliftOrder::validate() {
+	// TODO: More checks once we have more details.
+	if (this->player != NULL) {
+		return true;
+	}
+	return false;
+}
+
+bool AirliftOrder::execute() {
+	cout << "Attempting to execute airlift order...";
+
+	if (!this->validate()) {
+		cout << "Cannot execute airlift order because it is invalid." << endl;
+		return false;
+	}
+
+	// TODO: Do actions once we have more details.
+	cout << "Airlift order executed." << endl;
+	return true;
+}
+
 
 NegotiateOrder::NegotiateOrder(Player* player) : Order(player) { }
 
@@ -85,6 +195,27 @@ NegotiateOrder::NegotiateOrder(NegotiateOrder* other) : Order(other) { }
 
 NegotiateOrder::~NegotiateOrder() {
 	delete player;
+}
+
+bool NegotiateOrder::validate() {
+	// TODO: More checks once we have more details.
+	if (this->player != NULL) {
+		return true;
+	}
+	return false;
+}
+
+bool NegotiateOrder::execute() {
+	cout << "Attempting to execute negotiate order...";
+
+	if (!this->validate()) {
+		cout << "Cannot execute negotiate order because it is invalid." << endl;
+		return false;
+	}
+
+	// TODO: Do actions once we have more details.
+	cout << "Negotiate order executed." << endl;
+	return true;
 }
 
 
@@ -135,6 +266,7 @@ void OrdersList::move(int oldIndex, int newIndex) {
 	this->orders->insert(this->orders->begin() + newIndex, theOrder);
 }
 
+// Prints all orders for debugging purposes.
 void OrdersList::print() {
 	for (int i = 0; i < this->orders->size(); i++) {
 		cout << orders->at(i) << ", ";
