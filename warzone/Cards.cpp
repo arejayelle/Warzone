@@ -35,7 +35,7 @@ namespace Cards {
 	}
 
 	// Spy Cards
-	SpyCard::SpyCard()
+	SpyCard::SpyCard() : Card()
 	{
 		this->name = new std::string("Spy Card");
 	}
@@ -54,7 +54,7 @@ namespace Cards {
 	}
 
 	// Bomb Cards
-	BombCard::BombCard()
+	BombCard::BombCard(): Card()
 	{
 		this->name = new std::string("BombCard");
 	}
@@ -73,7 +73,7 @@ namespace Cards {
 	}
 
 	// Reinforcement Cards
-	ReinforcementCard::ReinforcementCard()
+	ReinforcementCard::ReinforcementCard() : Card()
 	{
 		name = new std::string("ReinforcementCard");
 	}
@@ -92,7 +92,7 @@ namespace Cards {
 	}
 
 	// Blockade Cards
-	BlockadeCard::BlockadeCard()
+	BlockadeCard::BlockadeCard(): Card()
 	{
 		name = new std::string("BlockadeCard");
 	}
@@ -113,7 +113,7 @@ namespace Cards {
 	}
 
 	// Airlift Cards
-	AirliftCard::AirliftCard()
+	AirliftCard::AirliftCard() : Card()
 	{
 		name = new std::string("AirliftCard");
 	}
@@ -133,7 +133,7 @@ namespace Cards {
 	}
 
 	// Diplomacy Cards
-	DiplomacyCard::DiplomacyCard()
+	DiplomacyCard::DiplomacyCard() : Card()
 	{
 		name = new std::string("DiplomacyCard");
 	}
