@@ -35,6 +35,9 @@ public:
 	
 	bool validate();
 	bool execute();
+
+private:
+	friend ostream& operator<<(ostream& strm, const DeployOrder& o);
 };
 
 
@@ -46,6 +49,9 @@ public:
 
 	bool validate();
 	bool execute();
+
+private:
+	friend ostream& operator<<(ostream& strm, const AdvanceOrder& o);
 };
 
 
@@ -57,6 +63,9 @@ public:
 
 	bool validate();
 	bool execute();
+
+private:
+	friend ostream& operator<<(ostream& strm, const BombOrder& o);
 };
 
 
@@ -68,6 +77,9 @@ public:
 
 	bool validate();
 	bool execute();
+
+private:
+	friend ostream& operator<<(ostream& strm, const BlockadeOrder& o);
 };
 
 
@@ -79,6 +91,9 @@ public:
 
 	bool validate();
 	bool execute();
+
+private:
+	friend ostream& operator<<(ostream& strm, const AirliftOrder& o);
 };
 
 
@@ -90,6 +105,9 @@ public:
 
 	bool validate();
 	bool execute();
+
+private:
+	friend ostream& operator<<(ostream& strm, const NegotiateOrder& o);
 };
 
 

@@ -39,8 +39,7 @@ bool Order::execute() {
 }
 
 ostream& operator<<(ostream &strm, const Order &o) {
-	return strm << "Order made by " << o.*player;
-	// TODO: insert return statement here
+	return strm << "Order made by player " << o.player << endl;
 }
 
 
@@ -73,6 +72,10 @@ bool DeployOrder::execute() {
 	return true;
 }
 
+ostream& operator<<(ostream& strm, const DeployOrder& d) {
+	return strm << "Deploy order made by player " << d.player << endl;
+}
+
 
 AdvanceOrder::AdvanceOrder(Player* player) : Order(player) { }
 
@@ -101,6 +104,10 @@ bool AdvanceOrder::execute() {
 	// TODO: Do actions once we have more details.
 	cout << "Advance order executed." << endl;
 	return true;
+}
+
+ostream& operator<<(ostream& strm, const AdvanceOrder& o) {
+	return strm << "Advance order made by player " << o.player << endl;
 }
 
 
@@ -133,6 +140,10 @@ bool BombOrder::execute() {
 	return true;
 }
 
+ostream& operator<<(ostream& strm, const BombOrder& o) {
+	return strm << "Bomb order made by player " << o.player << endl;
+}
+
 
 BlockadeOrder::BlockadeOrder(Player* player) : Order(player) { }
 
@@ -161,6 +172,10 @@ bool BlockadeOrder::execute() {
 	// TODO: Do actions once we have more details.
 	cout << "Blockade order executed." << endl;
 	return true;
+}
+
+ostream& operator<<(ostream& strm, const BlockadeOrder& o) {
+	return strm << "Blockade order made by player " << o.player << endl;
 }
 
 
@@ -193,6 +208,10 @@ bool AirliftOrder::execute() {
 	return true;
 }
 
+ostream& operator<<(ostream& strm, const AirliftOrder& o) {
+	return strm << "Airlift order made by player " << o.player << endl;
+}
+
 
 NegotiateOrder::NegotiateOrder(Player* player) : Order(player) { }
 
@@ -221,6 +240,10 @@ bool NegotiateOrder::execute() {
 	// TODO: Do actions once we have more details.
 	cout << "Negotiate order executed." << endl;
 	return true;
+}
+
+ostream& operator<<(ostream& strm, const NegotiateOrder& o) {
+	return strm << "Negotiate order made by player " << o.player << endl;
 }
 
 

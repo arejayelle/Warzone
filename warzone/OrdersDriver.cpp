@@ -24,25 +24,35 @@ int OrdersDriver::main() {
 
 	DeployOrder* depOrd1 = new DeployOrder(player1);
 	list1.add(depOrd1);
+
+	cout << *depOrd1 << endl;
 	
 	AdvanceOrder* advOrd1 = new AdvanceOrder(player1);
 	list1.add(advOrd1);
 
+	cout << *advOrd1 << endl;
+
 	BombOrder* bmbOrd1 = new BombOrder(player1);
 	list1.add(bmbOrd1);
+
+	cout << *bmbOrd1 << endl;
 
 	BlockadeOrder* blkOrd1 = new BlockadeOrder(player1);
 	list1.add(blkOrd1);
 
+	cout << *blkOrd1 << endl;
+
 	AirliftOrder* alfOrd1 = new AirliftOrder(player1);
 	list1.add(alfOrd1);
+
+	cout << *alfOrd1 << endl;
 
 	NegotiateOrder* ngtOrd1 = new NegotiateOrder(player1);
 	list1.add(ngtOrd1);
 
-	list1.executeAll();
+	cout << *ngtOrd1 << endl;
 
-	cout << regOrd1;
+	list1.executeAll();
 
 	return 0;
 }
