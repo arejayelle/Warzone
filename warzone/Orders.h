@@ -9,7 +9,6 @@ class Player;
 
 class Order {
 public:
-	Order();
 	Order(Player* player);
 	Order(Order* other);
 	~Order();
@@ -18,33 +17,58 @@ public:
 	virtual bool execute();
 	friend ostream& operator<<(ostream& outStream, const Order& order);
 
-private:
+protected:
 	Player* player;  // The player who created the order.
 };
+												    
+// Each type of order is a subclass of Order.	    
+class DeployOrder : public Order {
+	DeployOrder(Player* player);
+	DeployOrder(DeployOrder* other);
+	~DeployOrder();
+};
 
-// Each type of order is a subclass of Order.
-class DeployOrder : public Order { };
+class AdvanceOrder : public Order { 
+	AdvanceOrder(Player* player);
+	AdvanceOrder(AdvanceOrder* other);
+	~AdvanceOrder();
+};
 
-class AdvanceOrder : public Order { };
+class BombOrder : public Order {
+	BombOrder(Player* player);
+	BombOrder(BombOrder* other);
+	~BombOrder();
+};
 
-class BombOrder : public Order { };
+class BlockadeOrder : public Order {
+	BlockadeOrder(Player* player);
+	BlockadeOrder(BlockadeOrder* other);
+	~BlockadeOrder();
+};
 
-class BlockadeOrder : public Order { };
+class AirliftOrder : public Order {
+	AirliftOrder(Player* player);
+	AirliftOrder(AirliftOrder* other);
+	~AirliftOrder();
+};
 
-class AirliftOrder : public Order { };
-
-class NegotiateOrder : public Order { };
+class NegotiateOrder : public Order {
+	NegotiateOrder(Player* player);
+	NegotiateOrder(NegotiateOrder* other);
+	~NegotiateOrder();
+};
 
 class OrdersList {
 public:
+	OrdersList(Player* player);
+	OrdersList(OrdersList* other);
+	~OrdersList();
+
 	void add(Order* order);
 	void remove(int index);  // This is the delete function, but delete is a reserved word so I'm calling it remove.
 	void move(Order* order, int newIndex);
 
 private:
-	vector<Order> orders;
-};
-
-class Orders
-{
+	Player* player;
+	vector<Order>* orders;
 };

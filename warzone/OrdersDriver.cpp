@@ -1,9 +1,11 @@
 #include "OrdersDriver.h"
 #include <iostream>
 
-int OrdersDriver::main()
-{
-	std::cout << "Fuck you";
+class Player;
+
+int OrdersDriver::main() {
+	
+	
 	return 0;
 }
 
