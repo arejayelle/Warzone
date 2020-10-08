@@ -1,6 +1,6 @@
 #include "Orders.h"
 
-// Order class.
+
 Order::Order(Player* player) {
 	this->player = player;
 }
@@ -30,45 +30,63 @@ bool Order::execute() {
 }
 
 ostream& operator<<(ostream& outStream, const Order& order) {
-	// TODO: insert return statement here
 	return outStream;
 }
 
+
 DeployOrder::DeployOrder(Player* player) : Order(player) { }
+
 DeployOrder::DeployOrder(DeployOrder* other) : Order(other) { }
+
 DeployOrder::~DeployOrder() {
 	delete player;
 }
 
+
 AdvanceOrder::AdvanceOrder(Player* player) : Order(player) { }
+
 AdvanceOrder::AdvanceOrder(AdvanceOrder* other) : Order(other) { }
+
 AdvanceOrder::~AdvanceOrder() {
 	delete player;
 }
 
+
 BombOrder::BombOrder(Player* player) : Order(player) { }
+
 BombOrder::BombOrder(BombOrder* other) : Order(other) { }
+
 BombOrder::~BombOrder() {
 	delete player;
 }
 
+
 BlockadeOrder::BlockadeOrder(Player* player) : Order(player) { }
+
 BlockadeOrder::BlockadeOrder(BlockadeOrder* other) : Order(other) { }
+
 BlockadeOrder::~BlockadeOrder() {
 	delete player;
 }
 
+
 AirliftOrder::AirliftOrder(Player* player) : Order(player) { }
+
 AirliftOrder::AirliftOrder(AirliftOrder* other) : Order(other) { }
+
 AirliftOrder::~AirliftOrder() {
 	delete player;
 }
 
+
 NegotiateOrder::NegotiateOrder(Player* player) : Order(player) { }
+
 NegotiateOrder::NegotiateOrder(NegotiateOrder* other) : Order(other) { }
+
 NegotiateOrder::~NegotiateOrder() {
 	delete player;
 }
+
 
 OrdersList::OrdersList(Player* player) {
 	this->player = player;
@@ -86,14 +104,39 @@ OrdersList::~OrdersList() {
 	delete orders;
 }
 
-void OrdersList::add(Order* order) {
-
+// The new order is added to the back of the list.
+void OrdersList::add(Order* newOrder) {
+	this->orders->push_back(newOrder);
 }
 
+// Deletes the order at the specified index. Indexes begin at 0.
 void OrdersList::remove(int index) {
+	if (index > this->orders->size() - 1 || index < 0) {
+		cout << "Can't delete this order. Invalid index." << endl;
+		return;
+	}
 
+	this->orders->erase(this->orders->begin() + index);
 }
 
-void OrdersList::move(Order* order, int newIndex) {
+// Allows the player to rearrange orders by removing an order at oldIndex and inserting it at newIndex.
+void OrdersList::move(int oldIndex, int newIndex) {
+	if (oldIndex > this->orders->size() - 1 || oldIndex < 0) {
+		cout << "Can't move. Invalid starting index." << endl;
+		return;
+	}
+	else if (newIndex > this->orders->size() - 1 || newIndex < 0) {
+		cout << "Can't move. Invalid destination index." << endl;
+		return;
+	}
+	
+	Order theOrder = this->orders->at(oldIndex);
+	this->remove(oldIndex);
+	this->orders->insert(this->orders->begin() + newIndex, theOrder);
+}
 
+void OrdersList::print() {
+	for (int i = 0; i < this->orders->size(); i++) {
+		cout << orders->at(i) << ", ";
+	}
 }

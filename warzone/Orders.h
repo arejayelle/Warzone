@@ -64,9 +64,9 @@ public:
 	OrdersList(OrdersList* other);
 	~OrdersList();
 
-	void add(Order* order);
+	void add(Order* newOrder);
 	void remove(int index);  // This is the delete function, but delete is a reserved word so I'm calling it remove.
-	void move(Order* order, int newIndex);
+	void move(int oldIndex, int newIndex);
 
 private:
 	Player* player;
