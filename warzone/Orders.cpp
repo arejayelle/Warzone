@@ -1,5 +1,9 @@
 #include "Orders.h"
+#include <iostream>
 
+Order::Order() {
+	this->player = NULL;
+}
 
 Order::Order(Player* player) {
 	this->player = player;
@@ -22,7 +26,7 @@ bool Order::validate() {
 }
 
 bool Order::execute() {
-	cout << "Attempting to execute order...";
+	cout << "Attempting to execute order... ";
 
 	if(!this->validate()) {
 		cout << "Cannot execute order because it is invalid." << endl;
@@ -34,8 +38,9 @@ bool Order::execute() {
 	return true;
 }
 
-ostream& operator<<(ostream& outStream, const Order& order) {
-	return outStream;
+ostream& operator<<(ostream &strm, const Order &o) {
+	return strm << "Order made by " << o.*player;
+	// TODO: insert return statement here
 }
 
 
@@ -56,7 +61,7 @@ bool DeployOrder::validate() {
 }
 
 bool DeployOrder::execute() {
-	cout << "Attempting to execute deploy order...";
+	cout << "Attempting to execute deploy order... ";
 
 	if (!this->validate()) {
 		cout << "Cannot execute deploy order because it is invalid." << endl;
@@ -86,7 +91,7 @@ bool AdvanceOrder::validate() {
 }
 
 bool AdvanceOrder::execute() {
-	cout << "Attempting to execute advance order...";
+	cout << "Attempting to execute advance order... ";
 
 	if (!this->validate()) {
 		cout << "Cannot execute advance order because it is invalid." << endl;
@@ -116,7 +121,7 @@ bool BombOrder::validate() {
 }
 
 bool BombOrder::execute() {
-	cout << "Attempting to execute bomb order...";
+	cout << "Attempting to execute bomb order... ";
 
 	if (!this->validate()) {
 		cout << "Cannot execute bomb order because it is invalid." << endl;
@@ -146,7 +151,7 @@ bool BlockadeOrder::validate() {
 }
 
 bool BlockadeOrder::execute() {
-	cout << "Attempting to execute blockade order...";
+	cout << "Attempting to execute blockade order... ";
 
 	if (!this->validate()) {
 		cout << "Cannot execute blockade order because it is invalid." << endl;
@@ -176,7 +181,7 @@ bool AirliftOrder::validate() {
 }
 
 bool AirliftOrder::execute() {
-	cout << "Attempting to execute airlift order...";
+	cout << "Attempting to execute airlift order... ";
 
 	if (!this->validate()) {
 		cout << "Cannot execute airlift order because it is invalid." << endl;
@@ -206,7 +211,7 @@ bool NegotiateOrder::validate() {
 }
 
 bool NegotiateOrder::execute() {
-	cout << "Attempting to execute negotiate order...";
+	cout << "Attempting to execute negotiate order... ";
 
 	if (!this->validate()) {
 		cout << "Cannot execute negotiate order because it is invalid." << endl;
@@ -219,20 +224,21 @@ bool NegotiateOrder::execute() {
 }
 
 
-OrdersList::OrdersList(Player* player) {
-	this->player = player;
-	this->orders = {};
+OrdersList::OrdersList() {
+	this->orders = new vector<Order*>();
 }
 
 OrdersList::OrdersList(OrdersList* other) {
-	this->player = other->player;
 	this->orders = other->orders;
 }
 
 OrdersList::~OrdersList() {
-	delete player;
 	orders->clear();
 	delete orders;
+}
+
+int OrdersList::size() {
+	return this->orders->size();
 }
 
 // The new order is added to the back of the list.
@@ -241,34 +247,60 @@ void OrdersList::add(Order* newOrder) {
 }
 
 // Deletes the order at the specified index. Indexes begin at 0.
-void OrdersList::remove(int index) {
+bool OrdersList::remove(int index) {
 	if (index > this->orders->size() - 1 || index < 0) {
 		cout << "Can't delete this order. Invalid index." << endl;
-		return;
+		return false;
 	}
 
 	this->orders->erase(this->orders->begin() + index);
+	return true;
 }
 
 // Allows the player to rearrange orders by removing an order at oldIndex and inserting it at newIndex.
-void OrdersList::move(int oldIndex, int newIndex) {
+bool OrdersList::move(int oldIndex, int newIndex) {
+	// Check if the indices make sense.
 	if (oldIndex > this->orders->size() - 1 || oldIndex < 0) {
 		cout << "Can't move. Invalid starting index." << endl;
-		return;
+		return false;
 	}
 	else if (newIndex > this->orders->size() - 1 || newIndex < 0) {
 		cout << "Can't move. Invalid destination index." << endl;
-		return;
+		return false;
 	}
-	
-	Order theOrder = this->orders->at(oldIndex);
+
+	// Get and remove the item at oldIndex.
+	Order* theOrder = this->orders->at(oldIndex);
 	this->remove(oldIndex);
+
+	// The last index may have changed after removal, if invalid just add it to the back of the list.
+	if (newIndex > this->orders->size() - 1) {
+		this->orders->push_back(theOrder);
+		return true;
+	}
+
+	// Regular case, just insert it at the index.
 	this->orders->insert(this->orders->begin() + newIndex, theOrder);
+	return true;
 }
 
 // Prints all orders for debugging purposes.
 void OrdersList::print() {
 	for (int i = 0; i < this->orders->size(); i++) {
-		cout << orders->at(i) << ", ";
+		auto ord = orders->at(i);
+		cout << ord << ", ";
 	}
+}
+
+// Attempts to execute all orders in the list. Returns true if successful, returns false if at least one could not be executed.
+bool OrdersList::executeAll() {
+	bool allExecuted = true;
+
+	for (int i = 0; i < this->orders->size(); i++) {
+		if (!this->orders->at(i)->execute()) {
+			allExecuted = false;
+		}
+	}
+
+	return allExecuted;
 }

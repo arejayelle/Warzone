@@ -5,24 +5,30 @@
 
 using namespace std;
 
+
 class Player;
+
 
 class Order {
 public:
+	Order();
 	Order(Player* player);
 	Order(Order* other);
 	~Order();
 
 	virtual bool validate();
 	virtual bool execute();
-	friend ostream& operator<<(ostream& outStream, const Order& order);
+
+private:
+	friend ostream& operator<<(ostream &strm, const Order &o);
 
 protected:
 	Player* player;  // The player who created the order.
 };
-												    
-// Each type of order is a subclass of Order.	    
+												
+
 class DeployOrder : public Order {
+public:
 	DeployOrder(Player* player);
 	DeployOrder(DeployOrder* other);
 	~DeployOrder();
@@ -31,7 +37,9 @@ class DeployOrder : public Order {
 	bool execute();
 };
 
-class AdvanceOrder : public Order { 
+
+class AdvanceOrder : public Order {
+public:
 	AdvanceOrder(Player* player);
 	AdvanceOrder(AdvanceOrder* other);
 	~AdvanceOrder();
@@ -40,7 +48,9 @@ class AdvanceOrder : public Order {
 	bool execute();
 };
 
+
 class BombOrder : public Order {
+public:
 	BombOrder(Player* player);
 	BombOrder(BombOrder* other);
 	~BombOrder();
@@ -49,7 +59,9 @@ class BombOrder : public Order {
 	bool execute();
 };
 
+
 class BlockadeOrder : public Order {
+public:
 	BlockadeOrder(Player* player);
 	BlockadeOrder(BlockadeOrder* other);
 	~BlockadeOrder();
@@ -58,7 +70,9 @@ class BlockadeOrder : public Order {
 	bool execute();
 };
 
+
 class AirliftOrder : public Order {
+public:
 	AirliftOrder(Player* player);
 	AirliftOrder(AirliftOrder* other);
 	~AirliftOrder();
@@ -67,7 +81,9 @@ class AirliftOrder : public Order {
 	bool execute();
 };
 
+
 class NegotiateOrder : public Order {
+public:
 	NegotiateOrder(Player* player);
 	NegotiateOrder(NegotiateOrder* other);
 	~NegotiateOrder();
@@ -76,18 +92,20 @@ class NegotiateOrder : public Order {
 	bool execute();
 };
 
+
 class OrdersList {
 public:
-	OrdersList(Player* player);
+	OrdersList();
 	OrdersList(OrdersList* other);
 	~OrdersList();
 
+	int size();
 	void add(Order* newOrder);
-	void remove(int index);  // This is the delete function, but delete is a reserved word so I'm calling it remove.
-	void move(int oldIndex, int newIndex);
+	bool remove(int index);
+	bool move(int oldIndex, int newIndex);
 	void print();
+	bool executeAll();
 
 private:
-	Player* player;
-	vector<Order>* orders;
+	vector<Order*>* orders;
 };
