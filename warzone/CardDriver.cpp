@@ -19,8 +19,9 @@ namespace Cards {
         cout << "Drawing 5 random cards" << endl;
         int handSize = 5;
         Hand* hand = new Hand(deck);
+
         populateHand(deck, hand, handSize);
-        hand->printHand();
+        cout << *hand;
     
         cout << "Checking Draw pile" << endl;
         deck->printDrawpile();

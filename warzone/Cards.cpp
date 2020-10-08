@@ -7,6 +7,11 @@ namespace Cards {
 		this->name = new string("Basic Card");
 	}
 
+	Card::Card(Card* card)
+	{
+		this->name = &card->getName();
+	}
+
 	Card::~Card()
 	{
 		delete name;
@@ -35,6 +40,10 @@ namespace Cards {
 		this->name = new std::string("Spy Card");
 	}
 
+	SpyCard::SpyCard(SpyCard* spycard) : Card(spycard)
+	{
+	}
+
 	SpyCard::~SpyCard()
 	{
 	}
@@ -48,6 +57,10 @@ namespace Cards {
 	BombCard::BombCard()
 	{
 		this->name = new std::string("BombCard");
+	}
+
+	BombCard::BombCard(BombCard* bombCard) : Card(bombCard)
+	{
 	}
 
 	BombCard::~BombCard()
@@ -65,6 +78,10 @@ namespace Cards {
 		name = new std::string("ReinforcementCard");
 	}
 
+	ReinforcementCard::ReinforcementCard(ReinforcementCard* rCard) : Card(rCard)
+	{
+	}
+
 	ReinforcementCard::~ReinforcementCard()
 	{
 	}
@@ -78,6 +95,11 @@ namespace Cards {
 	BlockadeCard::BlockadeCard()
 	{
 		name = new std::string("BlockadeCard");
+	}
+
+	
+	BlockadeCard::BlockadeCard(BlockadeCard* bCard) : Card(bCard)
+	{
 	}
 
 	BlockadeCard::~BlockadeCard()
@@ -96,6 +118,10 @@ namespace Cards {
 		name = new std::string("AirliftCard");
 	}
 
+	AirliftCard::AirliftCard(AirliftCard* aCard) : Card(aCard)
+	{
+	}
+
 	AirliftCard::~AirliftCard()
 	{
 
@@ -110,6 +136,10 @@ namespace Cards {
 	DiplomacyCard::DiplomacyCard()
 	{
 		name = new std::string("DiplomacyCard");
+	}
+
+	DiplomacyCard::DiplomacyCard(DiplomacyCard* dCard) : Card(dCard)
+	{
 	}
 
 	DiplomacyCard::~DiplomacyCard()
@@ -128,6 +158,21 @@ namespace Cards {
 		this->fullDeck = new std::vector<Card*>;
 		this->drawPile = new std::vector<int*>;
 		return;
+	}
+
+	Deck::Deck(Deck* deck)
+	{
+		this->fullDeck = new vector<Card*>;
+		this->drawPile = new vector<int*>;
+
+		for (int i = 0; i < deck->fullDeck->size(); i++)
+		{
+			fullDeck->push_back(deck->fullDeck->at(i));
+		}
+		for (int i = 0; i < deck->drawPile->size(); i++)
+		{
+			drawPile->push_back(deck->drawPile->at(i));
+		}
 	}
 
 	Deck::~Deck()
@@ -213,6 +258,17 @@ namespace Cards {
 		this->currentHand = new vector<int*>;
 	}
 
+	Hand::Hand(Hand* hand)
+	{
+		this->deck = new Deck(hand->deck);
+		this->currentHand = new vector<int*>;
+
+		for (int i = 0; i < hand->currentHand->size(); i++)
+		{
+			currentHand->push_back(hand->currentHand->at(i));
+		}
+	}
+
 	Hand::~Hand()
 	{
 		delete deck;
@@ -249,7 +305,7 @@ namespace Cards {
 			int* cardID = hand.currentHand->operator[](i);
 			Card* card = hand.deck->getFromCatalog(cardID);
 
-			out << "ID: " <<(int)cardID << ' ' << card<< endl;
+			out << "ID: " <<(int)cardID << ' ' << *card<< endl;
 		}
 		out << "---------" << endl;
 

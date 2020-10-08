@@ -15,6 +15,7 @@ namespace Cards {
 		string* name;
 	public:
 		Card();
+		Card(Card* card);
 		~Card();
 		virtual void play();
 		string getName();
@@ -24,6 +25,7 @@ namespace Cards {
 	class SpyCard : public Card {
 	public:
 		SpyCard();
+		SpyCard(SpyCard* spycard);
 		~SpyCard();
 
 		void play();
@@ -32,6 +34,7 @@ namespace Cards {
 	class BombCard :public Card {
 	public:
 		BombCard();
+		BombCard(BombCard* bombCard);
 		~BombCard();
 		void play();
 	};
@@ -39,6 +42,7 @@ namespace Cards {
 	class ReinforcementCard :public Card {
 	public:
 		ReinforcementCard();
+		ReinforcementCard(ReinforcementCard* rCard);
 		~ReinforcementCard();
 
 		void play();
@@ -47,6 +51,7 @@ namespace Cards {
 	class BlockadeCard :public Card {
 	public:
 		BlockadeCard();
+		BlockadeCard(BlockadeCard* bCard);
 		~BlockadeCard();
 
 		void play();
@@ -55,6 +60,7 @@ namespace Cards {
 	class AirliftCard :public Card {
 	public:
 		AirliftCard();
+		AirliftCard(AirliftCard* aCard);
 		~AirliftCard();
 
 		void play();
@@ -63,6 +69,7 @@ namespace Cards {
 	class DiplomacyCard :public Card {
 	public:
 		DiplomacyCard();
+		DiplomacyCard(DiplomacyCard* dCard);
 		~DiplomacyCard();
 
 		void play();
@@ -77,6 +84,7 @@ namespace Cards {
 
 	public:
 		Deck();
+		Deck(Deck* deck);
 		~Deck();
 
 		void add(Card* card);
@@ -98,6 +106,7 @@ namespace Cards {
 
 	public:
 		Hand(Deck* deck);
+		Hand(Hand* hand);
 		~Hand();
 
 		void addCard(int* cardId);
