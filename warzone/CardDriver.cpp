@@ -72,6 +72,7 @@ namespace Cards {
         {
             hand->play(0);
         }
+        cout << "-------------- All cards played" << endl;
     }
 
 }

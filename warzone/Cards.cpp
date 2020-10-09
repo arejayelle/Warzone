@@ -70,7 +70,7 @@ namespace Cards {
 	 * \param card
 	 * \return 
 	 */
-	Card& Card::operator=(const Card& card)
+	Card* Card::operator=(const Card& card)
 	{
 		return new Card(card);
 	}
@@ -110,7 +110,7 @@ namespace Cards {
 	 * \param card
 	 * \return 
 	 */
-	SpyCard& SpyCard::operator=(const SpyCard& card)
+	SpyCard* SpyCard::operator=(const SpyCard& card)
 	{
 		return new SpyCard(card);
 	}
@@ -159,7 +159,7 @@ namespace Cards {
 	 * \param card card to be copied
 	 * \return 
 	 */
-	BombCard& BombCard::operator=(const BombCard& card)
+	BombCard* BombCard::operator=(const BombCard& card)
 	{
 		return new BombCard(card);
 	}
@@ -205,7 +205,7 @@ namespace Cards {
 	/**
 	 * Assignmenet operator makes copy of the passed card
 	 */
-	ReinforcementCard& ReinforcementCard::operator=(const ReinforcementCard& card)
+	ReinforcementCard* ReinforcementCard::operator=(const ReinforcementCard& card)
 	{
 		return new ReinforcementCard(card);
 	}
@@ -244,7 +244,7 @@ namespace Cards {
 	 * \param card
 	 * \return 
 	 */
-	BlockadeCard& BlockadeCard::operator=(const BlockadeCard& card)
+	BlockadeCard* BlockadeCard::operator=(const BlockadeCard& card)
 	{
 		return new BlockadeCard(card);
 	}
@@ -303,7 +303,7 @@ namespace Cards {
 	 * \param card
 	 * \return 
 	 */
-	AirliftCard& AirliftCard::operator=(const AirliftCard& card)
+	AirliftCard* AirliftCard::operator=(const AirliftCard& card)
 	{
 		return new AirliftCard(card);
 	}
@@ -351,7 +351,7 @@ namespace Cards {
 	 * \param card
 	 * \return 
 	 */
-	DiplomacyCard& DiplomacyCard::operator=(const DiplomacyCard& card)
+	DiplomacyCard* DiplomacyCard::operator=(const DiplomacyCard& card)
 	{
 		return new DiplomacyCard(card);
 	}
@@ -416,7 +416,7 @@ namespace Cards {
 	 * \param deck
 	 * \return 
 	 */
-	Deck& Deck::operator=(const Deck& deck)
+	Deck* Deck::operator=(const Deck& deck)
 	{
 		return new Deck(deck);
 	}
@@ -517,6 +517,7 @@ namespace Cards {
 			int* cardID = (*it);
 			cout << i++ << "\t" << (int)cardID << endl;
 		}
+		cout << "----------------";
 	}
 
 	// Hand functions
@@ -564,7 +565,7 @@ namespace Cards {
 	 * \param hand
 	 * \return 
 	 */
-	Hand& Hand::operator=(const Hand& hand)
+	Hand* Hand::operator=(const Hand& hand)
 	{
 		return new Hand(hand);
 	}
