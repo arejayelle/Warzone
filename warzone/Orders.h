@@ -124,6 +124,6 @@ public:
 	void print();
 	bool executeAll();
 
-private:
+
 	vector<Order*>* orders;
 };

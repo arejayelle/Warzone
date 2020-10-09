@@ -39,7 +39,7 @@ bool Order::execute() {
 }
 
 ostream& operator<<(ostream &strm, const Order &o) {
-	return strm << "Order made by player " << o.player << endl;
+	return strm << "Order made by player " << o.player;
 }
 
 
@@ -73,7 +73,7 @@ bool DeployOrder::execute() {
 }
 
 ostream& operator<<(ostream& strm, const DeployOrder& d) {
-	return strm << "Deploy order made by player " << d.player << endl;
+	return strm << "Deploy order made by player " << d.player;
 }
 
 
@@ -107,7 +107,7 @@ bool AdvanceOrder::execute() {
 }
 
 ostream& operator<<(ostream& strm, const AdvanceOrder& o) {
-	return strm << "Advance order made by player " << o.player << endl;
+	return strm << "Advance order made by player " << o.player;
 }
 
 
@@ -141,7 +141,7 @@ bool BombOrder::execute() {
 }
 
 ostream& operator<<(ostream& strm, const BombOrder& o) {
-	return strm << "Bomb order made by player " << o.player << endl;
+	return strm << "Bomb order made by player " << o.player;
 }
 
 
@@ -175,7 +175,7 @@ bool BlockadeOrder::execute() {
 }
 
 ostream& operator<<(ostream& strm, const BlockadeOrder& o) {
-	return strm << "Blockade order made by player " << o.player << endl;
+	return strm << "Blockade order made by player " << o.player;
 }
 
 
@@ -209,7 +209,7 @@ bool AirliftOrder::execute() {
 }
 
 ostream& operator<<(ostream& strm, const AirliftOrder& o) {
-	return strm << "Airlift order made by player " << o.player << endl;
+	return strm << "Airlift order made by player " << o.player;
 }
 
 
@@ -243,7 +243,7 @@ bool NegotiateOrder::execute() {
 }
 
 ostream& operator<<(ostream& strm, const NegotiateOrder& o) {
-	return strm << "Negotiate order made by player " << o.player << endl;
+	return strm << "Negotiate order made by player " << o.player;
 }
 
 
@@ -309,10 +309,12 @@ bool OrdersList::move(int oldIndex, int newIndex) {
 
 // Prints all orders for debugging purposes.
 void OrdersList::print() {
+	cout << "List contents are:\n[";
 	for (int i = 0; i < this->orders->size(); i++) {
-		auto ord = orders->at(i);
-		cout << ord << ", ";
+		// auto* o = this->orders->at(i);
+		cout << *(this->orders->at(i)) << ", ";
 	}
+	cout << "]\nEnd of list contents." << endl;
 }
 
 // Attempts to execute all orders in the list. Returns true if successful, returns false if at least one could not be executed.
