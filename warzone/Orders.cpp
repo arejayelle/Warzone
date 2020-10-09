@@ -285,6 +285,7 @@ OrdersList::OrdersList(OrdersList* other) {
 }
 
 OrdersList::~OrdersList() {
+	// Delete each pointer in orders and then clear the vector.
 	for (int i = 0; i < this->orders->size(); i++) {
 		delete orders->at(i);
 	}
@@ -348,7 +349,7 @@ void OrdersList::print() {
 	cout << "]\nEnd of list contents." << endl;
 }
 
-// Attempts to execute all orders in the list. Returns true if successful, returns false if at least one could not be executed.
+// Attempts to execute all orders in the list. Returns true if successful, returns false if at least one order could not be executed.
 bool OrdersList::executeAll() {
 	bool allExecuted = true;
 
