@@ -1,6 +1,7 @@
 #include "Orders.h"
 #include <iostream>
 
+
 Order::Order() {
 	this->player = NULL;
 }
@@ -284,6 +285,9 @@ OrdersList::OrdersList(OrdersList* other) {
 }
 
 OrdersList::~OrdersList() {
+	for (int i = 0; i < this->orders->size(); i++) {
+		delete orders->at(i);
+	}
 	orders->clear();
 	delete orders;
 }
