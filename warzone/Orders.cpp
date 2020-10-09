@@ -42,6 +42,10 @@ ostream& operator<<(ostream &strm, const Order &o) {
 	return strm << "Order made by player " << o.player;
 }
 
+Order& Order::operator=(const Order &o) {
+	return new Order(o);
+}
+
 
 DeployOrder::DeployOrder(Player* player) : Order(player) { }
 
@@ -74,6 +78,10 @@ bool DeployOrder::execute() {
 
 ostream& operator<<(ostream& strm, const DeployOrder& d) {
 	return strm << "Deploy order made by player " << d.player;
+}
+
+DeployOrder& DeployOrder::operator=(const DeployOrder& o) {
+	return new DeployOrder(o);
 }
 
 
@@ -110,6 +118,10 @@ ostream& operator<<(ostream& strm, const AdvanceOrder& o) {
 	return strm << "Advance order made by player " << o.player;
 }
 
+AdvanceOrder& AdvanceOrder::operator=(const AdvanceOrder& o) {
+	return new AdvanceOrder(o);
+}
+
 
 BombOrder::BombOrder(Player* player) : Order(player) { }
 
@@ -142,6 +154,10 @@ bool BombOrder::execute() {
 
 ostream& operator<<(ostream& strm, const BombOrder& o) {
 	return strm << "Bomb order made by player " << o.player;
+}
+
+BombOrder& BombOrder::operator=(const BombOrder& o) {
+	return new BombOrder(o);
 }
 
 
@@ -178,6 +194,10 @@ ostream& operator<<(ostream& strm, const BlockadeOrder& o) {
 	return strm << "Blockade order made by player " << o.player;
 }
 
+BlockadeOrder& BlockadeOrder::operator=(const BlockadeOrder& o) {
+	return new BlockadeOrder(o);
+}
+
 
 AirliftOrder::AirliftOrder(Player* player) : Order(player) { }
 
@@ -212,6 +232,10 @@ ostream& operator<<(ostream& strm, const AirliftOrder& o) {
 	return strm << "Airlift order made by player " << o.player;
 }
 
+AirliftOrder& AirliftOrder::operator=(const AirliftOrder& o) {
+	return new AirliftOrder(o);
+}
+
 
 NegotiateOrder::NegotiateOrder(Player* player) : Order(player) { }
 
@@ -244,6 +268,10 @@ bool NegotiateOrder::execute() {
 
 ostream& operator<<(ostream& strm, const NegotiateOrder& o) {
 	return strm << "Negotiate order made by player " << o.player;
+}
+
+NegotiateOrder& NegotiateOrder::operator=(const NegotiateOrder& o) {
+	return new NegotiateOrder(o);
 }
 
 
@@ -333,3 +361,6 @@ ostream& operator<<(ostream& strm, const OrdersList& o) {
 	return strm << "OrdersList containing " << o.orders->size() << " orders.";
 }
 
+OrdersList& OrdersList::operator=(const OrdersList& o) {
+	return new OrdersList(o);
+}
