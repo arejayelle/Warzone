@@ -124,6 +124,7 @@ public:
 	void print();
 	bool executeAll();
 
-
+private:
 	vector<Order*>* orders;
+	friend ostream& operator<<(ostream& strm, const OrdersList& o);
 };

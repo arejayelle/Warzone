@@ -98,11 +98,13 @@ int OrdersDriver::main() {
 	cout << "\nExecuting all orders in the list." << endl;
 	list1.executeAll();
 
+	// Stream insertion operators for Orders and OrdersList.
+	cout << "\nDemonstration of Orders stream insertion operator: " << *regOrd1 << endl;
+	cout << "Demonstration of OrdersList stream insertion operator: " << list1 << endl;
+
 	return 0;
 }
 
 int main() {
 	return OrdersDriver::main();
 }
-
-

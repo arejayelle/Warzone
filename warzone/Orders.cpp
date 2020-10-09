@@ -311,7 +311,6 @@ bool OrdersList::move(int oldIndex, int newIndex) {
 void OrdersList::print() {
 	cout << "List contents are:\n[";
 	for (int i = 0; i < this->orders->size(); i++) {
-		// auto* o = this->orders->at(i);
 		cout << *(this->orders->at(i)) << ", ";
 	}
 	cout << "]\nEnd of list contents." << endl;
@@ -329,3 +328,8 @@ bool OrdersList::executeAll() {
 
 	return allExecuted;
 }
+
+ostream& operator<<(ostream& strm, const OrdersList& o) {
+	return strm << "OrdersList containing " << o.orders->size() << " orders.";
+}
+
