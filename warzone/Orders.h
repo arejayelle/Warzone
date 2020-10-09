@@ -21,7 +21,7 @@ public:
 
 private:
 	friend ostream& operator<<(ostream &strm, const Order &o);
-	Order& operator= (const Order& o);
+	Order* operator= (const Order& o);
 
 protected:
 	Player* player;  // The player who created the order.
@@ -39,7 +39,7 @@ public:
 
 private:
 	friend ostream& operator<<(ostream& strm, const DeployOrder& o);
-	DeployOrder& operator= (const DeployOrder& o);
+	DeployOrder* operator= (const DeployOrder& o);
 };
 
 
@@ -54,7 +54,7 @@ public:
 
 private:
 	friend ostream& operator<<(ostream& strm, const AdvanceOrder& o);
-	AdvanceOrder& operator= (const AdvanceOrder& o);
+	AdvanceOrder* operator= (const AdvanceOrder& o);
 };
 
 
@@ -69,7 +69,7 @@ public:
 
 private:
 	friend ostream& operator<<(ostream& strm, const BombOrder& o);
-	BombOrder& operator= (const BombOrder& o);
+	BombOrder* operator= (const BombOrder& o);
 };
 
 
@@ -84,7 +84,7 @@ public:
 
 private:
 	friend ostream& operator<<(ostream& strm, const BlockadeOrder& o);
-	BlockadeOrder& operator= (const BlockadeOrder& o);
+	BlockadeOrder* operator= (const BlockadeOrder& o);
 };
 
 
@@ -99,7 +99,7 @@ public:
 
 private:
 	friend ostream& operator<<(ostream& strm, const AirliftOrder& o);
-	AirliftOrder& operator= (const AirliftOrder& o);
+	AirliftOrder* operator= (const AirliftOrder& o);
 };
 
 
@@ -114,7 +114,7 @@ public:
 
 private:
 	friend ostream& operator<<(ostream& strm, const NegotiateOrder& o);
-	NegotiateOrder& operator= (const NegotiateOrder& o);
+	NegotiateOrder* operator= (const NegotiateOrder& o);
 };
 
 
@@ -134,5 +134,5 @@ public:
 private:
 	vector<Order*>* orders;
 	friend ostream& operator<<(ostream& strm, const OrdersList& o);
-	OrdersList& operator= (const OrdersList& o);
+	OrdersList* operator= (const OrdersList& o);
 };
