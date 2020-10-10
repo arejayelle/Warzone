@@ -269,12 +269,11 @@ OrdersList::OrdersList() {
 }
 
 OrdersList::OrdersList(OrdersList* other) {
-	// TODO make deep copy.
-	/*vector<Order*>* newOrders = new vector<Order*>();
+	vector<Order*>* newOrders = new vector<Order*>();
 	for (int i = 0; i < other->orders->size(); i++) {
-		
-	}*/
-	this->orders = other->orders;
+		newOrders->push_back(new Order(other->orders->at(i)));
+	}
+	this->orders = newOrders;
 }
 
 OrdersList::~OrdersList() {
