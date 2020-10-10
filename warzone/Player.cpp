@@ -1,81 +1,82 @@
 #include "Player.h"
+#include "MapDriver.h"
 #include <iostream>
 
 Player::Player() {
 	this->playerTerritory = new vector<Territory*>();
-	//this->playerOrders = new Orders();
 	this->playerHand = new Hand();
 	//this->playerOrdersList = new OrdersList();
 }
 
-//Player::Player(vector<Territory*>* territoriesToAdd, Orders* ordersToAdd, Hand* handToAdd) { //add OrdersList in parameters
-//	this->playerTerritory = territoriesToAdd;
-//	this->playerOrders = ordersToAdd;
-//	this->playerHand = handToAdd;
-//}
-
-Player::Player(vector<Territory*>* territoriesToAdd, Hand* handToAdd) { //add OrdersList in parameters
+Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Hand* handToAdd) { //add OrdersList in parameters
 	this->playerTerritory = territoriesToAdd;
 	this->playerHand = handToAdd;
+	this->playerOrdersList = playerList;
 }
 
 Player::~Player() {
 	for (Territory* t : *playerTerritory) {
 		delete t;
-		t = nullptr;
 	}
 	delete playerTerritory;
-	playerTerritory = nullptr;
-	//delete playerOrders;
-	//playerOrders = nullptr;
 	delete playerHand;
-	playerHand = nullptr;
-	//delete playerOrdersList;
-	//playerOrdersList = nullptr;
+	delete playerOrdersList;
 }
 
 Player& Player::operator=(const Player& one)  //assignment operator
 {	
 	delete playerHand;
 	this->playerHand = one.playerHand;
-	//this->playerOrders = one.playerOrders;
 	delete playerTerritory;
 	this->playerTerritory = one.playerTerritory;
-	//this->playerOrdersList=one.playerOrdersList;
+	delete playerOrdersList;
+	this->playerOrdersList=one.playerOrdersList;
 }
 
 Player::Player(const Player& player)  //copy constructor
 {
+	for (Territory* t : *player.playerTerritory)
+	{
+		Territory temp = new Territory(t);
+		this->playerTerritory->push_back(t);
+	}
+	this->playerOrdersList = new OrdersList(*player.playerOrdersList);
+	this->playerHand = new Hand(*player.playerHand);
+}
+
+const vector<Territory*>* Player::toDefend()
+{
+	Map* map= MapDriver::getValidMap();
+	map->getTerritories();
+	return map->getTerritories();
+}
+
+const vector<Territory*>* Player::toAttack()
+{
+	Map* map = MapDriver::getValidMap();
+	map->getTerritories();
+	return map->getTerritories();
+}
+
+void Player::issueOrder(Order* newOrder)
+{
+	Order* playerOrder = new Order(*newOrder);
 
 }
 
-vector<Territory*> Player::toDefend()
+const vector<Territory*>* Player::getTerritories() 
 {
-
+	return playerTerritory;
 }
 
-vector<Territory*> Player::toAttack()
+const OrdersList* Player::getOrdersList()
 {
+	return playerOrdersList;
 }
 
-void Player::issueOrder(Orders* newOrder)
+const Hand* Player::getHand()
 {
-
-}
-
-vector<Territory*>* Player::getTerritories()
-{
-	return nullptr;
-}
-
-//Orders* Player::getOrders()
-//{
-//	return nullptr;
-//}
-
-Hand* Player::getHand()
-{
-	return nullptr;
+	return playerHand;
 }
 
 void Player::setTerritories(vector<Territory*>* territoriesToAdd)
@@ -83,15 +84,10 @@ void Player::setTerritories(vector<Territory*>* territoriesToAdd)
 	this->playerTerritory = territoriesToAdd;
 }
 
-//void Player::setOrders(Orders* ordersToAdd)
-//{
-//	this->playerOrders = ordersToAdd;
-//}
-
-//void Player::setOrdersList(OrdersList* ordersList)
-//{
-//	this->playerOrdersList= ordersList
-//}
+void Player::setOrdersList(OrdersList* ordersList)
+{
+	this->playerOrdersList= ordersList
+}
 
 void Player::setHand(Hand* handToAdd)
 {
@@ -102,9 +98,8 @@ ostream& operator<<(ostream& output, const Player& player)
 {
 	output << "Player Information:"<<endl;
 	output << "Hand: "<< player.playerHand<<endl;
-	//output << player.playerOrders<<endl;
 	output << "Territories: "<< player.playerTerritory<<endl;
-	//	output << "Orders list: " <<player.OrdersList<<endl;
+	output << "Orders list: " <<player.playerOrdersList<<endl;
 	return output;
 }
 
