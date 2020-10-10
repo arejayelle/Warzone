@@ -139,16 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <ClCompile Include="Hand.cpp" />
-=======
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="CardDriver.cpp" />
     <ClCompile Include="Cards.cpp" />
     <ClCompile Include="Deck.cpp" />
-    <ClCompile Include="Hand.cpp" />
     <ClCompile Include="Main.cpp" />
->>>>>>> master
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapDriver.cpp" />
     <ClCompile Include="Orders.cpp" />
@@ -156,16 +152,12 @@
     <ClCompile Include="PlayerDriver.cpp" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <ClInclude Include="Hand.h" />
-=======
     <ClInclude Include="Card.h" />
     <ClInclude Include="CardDriver.h" />
     <ClInclude Include="Cards.h" />
     <ClInclude Include="Deck.h" />
     <ClInclude Include="Hand.h" />
     <ClInclude Include="Main.h" />
->>>>>>> master
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapDriver.h" />
     <ClInclude Include="Orders.h" />
