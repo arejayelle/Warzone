@@ -105,9 +105,16 @@ Map::Map()
 
 // Copy constructor for Map
 Map::Map(Map* other)
-	: territories{ other->territories }, continents{ other->continents }
 {
+	territories = {};
+	for (std::vector<Territory*>::const_iterator it = other->getTerritories()->begin(); it != other->getTerritories()->end(); it++) {
+		territories.push_back(new Territory(**it));
+	}
 
+	continents = {};
+	for (std::vector<Continent*>::const_iterator it = other->getContinents()->begin(); it != other->getContinents()->end(); it++) {
+		continents.push_back(new Continent(**it));
+	}
 }
 
 // Destructor for Map. Map owns all of its continents and territories, so it must destroy them when it is destroyed
