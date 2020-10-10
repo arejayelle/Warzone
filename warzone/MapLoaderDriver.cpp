@@ -1,7 +1,8 @@
 #pragma once
 #include "MapLoader.h"
+#include "MapLoaderDriver.h"
 
-/*int main() {
+int MapLoaderDriver::main() {
 	//Valide Map
 	MapLoader* mapL = new MapLoader("bigeurope.map");
 	mapL->validateMapFormat();
@@ -21,4 +22,8 @@
 	myMap3->validate();
 
 
-}*/
+}
+
+int main() {
+	return MapLoaderDriver::main();
+}
