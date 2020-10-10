@@ -139,11 +139,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Card.cpp" />
+    <ClCompile Include="CardDriver.cpp" />
+    <ClCompile Include="Cards.cpp" />
+    <ClCompile Include="Deck.cpp" />
+    <ClCompile Include="Hand.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapDriver.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Card.h" />
+    <ClInclude Include="CardDriver.h" />
+    <ClInclude Include="Cards.h" />
+    <ClInclude Include="Deck.h" />
+    <ClInclude Include="Hand.h" />
+    <ClInclude Include="Main.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapDriver.h" />
     <ClInclude Include="Player.h" />
