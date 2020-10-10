@@ -100,7 +100,7 @@ int OrdersDriver::main() {
 
 	// Stream insertion operators for Orders and OrdersList.
 	cout << "\nDemonstration of Orders stream insertion operator: " << *regOrd1 << endl;
-	cout << "Demonstration of OrdersList stream insertion operator: " << list1 << endl;
+	cout << "Demonstration of OrdersList stream insertion operator: " << list1 << endl << endl;
 
 	return 0;
 }

@@ -16,7 +16,6 @@ Order::Order(Order* other) {
 
 Order::~Order() {
 	cout << "Deleting " << *this << "." << endl;
-	// delete player;
 }
 
 bool Order::validate() {
@@ -53,9 +52,7 @@ DeployOrder::DeployOrder(Player* player) : Order(player) { }
 
 DeployOrder::DeployOrder(DeployOrder* other) : Order(other) { }
 
-DeployOrder::~DeployOrder() {
-	delete player;
-}
+DeployOrder::~DeployOrder() { }
 
 bool DeployOrder::validate() {
 	// TODO: More checks once we have more details.
@@ -91,9 +88,7 @@ AdvanceOrder::AdvanceOrder(Player* player) : Order(player) { }
 
 AdvanceOrder::AdvanceOrder(AdvanceOrder* other) : Order(other) { }
 
-AdvanceOrder::~AdvanceOrder() {
-	delete player;
-}
+AdvanceOrder::~AdvanceOrder() { }
 
 bool AdvanceOrder::validate() {
 	// TODO: More checks once we have more details.
@@ -129,9 +124,7 @@ BombOrder::BombOrder(Player* player) : Order(player) { }
 
 BombOrder::BombOrder(BombOrder* other) : Order(other) { }
 
-BombOrder::~BombOrder() {
-	delete player;
-}
+BombOrder::~BombOrder() { }
 
 bool BombOrder::validate() {
 	// TODO: More checks once we have more details.
@@ -167,9 +160,7 @@ BlockadeOrder::BlockadeOrder(Player* player) : Order(player) { }
 
 BlockadeOrder::BlockadeOrder(BlockadeOrder* other) : Order(other) { }
 
-BlockadeOrder::~BlockadeOrder() {
-	delete player;
-}
+BlockadeOrder::~BlockadeOrder() { }
 
 bool BlockadeOrder::validate() {
 	// TODO: More checks once we have more details.
@@ -205,9 +196,7 @@ AirliftOrder::AirliftOrder(Player* player) : Order(player) { }
 
 AirliftOrder::AirliftOrder(AirliftOrder* other) : Order(other) { }
 
-AirliftOrder::~AirliftOrder() {
-	delete player;
-}
+AirliftOrder::~AirliftOrder() { }
 
 bool AirliftOrder::validate() {
 	// TODO: More checks once we have more details.
@@ -243,9 +232,7 @@ NegotiateOrder::NegotiateOrder(Player* player) : Order(player) { }
 
 NegotiateOrder::NegotiateOrder(NegotiateOrder* other) : Order(other) { }
 
-NegotiateOrder::~NegotiateOrder() {
-	delete player;
-}
+NegotiateOrder::~NegotiateOrder() { }
 
 bool NegotiateOrder::validate() {
 	// TODO: More checks once we have more details.
