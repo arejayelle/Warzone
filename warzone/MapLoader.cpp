@@ -4,21 +4,38 @@
 #include <sstream>
 
 
+//MapLoader Copy Constructor
 MapLoader::MapLoader(MapLoader* mapL)
 {
 	this->fileName = mapL->fileName;
 }
 
+//MapLoader Constructor
 MapLoader::MapLoader(std::string fileName)
 {
 	this->fileName = new std::string(fileName);
 }
 
+//MapLoader Destructor
 MapLoader::~MapLoader() 
 {
 	delete	fileName;
 }
 
+//Assignment operator
+MapLoader* MapLoader::operator=(const MapLoader& mapLoader)
+{
+	return new MapLoader(mapLoader);
+}
+
+
+//Stream insertion operator
+std::ostream& operator<<(std::ostream& out, const MapLoader& mapLoader)
+{
+	std::string fileName = (std::string)*mapLoader.fileName;
+	out << fileName;
+	return out;
+}
 
 bool MapLoader::validateMapFormat() 
 {
