@@ -45,16 +45,8 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Card.h">
-      <Filter>Header Files\Card</Filter>
     </ClInclude>
     <ClInclude Include="CardDriver.h">
-      <Filter>Header Files\Card</Filter>
-    </ClInclude>
-    <ClInclude Include="Deck.h">
-      <Filter>Header Files\Card</Filter>
-    </ClInclude>
-    <ClInclude Include="Hand.h">
       <Filter>Header Files\Card</Filter>
     </ClInclude>
     <ClInclude Include="Main.h">
@@ -84,15 +76,6 @@
       <Filter>Source Files\Player</Filter>
     </ClCompile>
     <ClCompile Include="CardDriver.cpp">
-      <Filter>Source Files\Card</Filter>
-    </ClCompile>
-    <ClCompile Include="Deck.cpp">
-      <Filter>Source Files\Card</Filter>
-    </ClCompile>
-    <ClCompile Include="Hand.cpp">
-      <Filter>Source Files\Card</Filter>
-    </ClCompile>
-    <ClCompile Include="Card.cpp">
       <Filter>Source Files\Card</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
