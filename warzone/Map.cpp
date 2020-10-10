@@ -2,19 +2,16 @@
 
 // Creates a Territory with the given name and position, and belonging to the given Continent.
 Territory::Territory(std::string name, Continent* continent, int x, int y)
-	: name{ name }, armies{ 0 }, x{ x }, y{ y }, borders{}
+	: name{ name }, armies{ 0 }, x{ x }, y{ y }, borders{}, continent{ continent }, owner{ nullptr }
 {
-	this->continent = continent;
-	// At the time of creation of a map, it is not known who the territory belongs to, and territories may belong to noone.
-	this->owner = nullptr;
+
 }
 
 // Copy constructor of Territory
 Territory::Territory(Territory* other)
-	: name{ other->name }, armies{ other->armies }, x{ other->x }, y{ other->y }, borders{ other->borders }
+	: name{ other->name }, armies{ other->armies }, x{ other->x }, y{ other->y }, borders{ other->borders }, continent{ other->continent }, owner{ other->owner }
 {
-	continent = other->continent;
-	this->owner = other->owner;
+
 }
 
 // Destructor for Territory. Territory does not own its neighboring countries or its continent (they are owned by Map) and does not own its Player, so it does not destroy them.
