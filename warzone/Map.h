@@ -20,13 +20,13 @@ public:
 	friend std::ostream& operator<< (std::ostream& out, const Territory& territory);
 	
 private:
-	std::string* name;
+	std::string name;
 	Continent* continent;
 	Player* owner;
-	int* armies;
-	int* x;
-	int* y;
-	std::vector<Territory*>* borders;
+	int armies;
+	int x;
+	int y;
+	std::vector<Territory*> borders;
 };
 
 class Continent {
@@ -41,10 +41,10 @@ public:
 	friend std::ostream& operator<< (std::ostream& out, const Continent& continent);
 
 private:
-	std::string* name;
-	std::string* colour;
-	int* value; // The number of bonus troops a player earns for controlling the continent
-	std::vector<Territory*>* territories;
+	std::string name;
+	std::string colour;
+	int value; // The number of bonus troops a player earns for controlling the continent
+	std::vector<Territory*> territories;
 };
 
 class Map {
@@ -77,8 +77,8 @@ public:
 	static const std::string TERRITORY_IN_ZERO_CONTINENTS_ERROR;
 
 private:
-	std::vector<Continent*>* continents;
-	std::vector<Territory*>* territories;
+	std::vector<Continent*> continents;
+	std::vector<Territory*> territories;
 
 	void visitTerritory(Territory* territoryId, std::vector<Territory*>* visitedTerritories);
 	void visitTerritoryInContinent(Territory* territory, Continent* continent, std::vector<Territory*>* visitedTerritories);

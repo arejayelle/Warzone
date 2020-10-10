@@ -1,35 +1,22 @@
 #include "Map.h"
 
 Territory::Territory(std::string name, Continent* continent, int x, int y)
+	: name{ name }, armies{ 0 }, x{ x }, y{ y }, borders{}
 {
-	this->name = new std::string(name);
 	this->continent = continent;
 	// At the time of creation of a map, it is not known who the territory belongs to, and territories may belong to noone.
 	this->owner = nullptr;
-	this->armies = new int(0);
-	this->x = new int(x);
-	this->y = new int(y);
-	this->borders = new std::vector<Territory*>();
 }
 
-Territory::Territory(Territory* other) {
-	name = new std::string(*other->name);
+Territory::Territory(Territory* other)
+	: name{ other->name }, armies{ other->armies }, x{ other->x }, y{ other->y }, borders{ other->borders }
+{
 	continent = other->continent;
 	this->owner = other->owner;
-	this->armies = new int(*other->armies);
-	x = new int(*other->x);
-	y = new int(*other->y);
-	this->borders = new std::vector<Territory*>(*other->borders);
 }
 
 Territory::~Territory() {
-	delete name;
-	delete continent;
-	delete armies;
-	delete x;
-	delete y;
-	borders->clear();
-	delete borders;
+
 }
 
 Territory* Territory::operator=(const Territory& territory)
@@ -39,13 +26,13 @@ Territory* Territory::operator=(const Territory& territory)
 
 void Territory::addBorders(std::vector<Territory*>* borders) {
 	for (std::vector<Territory*>::iterator it = borders->begin(); it != borders->end(); ++it) {
-		this->borders->push_back(*it);
+		this->borders.push_back(*it);
 	}
 }
 
 const std::vector<Territory*>* Territory::getBorders()
 {
-	return borders;
+	return &borders;
 }
 
 Continent* Territory::getContinent() {
@@ -58,25 +45,20 @@ std::ostream& operator<<(std::ostream& out, const Territory& territory)
 	return out;
 }
 
-Continent::Continent(std::string name, std::string colour, int value) {
-	this->name = new std::string(name);
-	this->colour = new std::string(colour);
-	this->value = new int(value);
-	this->territories = new std::vector<Territory*>();
+Continent::Continent(std::string name, std::string colour, int value)
+	: name{ name }, colour{ colour }, value{ value }, territories{ }
+{
+
 }
 
-Continent::Continent(Continent* continent) {
-	name = new std::string(*continent->name);
-	colour = new std::string(*continent->name);
-	this->value = new int(*continent->value);
-	this->territories = new std::vector<Territory*>(*continent->territories);
+Continent::Continent(Continent* continent)
+	: name{ continent->name }, colour{ continent->colour }, value{ continent->value }, territories{ continent->territories }
+{
+
 }
 
 Continent::~Continent() {
-	delete name;
-	delete colour;
-	delete value;
-	delete territories;
+
 }
 
 Continent* Continent::operator=(const Continent& continent)
@@ -86,11 +68,11 @@ Continent* Continent::operator=(const Continent& continent)
 
 void Continent::addTerritory(Territory* territory)
 {
-	territories->push_back(territory);
+	territories.push_back(territory);
 }
 
 const std::vector<Territory*>* Continent::getTerritories() {
-	return territories;
+	return &territories;
 }
 
 std::ostream& operator<<(std::ostream& out, const Continent& continent)
@@ -100,23 +82,27 @@ std::ostream& operator<<(std::ostream& out, const Continent& continent)
 }
 
 Map::Map()
+	: territories{}, continents{}
 {
-	territories = new std::vector<Territory*>();
-	continents = new std::vector<Continent*>();
+
 }
 
 Map::Map(Map* other)
+	: territories{ other->territories }, continents{ other->continents }
 {
-	territories = new std::vector<Territory*>(*other->territories);
-	continents = new std::vector<Continent*>(*other->continents);
+
 }
 
 Map::~Map() {
-	territories->clear();
-	delete territories;
+	for (std::vector<Territory*>::iterator it = territories.begin(); it != territories.end(); it++) {
+		delete *it;
+	}
+	territories.clear();
 
-	continents->clear();
-	delete continents;
+	for (std::vector<Continent*>::iterator it = continents.begin(); it != continents.end(); it++) {
+		delete* it;
+	}
+	continents.clear();
 }
 
 Map* Map::operator=(const Map& map)
@@ -126,42 +112,46 @@ Map* Map::operator=(const Map& map)
 
 void Map::addContinent(Continent* continent)
 {
-	continents->push_back(continent);
+	continents.push_back(continent);
 }
 
 void Map::addTerritory(Territory* territory)
 {
-	territories->push_back(territory);
+	territories.push_back(territory);
 	territory->getContinent()->addTerritory(territory);
 }
 
 void Map::addBorder(int territoryId, std::vector<Territory*>* neighbors)
 {
-	Territory* territory = territories->at(territoryId);
+	Territory* territory = territories.at(territoryId);
 	territory->addBorders(neighbors);
 }
 
+// Get a continent in the map by its ID (its index in the array)
 Continent* Map::getContinent(int continentId)
 {
-	return continents->at(continentId);
+	return continents.at(continentId);
 }
 
+// Get a territory in the map by its ID (its index in the array)
 Territory* Map::getTerritory(int territoryId)
 {
-	return territories->at(territoryId);
+	return territories.at(territoryId);
 }
 
+// Get a read-only vector of the continents in the map
 const std::vector<Continent*>* Map::getContinents()
 {
-	return continents;
+	return &continents;
 }
 
+// Get a read-only vector of the territories in the map
 const std::vector<Territory*>* Map::getTerritories()
 {
-	return territories;
+	return &territories;
 }
 
-
+// Validate that the map is correct
 void Map::validate() {
 	checkMapIsConnectedGraph();
 	checkContinentsAreConnectedSubgraphs();
@@ -290,12 +280,12 @@ std::ostream& operator<<(std::ostream& out, const Map& map)
 	out << "Map:" << std::endl;
 
 	out << "Continents:" << std::endl;
-	for (std::vector<Continent*>::const_iterator it = map.continents->begin(); it != map.continents->end(); it++) {
+	for (std::vector<Continent*>::const_iterator it = map.continents.begin(); it != map.continents.end(); it++) {
 		out << *it << std::endl;
 	}
 
 	out << "Territories:" << std::endl;
-	for (std::vector<Territory*>::const_iterator it = map.territories->begin(); it != map.territories->end(); it++) {
+	for (std::vector<Territory*>::const_iterator it = map.territories.begin(); it != map.territories.end(); it++) {
 		out << *it << std::endl;
 	}
 
