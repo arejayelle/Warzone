@@ -5,7 +5,7 @@
 
 
 Order::Order() {
-	this->player = NULL;
+	this->player = nullptr;
 }
 
 Order::Order(Player* player) {
@@ -16,9 +16,7 @@ Order::Order(Order* other) {
 	this->player = other->player;
 }
 
-Order::~Order() {
-	cout << "Deleting " << *this << "." << endl;
-}
+Order::~Order() { }
 
 bool Order::validate() {
 	// TODO: More checks once we have more details.
@@ -321,7 +319,7 @@ OrdersList::OrdersList(OrdersList* other) {
 }
 
 OrdersList::~OrdersList() {
-	// Delete each pointer in orders and then clear the vector.
+	// Delete each pointer in orders.
 	for (int i = 0; i < orders.size(); i++) {
 		delete orders.at(i);
 	}
