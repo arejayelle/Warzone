@@ -1,5 +1,6 @@
 #include "Map.h"
 
+// Creates a Territory with the given name and position, and belonging to the given Continent.
 Territory::Territory(std::string name, Continent* continent, int x, int y)
 	: name{ name }, armies{ 0 }, x{ x }, y{ y }, borders{}
 {
@@ -8,6 +9,7 @@ Territory::Territory(std::string name, Continent* continent, int x, int y)
 	this->owner = nullptr;
 }
 
+// Copy constructor of Territory
 Territory::Territory(Territory* other)
 	: name{ other->name }, armies{ other->armies }, x{ other->x }, y{ other->y }, borders{ other->borders }
 {
@@ -15,84 +17,100 @@ Territory::Territory(Territory* other)
 	this->owner = other->owner;
 }
 
+// Destructor for Territory. Territory does not own its neighboring countries or its continent (they are owned by Map) and does not own its Player, so it does not destroy them.
 Territory::~Territory() {
 
 }
 
+// Assignment operator for Territory
 Territory* Territory::operator=(const Territory& territory)
 {
 	return new Territory(territory);
 }
 
+// Add borders between this country and all countries in the provided borders vector
 void Territory::addBorders(std::vector<Territory*>* borders) {
 	for (std::vector<Territory*>::iterator it = borders->begin(); it != borders->end(); ++it) {
 		this->borders.push_back(*it);
 	}
 }
 
+// Get a read-only vector of all territories bordering this one
 const std::vector<Territory*>* Territory::getBorders()
 {
 	return &borders;
 }
 
+// Get the continent in which this territory is located
 Continent* Territory::getContinent() {
 	return this->continent;
 }
 
+// Stream insertion operator for Territory
 std::ostream& operator<<(std::ostream& out, const Territory& territory)
 {
 	out << territory.name;
 	return out;
 }
 
+// Constructor to create an empty Continent with the given name, colour and value
 Continent::Continent(std::string name, std::string colour, int value)
 	: name{ name }, colour{ colour }, value{ value }, territories{ }
 {
 
 }
 
+// Copy constructor for Continent
 Continent::Continent(Continent* continent)
 	: name{ continent->name }, colour{ continent->colour }, value{ continent->value }, territories{ continent->territories }
 {
 
 }
 
+// Destructor for Continent. Continent does not own its territories (they are owned by Map) so it does not destroy them
 Continent::~Continent() {
 
 }
 
+// Assignment operator for Continent
 Continent* Continent::operator=(const Continent& continent)
 {
 	return new Continent(continent);
 }
 
+// Add a territory to this continent
 void Continent::addTerritory(Territory* territory)
 {
 	territories.push_back(territory);
 }
 
+// Get a read-only vector of all territories in the continent
 const std::vector<Territory*>* Continent::getTerritories() {
 	return &territories;
 }
 
+// Stream insertion operator for Continent
 std::ostream& operator<<(std::ostream& out, const Continent& continent)
 {
 	out << continent.name;
 	return out;
 }
 
+// Construct an empty Map
 Map::Map()
 	: territories{}, continents{}
 {
 
 }
 
+// Copy constructor for Map
 Map::Map(Map* other)
 	: territories{ other->territories }, continents{ other->continents }
 {
 
 }
 
+// Destructor for Map. Map owns all of its continents and territories, so it must destroy them when it is destroyed
 Map::~Map() {
 	for (std::vector<Territory*>::iterator it = territories.begin(); it != territories.end(); it++) {
 		delete *it;
@@ -105,22 +123,26 @@ Map::~Map() {
 	continents.clear();
 }
 
+// Assignment operator for map
 Map* Map::operator=(const Map& map)
 {
 	return new Map(map);
 }
 
+// Add a continent to the map
 void Map::addContinent(Continent* continent)
 {
 	continents.push_back(continent);
 }
 
+// Add a territory to the map
 void Map::addTerritory(Territory* territory)
 {
 	territories.push_back(territory);
 	territory->getContinent()->addTerritory(territory);
 }
 
+// Given the ID of a territory, add borders between it and all given neighbors
 void Map::addBorder(int territoryId, std::vector<Territory*>* neighbors)
 {
 	Territory* territory = territories.at(territoryId);
@@ -159,7 +181,7 @@ void Map::validate() {
 }
 
 /*
-Checks that the graph is connected.
+Checks that the graph is connected. Throws an exception if validation fails.
 Start at node 0. Perform a depth-first search of the graph, visiting every node that is connected to the starting node.
 Mark each node as visited by adding it to a list. At the end of the search, if every node in the graph is in the list
 of visited nodes, the graph is connected.
@@ -198,7 +220,7 @@ void Map::visitTerritory(Territory* territory, std::vector<Territory*>* visitedC
 }
 
 /*
-Checks that each continent is a connected subgraph.
+Checks that each continent is a connected subgraph. Throws an exception if validation fails.
 For each continent, performs the same algorithm to check for a connected graph, but does not visit or recurse on territories
 that are not in the continent.
 */
@@ -245,6 +267,7 @@ void Map::visitTerritoryInContinent(Territory* territory, Continent* continent, 
 	}
 }
 
+// Validates that each territory in the map belongs to exactly one continent. Throws an exception if validation fails.
 void Map::checkTerritoriesBelongToExactlyOneContinent()
 {
 	const std::vector<Continent*>* continents = getContinents();
@@ -275,6 +298,7 @@ void Map::checkTerritoriesBelongToExactlyOneContinent()
 	}
 }
 
+// Stream insertion operator for Map.
 std::ostream& operator<<(std::ostream& out, const Map& map)
 {
 	out << "Map:" << std::endl;
@@ -292,6 +316,7 @@ std::ostream& operator<<(std::ostream& out, const Map& map)
 	return out;
 }
 
+// Error messages generated when validating maps
 const std::string Map::UNCONNECTED_MAP_ERROR = "Map is not a connected graph.";
 const std::string Map::UNCONNECTED_CONTINENT_ERROR = "Continent is not a connected subgraph";
 const std::string Map::TERRITORY_IN_TWO_CONTINENTS_ERROR = "Territory is in two different continents";
