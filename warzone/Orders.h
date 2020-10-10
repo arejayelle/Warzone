@@ -26,7 +26,7 @@ private:
 protected:
 	Player* player;  // The player who created the order.
 };
-												
+
 
 class DeployOrder : public Order {
 public:

@@ -15,7 +15,8 @@ Order::Order(Order* other) {
 }
 
 Order::~Order() {
-	delete player;
+	cout << "Deleting " << *this << "." << endl;
+	// delete player;
 }
 
 bool Order::validate() {
@@ -281,12 +282,17 @@ OrdersList::OrdersList() {
 }
 
 OrdersList::OrdersList(OrdersList* other) {
+	// TODO make deep copy.
+	/*vector<Order*>* newOrders = new vector<Order*>();
+	for (int i = 0; i < other->orders->size(); i++) {
+		
+	}*/
 	this->orders = other->orders;
 }
 
 OrdersList::~OrdersList() {
 	// Delete each pointer in orders and then clear the vector.
-	for (int i = 0; i < this->orders->size(); i++) {
+	for (int i = 0; i < orders->size(); i++) {
 		delete orders->at(i);
 	}
 	orders->clear();
