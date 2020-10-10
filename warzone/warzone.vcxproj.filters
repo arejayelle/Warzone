@@ -31,6 +31,12 @@
     <Filter Include="Header Files\Card">
       <UniqueIdentifier>{1c27fb3b-a7e4-42ab-968b-f95be972a438}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Orders">
+      <UniqueIdentifier>{416f7e51-5f8b-4158-b526-495666775408}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Orders">
+      <UniqueIdentifier>{11db3291-223f-416f-aa3e-eac2f3ad31b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
@@ -60,6 +66,12 @@
     <ClInclude Include="MapDriver.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
+    <ClInclude Include="Orders.h">
+      <Filter>Header Files\Orders</Filter>
+    </ClInclude>
+    <ClInclude Include="OrdersDriver.h">
+      <Filter>Header Files\Orders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Map.cpp">
@@ -88,6 +100,12 @@
     </ClCompile>
     <ClCompile Include="Cards.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Orders.cpp">
+      <Filter>Source Files\Orders</Filter>
+    </ClCompile>
+    <ClCompile Include="OrdersDriver.cpp">
+      <Filter>Source Files\Orders</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

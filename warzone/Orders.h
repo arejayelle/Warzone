@@ -139,7 +139,7 @@ public:
 	bool executeAll();
 
 private:
-	vector<Order*>* orders;
+	vector<Order*> orders;
 	friend ostream& operator<<(ostream& strm, const OrdersList& o);
 	OrdersList* operator= (const OrdersList& o);
 };

@@ -309,78 +309,76 @@ NegotiateOrder* NegotiateOrder::operator=(const NegotiateOrder& o) {
 
 
 OrdersList::OrdersList() {
-	this->orders = new vector<Order*>();
+	this->orders = vector<Order*>();
 }
 
 OrdersList::OrdersList(OrdersList* other) {
-	vector<Order*>* newOrders = new vector<Order*>();
-	for (int i = 0; i < other->orders->size(); i++) {
-		newOrders->push_back(new Order(other->orders->at(i)));
+	vector<Order*> newOrders = vector<Order*>();
+	for (int i = 0; i < other->orders.size(); i++) {
+		newOrders.push_back(new Order(other->orders.at(i)));
 	}
 	this->orders = newOrders;
 }
 
 OrdersList::~OrdersList() {
 	// Delete each pointer in orders and then clear the vector.
-	for (int i = 0; i < orders->size(); i++) {
-		delete orders->at(i);
+	for (int i = 0; i < orders.size(); i++) {
+		delete orders.at(i);
 	}
-	orders->clear();
-	delete orders;
 }
 
 int OrdersList::size() {
-	return this->orders->size();
+	return this->orders.size();
 }
 
 // The new order is added to the back of the list.
 void OrdersList::add(Order* newOrder) {
-	this->orders->push_back(newOrder);
+	this->orders.push_back(newOrder);
 }
 
 // Deletes the order at the specified index. Indexes begin at 0.
 bool OrdersList::remove(int index) {
-	if (index > this->orders->size() - 1 || index < 0) {
+	if (index > this->orders.size() - 1 || index < 0) {
 		cout << "Can't delete this order. Invalid index." << endl;
 		return false;
 	}
 
-	this->orders->erase(this->orders->begin() + index);
+	this->orders.erase(this->orders.begin() + index);
 	return true;
 }
 
 // Allows the player to rearrange orders by removing an order at oldIndex and inserting it at newIndex.
 bool OrdersList::move(int oldIndex, int newIndex) {
 	// Check if the indices make sense.
-	if (oldIndex > this->orders->size() - 1 || oldIndex < 0) {
+	if (oldIndex > this->orders.size() - 1 || oldIndex < 0) {
 		cout << "Can't move. Invalid starting index." << endl;
 		return false;
 	}
-	else if (newIndex > this->orders->size() - 1 || newIndex < 0) {
+	else if (newIndex > this->orders.size() - 1 || newIndex < 0) {
 		cout << "Can't move. Invalid destination index." << endl;
 		return false;
 	}
 
 	// Get and remove the item at oldIndex.
-	Order* theOrder = this->orders->at(oldIndex);
+	Order* theOrder = this->orders.at(oldIndex);
 	this->remove(oldIndex);
 
 	// The last index may have changed after removal, if invalid just add it to the back of the list.
-	if (newIndex > this->orders->size() - 1) {
-		this->orders->push_back(theOrder);
+	if (newIndex > this->orders.size() - 1) {
+		this->orders.push_back(theOrder);
 		return true;
 	}
 
 	// Regular case, just insert it at the index.
-	this->orders->insert(this->orders->begin() + newIndex, theOrder);
+	this->orders.insert(this->orders.begin() + newIndex, theOrder);
 	return true;
 }
 
 // Prints all orders for debugging purposes.
 void OrdersList::print() {
 	cout << "List contents are:\n[";
-	for (int i = 0; i < this->orders->size(); i++) {
-		cout << *(this->orders->at(i)) << ", ";
+	for (int i = 0; i < this->orders.size(); i++) {
+		cout << *(this->orders.at(i)) << ", ";
 	}
 	cout << "]\nEnd of list contents." << endl;
 }
@@ -389,8 +387,8 @@ void OrdersList::print() {
 bool OrdersList::executeAll() {
 	bool allExecuted = true;
 
-	for (int i = 0; i < this->orders->size(); i++) {
-		if (!this->orders->at(i)->execute()) {
+	for (int i = 0; i < this->orders.size(); i++) {
+		if (!this->orders.at(i)->execute()) {
 			allExecuted = false;
 		}
 	}
@@ -399,7 +397,7 @@ bool OrdersList::executeAll() {
 }
 
 ostream& operator<<(ostream& strm, const OrdersList& o) {
-	return strm << "OrdersList containing " << o.orders->size() << " orders.";
+	return strm << "OrdersList containing " << o.orders.size() << " orders.";
 }
 
 OrdersList* OrdersList::operator=(const OrdersList& o) {
