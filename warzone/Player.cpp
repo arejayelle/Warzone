@@ -35,9 +35,11 @@ Player::~Player() {
 }
 
 Player& Player::operator=(const Player& one)  //assignment operator
-{
+{	
+	delete playerHand;
 	this->playerHand = one.playerHand;
 	//this->playerOrders = one.playerOrders;
+	delete playerTerritory;
 	this->playerTerritory = one.playerTerritory;
 	//this->playerOrdersList=one.playerOrdersList;
 }
