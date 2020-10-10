@@ -18,6 +18,7 @@ public:
 
 	virtual bool validate();
 	virtual bool execute();
+	virtual string toString() const;
 
 private:
 	friend ostream& operator<<(ostream &strm, const Order &o);
@@ -36,6 +37,7 @@ public:
 	
 	bool validate();
 	bool execute();
+	string toString() const;
 
 private:
 	friend ostream& operator<<(ostream& strm, const DeployOrder& o);
@@ -51,6 +53,7 @@ public:
 
 	bool validate();
 	bool execute();
+	string toString() const;
 
 private:
 	friend ostream& operator<<(ostream& strm, const AdvanceOrder& o);
@@ -66,6 +69,7 @@ public:
 
 	bool validate();
 	bool execute();
+	string toString() const;
 
 private:
 	friend ostream& operator<<(ostream& strm, const BombOrder& o);
@@ -81,6 +85,7 @@ public:
 
 	bool validate();
 	bool execute();
+	string toString() const;
 
 private:
 	friend ostream& operator<<(ostream& strm, const BlockadeOrder& o);
@@ -96,6 +101,7 @@ public:
 
 	bool validate();
 	bool execute();
+	string toString() const;
 
 private:
 	friend ostream& operator<<(ostream& strm, const AirliftOrder& o);
@@ -111,6 +117,7 @@ public:
 
 	bool validate();
 	bool execute();
+	string toString() const;
 
 private:
 	friend ostream& operator<<(ostream& strm, const NegotiateOrder& o);

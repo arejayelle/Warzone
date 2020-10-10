@@ -1,5 +1,7 @@
 #include "Orders.h"
 #include <iostream>
+#include <string>
+#include <sstream>
 
 
 Order::Order() {
@@ -39,8 +41,14 @@ bool Order::execute() {
 	return true;
 }
 
+string Order::toString() const {
+	ostringstream strm;
+	strm << "Order made by player " << this->player;
+	return strm.str();
+}
+
 ostream& operator<<(ostream &strm, const Order &o) {
-	return strm << "Order made by player " << o.player;
+	return strm << o.toString();
 }
 
 Order* Order::operator=(const Order &o) {
@@ -75,8 +83,14 @@ bool DeployOrder::execute() {
 	return true;
 }
 
-ostream& operator<<(ostream& strm, const DeployOrder& d) {
-	return strm << "Deploy order made by player " << d.player;
+string DeployOrder::toString() const {
+	ostringstream strm;
+	strm << "Deploy order made by player " << this->player;
+	return strm.str();
+}
+
+ostream& operator<<(ostream& strm, const DeployOrder& o) {
+	return strm << o.toString();
 }
 
 DeployOrder* DeployOrder::operator=(const DeployOrder& o) {
@@ -111,8 +125,14 @@ bool AdvanceOrder::execute() {
 	return true;
 }
 
+string AdvanceOrder::toString() const {
+	ostringstream strm;
+	strm << "Advance order made by player " << this->player;
+	return strm.str();
+}
+
 ostream& operator<<(ostream& strm, const AdvanceOrder& o) {
-	return strm << "Advance order made by player " << o.player;
+	return strm << o.toString();
 }
 
 AdvanceOrder* AdvanceOrder::operator=(const AdvanceOrder& o) {
@@ -147,8 +167,14 @@ bool BombOrder::execute() {
 	return true;
 }
 
+string BombOrder::toString() const {
+	ostringstream strm;
+	strm << "Bomb order made by player " << this->player;
+	return strm.str();
+}
+
 ostream& operator<<(ostream& strm, const BombOrder& o) {
-	return strm << "Bomb order made by player " << o.player;
+	return strm << o.toString();
 }
 
 BombOrder* BombOrder::operator=(const BombOrder& o) {
@@ -183,8 +209,14 @@ bool BlockadeOrder::execute() {
 	return true;
 }
 
+string BlockadeOrder::toString() const {
+	ostringstream strm;
+	strm << "Blockade order made by player " << this->player;
+	return strm.str();
+}
+
 ostream& operator<<(ostream& strm, const BlockadeOrder& o) {
-	return strm << "Blockade order made by player " << o.player;
+	return strm << o.toString();
 }
 
 BlockadeOrder* BlockadeOrder::operator=(const BlockadeOrder& o) {
@@ -219,8 +251,14 @@ bool AirliftOrder::execute() {
 	return true;
 }
 
+string AirliftOrder::toString() const {
+	ostringstream strm;
+	strm << "Airlift order made by player " << this->player;
+	return strm.str();
+}
+
 ostream& operator<<(ostream& strm, const AirliftOrder& o) {
-	return strm << "Airlift order made by player " << o.player;
+	return strm << o.toString();
 }
 
 AirliftOrder* AirliftOrder::operator=(const AirliftOrder& o) {
@@ -255,8 +293,14 @@ bool NegotiateOrder::execute() {
 	return true;
 }
 
+string NegotiateOrder::toString() const {
+	ostringstream strm;
+	strm << "Negotiate order made by player " << this->player;
+	return strm.str();
+}
+
 ostream& operator<<(ostream& strm, const NegotiateOrder& o) {
-	return strm << "Negotiate order made by player " << o.player;
+	return strm << o.toString();
 }
 
 NegotiateOrder* NegotiateOrder::operator=(const NegotiateOrder& o) {
