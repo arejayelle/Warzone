@@ -32,6 +32,11 @@ Territory::~Territory() {
 	delete borders;
 }
 
+Territory* Territory::operator=(const Territory& territory)
+{
+	return new Territory(territory);
+}
+
 void Territory::addBorders(std::vector<Territory*>* borders) {
 	for (std::vector<Territory*>::iterator it = borders->begin(); it != borders->end(); ++it) {
 		this->borders->push_back(*it);
@@ -45,6 +50,12 @@ const std::vector<Territory*>* Territory::getBorders()
 
 Continent* Territory::getContinent() {
 	return this->continent;
+}
+
+std::ostream& operator<<(std::ostream& out, const Territory& territory)
+{
+	out << territory.name;
+	return out;
 }
 
 Continent::Continent(std::string name, std::string colour, int value) {
@@ -68,6 +79,11 @@ Continent::~Continent() {
 	delete territories;
 }
 
+Continent* Continent::operator=(const Continent& continent)
+{
+	return new Continent(continent);
+}
+
 void Continent::addTerritory(Territory* territory)
 {
 	territories->push_back(territory);
@@ -75,6 +91,12 @@ void Continent::addTerritory(Territory* territory)
 
 const std::vector<Territory*>* Continent::getTerritories() {
 	return territories;
+}
+
+std::ostream& operator<<(std::ostream& out, const Continent& continent)
+{
+	out << continent.name;
+	return out;
 }
 
 Map::Map()
@@ -95,6 +117,11 @@ Map::~Map() {
 
 	continents->clear();
 	delete continents;
+}
+
+Map* Map::operator=(const Map& map)
+{
+	return new Map(map);
 }
 
 void Map::addContinent(Continent* continent)
@@ -256,6 +283,23 @@ void Map::checkTerritoriesBelongToExactlyOneContinent()
 			throw Map::TERRITORY_IN_ZERO_CONTINENTS_ERROR;
 		}
 	}
+}
+
+std::ostream& operator<<(std::ostream& out, const Map& map)
+{
+	out << "Map:" << std::endl;
+
+	out << "Continents:" << std::endl;
+	for (std::vector<Continent*>::const_iterator it = map.continents->begin(); it != map.continents->end(); it++) {
+		out << *it << std::endl;
+	}
+
+	out << "Territories:" << std::endl;
+	for (std::vector<Territory*>::const_iterator it = map.territories->begin(); it != map.territories->end(); it++) {
+		out << *it << std::endl;
+	}
+
+	return out;
 }
 
 const std::string Map::UNCONNECTED_MAP_ERROR = "Map is not a connected graph.";
