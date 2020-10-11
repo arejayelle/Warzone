@@ -4,5 +4,6 @@ int main()
 {
     return Cards::main() 
         | MapDriver::main() 
-        | OrdersDriver::main();
+        | OrdersDriver::main()
+        | MapLoaderDriver::main();
 }

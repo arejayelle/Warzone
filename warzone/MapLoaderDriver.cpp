@@ -23,7 +23,3 @@ int MapLoaderDriver::main() {
 
 	return 0;
 }
-
-int main() {
-	return MapLoaderDriver::main();
-}
