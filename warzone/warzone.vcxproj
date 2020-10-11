@@ -146,7 +146,9 @@
     <ClCompile Include="MapDriver.cpp" />
     <ClCompile Include="Orders.cpp" />
     <ClCompile Include="OrdersDriver.cpp" />
+    <ClCompile Include="MapLoader.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="MapLoaderDriver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CardDriver.h" />
@@ -156,6 +158,7 @@
     <ClInclude Include="MapDriver.h" />
     <ClInclude Include="Orders.h" />
     <ClInclude Include="OrdersDriver.h" />
+    <ClInclude Include="MapLoader.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -34,8 +34,14 @@
     <Filter Include="Header Files\Orders">
       <UniqueIdentifier>{416f7e51-5f8b-4158-b526-495666775408}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Orders">
-      <UniqueIdentifier>{11db3291-223f-416f-aa3e-eac2f3ad31b6}</UniqueIdentifier>
+	<Filter Include="Source Files\Orders">
+		<UniqueIdentifier>{11db3291-223f-416f-aa3e-eac2f3ad31b6}</UniqueIdentifier>
+	</Filter>
+    <Filter Include="Header Files\MapLoader">
+      <UniqueIdentifier>{884a5ce2-c204-4816-b47e-7edd3e24f114}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MapLoader">
+      <UniqueIdentifier>{32cab156-2ec2-4008-b1e4-e71f81ce29c9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +69,9 @@
     <ClInclude Include="OrdersDriver.h">
       <Filter>Header Files\Orders</Filter>
     </ClInclude>
+    <ClInclude Include="MapLoader.h">
+      <Filter>Header Files\MapLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Map.cpp">
@@ -86,8 +95,14 @@
     <ClCompile Include="Orders.cpp">
       <Filter>Source Files\Orders</Filter>
     </ClCompile>
-    <ClCompile Include="OrdersDriver.cpp">
-      <Filter>Source Files\Orders</Filter>
+	<ClCompile Include="OrdersDriver.cpp">
+		<Filter>Source Files\Orders</Filter>
+	</ClCompile>
+    <ClCompile Include="MapLoader.cpp">
+      <Filter>Source Files\MapLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="MapLoaderDriver.cpp">
+      <Filter>Source Files\MapLoader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -4,10 +4,6 @@
 
 using std::vector;
 
-// int main() {
-// 	MapDriver::main();
-// }
-
 int MapDriver::main()
 {
 	Map* validMap = getValidMap();
@@ -20,6 +16,7 @@ int MapDriver::main()
 	catch (std::string exception) {
 		assert(exception.compare(Map::UNCONNECTED_MAP_ERROR) == 0);
 	}
+	delete unconnectedMap;
 
 	Map* unconnectedContinentMap = getMapUnconnectedContinent();
 	try {
@@ -28,6 +25,7 @@ int MapDriver::main()
 	catch (std::string exception) {
 		assert(exception.compare(Map::UNCONNECTED_CONTINENT_ERROR) == 0);
 	}
+	delete unconnectedContinentMap;
 
 	Map* mapWithTerritoryInNoContinents = getMapTerritoryInNoContinents();
 	try {
@@ -36,6 +34,7 @@ int MapDriver::main()
 	catch (std::string exception) {
 		assert(exception.compare(Map::TERRITORY_IN_ZERO_CONTINENTS_ERROR) == 0);
 	}
+	delete mapWithTerritoryInNoContinents;
 
 	Map* mapWithTerritoryInTwoContinents = getMapTerritoryInTwoContinents();
 	try {
@@ -44,8 +43,10 @@ int MapDriver::main()
 	catch (std::string exception) {
 		assert(exception.compare(Map::TERRITORY_IN_TWO_CONTINENTS_ERROR) == 0);
 	}
+	delete mapWithTerritoryInTwoContinents;
 
 	std::cout << "Validation successful" << std::endl;
+	delete validMap;
 
 	return 0;
 }
