@@ -526,6 +526,9 @@ namespace Cards {
 	 * 
 	 * \param deck
 	 */
+	Hand::Hand() {
+
+	}
 	Hand::Hand(Deck* deck)
 	{
 		this->deck = deck;

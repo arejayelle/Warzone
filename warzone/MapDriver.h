@@ -4,7 +4,6 @@
 
 namespace MapDriver {
 	int main();
-
 	Map* getValidMap();
 	Map* getMapUnconnected();
 	Map* getMapUnconnectedContinent();

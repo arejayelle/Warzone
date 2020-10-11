@@ -78,8 +78,11 @@
     <ClInclude Include="OrdersDriver.h">
       <Filter>Header Files\Orders</Filter>
     </ClInclude>
-    <ClInclude Include="MapLoader.h">
-      <Filter>Header Files\MapLoader</Filter>
+	<ClInclude Include="MapLoader.h">
+		<Filter>Header Files\MapLoader</Filter>
+	</ClInclude>
+    <ClInclude Include="PlayerDriver.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="MapLoaderDriver.cpp">
       <Filter>Source Files\MapLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDriver.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
