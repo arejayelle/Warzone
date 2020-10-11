@@ -372,7 +372,7 @@ void DiplomacyCard::play()
 Deck::Deck()
 	{
 		this->fullDeck = new std::vector<Card*>;
-		this->drawPile = new std::vector<int*>;
+		this->drawPile = new std::vector<int>;
 		return;
 	}
 
@@ -384,7 +384,7 @@ Deck::Deck()
 Deck::Deck(Deck* deck)
 	{
 		this->fullDeck = new vector<Card*>;
-		this->drawPile = new vector<int*>;
+		this->drawPile = new vector<int>;
 
 		for (int i = 0; i < deck->fullDeck->size(); i++)
 		{
@@ -427,7 +427,7 @@ Deck* Deck::operator=(const Deck& deck)
 void Deck::add(Card* card)
 	{
 		fullDeck->push_back(card);
-		int* size = (int*)fullDeck->size();
+		int size = fullDeck->size();
 		drawPile->push_back(size);
 
 	}
@@ -438,7 +438,7 @@ void Deck::add(Card* card)
 	 * \param cardID
 	 * \return 
 	 */
-Card* Deck::getFromCatalog(int* cardID)
+Card* Deck::getFromCatalog(int cardID)
 	{
 		if ((size_t)cardID < fullDeck->size())
 		{
@@ -453,17 +453,17 @@ Card* Deck::getFromCatalog(int* cardID)
 	 * 
 	 * \return cardID of drawn card
 	 */
-int* Deck::draw()
+int Deck::draw()
 	{
 		// randomly choose a value from the draw pile
 		srand((unsigned int)time(NULL));
 		int drawIndex = rand() % drawPile->size();
 
 		// Retrieve cardID
-		int* cardID = drawPile->operator[](drawIndex);
+		int cardID = drawPile->operator[](drawIndex);
 
 		// Get iterator at location for erasing
-		std::vector<int*>::iterator it = drawPile->begin() + drawIndex;
+		std::vector<int>::iterator it = drawPile->begin() + drawIndex;
 		drawPile->erase(it);
 
 		return cardID;
@@ -474,7 +474,7 @@ int* Deck::draw()
 	 * 
 	 * \param cardID
 	 */
-void Deck::returnToDrawPile(int* cardID)
+void Deck::returnToDrawPile(int cardID)
 	{
 		drawPile->push_back(cardID);
 	}
@@ -510,12 +510,12 @@ void Deck::printDrawpile()
 	cout << "index\tCard ID" << endl;
 
 	int i = 0;
-	for (std::vector<int*>::iterator it = drawPile->begin(); it !=drawPile->end(); ++it) {
+	for (std::vector<int>::iterator it = drawPile->begin(); it !=drawPile->end(); ++it) {
 
-		int* cardID = (*it);
-		cout << i++ << "\t" << (int)cardID << endl;
+		int cardID = *it;
+		cout << i++ << "\t" << cardID << endl;
 	}
-	cout << "----------------";
+	cout << "----------------" <<endl;
 }
 
 // Hand functions
@@ -527,7 +527,7 @@ void Deck::printDrawpile()
 Hand::Hand(Deck* deck)
 	{
 		this->deck = deck;
-		this->currentHand = new vector<int*>;
+		this->currentHand = new vector<int>;
 	}
 
 /**
@@ -538,7 +538,7 @@ Hand::Hand(Deck* deck)
 Hand::Hand(Hand* hand)
 	{
 		this->deck = new Deck(hand->deck);
-		this->currentHand = new vector<int*>;
+		this->currentHand = new vector<int>;
 
 		for (int i = 0; i < hand->currentHand->size(); i++)
 		{
@@ -573,7 +573,7 @@ Hand* Hand::operator=(const Hand& hand)
 * 
 * \param cardId
 */
-void Hand::addCard(int* cardId)
+void Hand::addCard(int cardId)
 	{
 		currentHand->push_back(cardId);
 	}
@@ -587,7 +587,7 @@ void Hand::play(int index)
 	{
 		if (index < currentHand->size()) {
 
-			std::vector<int*>::iterator it = currentHand->begin() + index;
+			std::vector<int>::iterator it = currentHand->begin() + index;
 			Card* aCard = this->deck->getFromCatalog((*it));
 			aCard->play();
 			deck->returnToDrawPile(*it);
@@ -598,7 +598,7 @@ void Hand::play(int index)
 /**
  * \return currentHand
  */
-vector<int*>* Hand::getCurrentHand()
+vector<int>* Hand::getCurrentHand()
 	{
 		return this->currentHand;
 	}
@@ -616,10 +616,10 @@ ostream& operator<<(ostream& out, const Hand& hand)
 
 	for (int i = 0; i < hand.currentHand->size(); i++)
 	{
-		int* cardID = hand.currentHand->operator[](i);
+		int cardID = hand.currentHand->operator[](i);
 		Card* card = hand.deck->getFromCatalog(cardID);
 
-		out << "ID: " <<(int)cardID << ' ' << *card<< endl;
+		out << "ID: " <<cardID << ' ' << *card<< endl;
 	}
 	out << "---------" << endl;
 

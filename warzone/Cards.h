@@ -87,7 +87,7 @@ class Deck
 {
 private:
 	std::vector<Card*>* fullDeck;
-	std::vector <int*>* drawPile;
+	std::vector <int>* drawPile;
 
 public:
 	Deck();
@@ -96,10 +96,10 @@ public:
 	Deck* operator= (const Deck& deck);
 
 	void add(Card* card);
-	Card* getFromCatalog(int* cardID);
+	Card* getFromCatalog(int cardID);
 
-	int* draw();
-	void returnToDrawPile(int* index);
+	int draw();
+	void returnToDrawPile(int index);
 
 	friend ostream& operator<< (ostream& out, const Deck& deck);
 	void printDrawpile();
@@ -110,7 +110,7 @@ class Hand
 {
 private:
 	Deck* deck;
-	vector<int*>* currentHand;
+	vector<int>* currentHand;
 
 public:
 	Hand(Deck* deck);
@@ -118,10 +118,10 @@ public:
 	~Hand();
 	Hand* operator= (const Hand& hand);
 
-	void addCard(int* cardId);
 	void play(int index);
+	void addCard(int cardId);
 	
-	vector<int*>* getCurrentHand();
+	vector<int>* getCurrentHand();
 	
 	friend ostream& operator<< (ostream& out, const Hand& hand);
 };

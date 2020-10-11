@@ -61,7 +61,7 @@ namespace Cards {
     {
         for (int i = 0;i < handSize;i++) 
         {
-            int* cardID = deck->draw();
+            int cardID = deck->draw();
             hand->addCard(cardID);
         }
     }
