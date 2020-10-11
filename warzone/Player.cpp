@@ -19,7 +19,8 @@ Player::~Player() {  //destructor
 	delete playerOrdersList;
 }
 
-Player* Player::operator=(const Player& one)  //assignment operator
+
+Player * Player::operator=(const Player & one)  //assignment operator
 {
 	return new Player(one);
 }
@@ -58,12 +59,13 @@ void Player::issueOrder(Order* newOrder)  //allows player to issue an order
 	return playerTerritories;
 }
 
- OrdersList* Player::getOrdersList()   //returns the player's order list
+
+OrdersList* Player::getOrdersList()   //returns the player's order list
 {
 	return playerOrdersList;
 }
 
- Cards::Hand* Player::getHand()  //returns the cards in the player's hand
+Cards::Hand* Player::getHand()  //returns the cards in the player's hand
 {
 	return playerHand;
 }

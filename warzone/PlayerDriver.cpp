@@ -18,6 +18,9 @@ int PlayerDriver::main() {
 	Order* playerOrder = new Order();
 	p1->issueOrder(playerOrder);  //issuing an order
 
+	cout << "Player has following orders: " << endl;  //returns the player's order list
+	p1->getOrdersList();
+	
 	cout << p1;  //output opperator 
 
 	return 0;

@@ -13,6 +13,7 @@ public:
 	Player();
 	Player(vector<Territory*>* territoriesToAdd,  OrdersList* playerList, Cards::Deck* deckToTakeFrom);  //constructor
 	~Player();   //destructor
+
 	Player* operator= (const Player& one);  //assignment operator
 	Player(const Player& player);  //copy constructor 
 
@@ -23,6 +24,7 @@ public:
 	void issueOrder(Order* newOrder);  //Issue order method
 
 	//Getters
+
 	vector<Territory*>* getTerritories(); //Get territories
 	Cards::Hand* getHand(); //Get hand
 	OrdersList* getOrdersList(); //Get order list
