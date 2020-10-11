@@ -125,8 +125,8 @@ public:
 
 	void addCard(int cardId);
 	void play(int index);
-	
+
 	vector<int>* getCurrentHand();
-	
+
 	friend ostream& operator<< (ostream& out, const Hand& hand);
 };
