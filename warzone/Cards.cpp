@@ -585,17 +585,21 @@ void Hand::addCard(int cardId)
 	}
 
 /**
- * Plays card at hand index
+ * Plays card at hand index and adds the created order to the owner's orderlist
  * 
  * \param index Index of the card to be played
  */
-Order* Hand::play(int index)
+void Hand::play(int index)
 	{
 		if (index < currentHand->size()) {
 
 			std::vector<int>::iterator it = currentHand->begin() + index;
 			Card* aCard = this->deck->getFromCatalog((*it));
-			aCard->play(owner);
+			Order* newOrder = aCard->play(owner);
+
+			OrdersList* list =  owner->getOrdersList();
+			list->add(newOrder);
+
 			deck->returnToDrawPile(*it);
 			currentHand->erase(it);
 		}

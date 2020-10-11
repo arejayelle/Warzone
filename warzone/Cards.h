@@ -5,6 +5,8 @@
 #include <ctime>
 #include <iostream>
 #include "Orders.h"
+#include "Player.h"
+
 
 using namespace std;
 
@@ -122,7 +124,7 @@ public:
 	Hand* operator= (const Hand& hand);
 
 	void addCard(int cardId);
-	Order* play(int index);
+	void play(int index);
 	
 	vector<int>* getCurrentHand();
 	
