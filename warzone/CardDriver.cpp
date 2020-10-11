@@ -5,7 +5,8 @@ namespace Cards {
     int main()
     {
         Deck* deck = new Deck();
- 
+        Player* player = new Player();
+
         cout << "Creating Deck"<<endl;
         cout << (*deck);
         
@@ -18,7 +19,7 @@ namespace Cards {
 
         cout << "Drawing 5 random cards" << endl;
         int handSize = 5;
-        Hand* hand = new Hand(deck);
+        Hand* hand = new Hand(deck, player);
 
         populateHand(deck, hand, handSize);
         cout << *hand;
