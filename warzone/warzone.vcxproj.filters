@@ -45,7 +45,6 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
-    </ClInclude>
     <ClInclude Include="CardDriver.h">
       <Filter>Header Files\Card</Filter>
     </ClInclude>
