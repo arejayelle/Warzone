@@ -3,7 +3,6 @@
 
 Player::Player() {  //default constructor
 	this->playerTerritories = new vector<Territory*>();
-	this->playerHand = new Hand();
 	this->playerOrdersList = new OrdersList();
 }
 
@@ -11,7 +10,7 @@ Player::Player() {  //default constructor
 Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom) { //Constructor with all parameters
 	this->playerTerritories = territoriesToAdd;
 	this->playerOrdersList = playerList;
-	this->playerHand = new Hand(deckToTakeFrom);
+	this->playerHand = new Hand(deckToTakeFrom, this);
 }
 
 Player::~Player() {  //destructor 
@@ -89,8 +88,8 @@ void Player::setHand(Hand* handToAdd)  //sets the cards in the player's hand
 ostream& operator<<(ostream& output, const Player &player)  //output stream
 {
 	output << "Player Information:" << endl;
-	output << "Hand: " << player.playerHand << endl;
+	output << "Hand: " << *player.playerHand << endl;
 	output << "Territories: " << player.playerTerritories<< endl;
-	output << "Orders list: " << player.playerOrdersList<< endl;
+	output << "Orders list: " << *player.playerOrdersList<< endl;
 	return output;
 }

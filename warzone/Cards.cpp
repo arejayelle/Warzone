@@ -520,16 +520,6 @@ void Deck::printDrawpile()
 	cout << "----------------" << endl;
 }
 
-	// Hand functions
-	/**
-	 * Constructor with reference to the Deck
-	 * 
-	 * \param deck
-	 */
-	Hand::Hand() {
-
-	}
-	Hand::Hand(Deck* deck){}
 // Hand functions
 /**
  * Constructor with reference to the Deck
