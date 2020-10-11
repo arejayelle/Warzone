@@ -21,7 +21,7 @@ int PlayerDriver::main() {
 
 	p1->getOrdersList()->print();
 
-	cout << &p1 << endl;  //output opperator 
+	cout << *p1 << endl;  //output opperator 
 
 	return 0;
 }

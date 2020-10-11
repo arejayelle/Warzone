@@ -88,8 +88,8 @@ void Player::setHand(Cards::Hand* handToAdd)  //sets the cards in the player's h
 ostream& operator<<(ostream& output, const Player &player)  //output stream
 {
 	output << "Player Information:" << endl;
-	output << "Hand: " << endl;
-	output << "Territories: " << endl;
-	output << "Orders list: " << endl;
+	output << "Hand: " << player.playerHand << endl;
+	output << "Territories: " << player.playerTerritories<< endl;
+	output << "Orders list: " << player.playerOrdersList<< endl;
 	return output;
 }
