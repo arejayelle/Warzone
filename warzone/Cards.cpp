@@ -432,7 +432,7 @@ Deck* Deck::operator=(const Deck& deck)
 void Deck::add(Card* card)
 	{
 		fullDeck->push_back(card);
-		int size = fullDeck->size();
+		int size =  (int) fullDeck->size();
 		drawPile->push_back(size);
 
 	}
