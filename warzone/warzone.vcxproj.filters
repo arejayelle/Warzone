@@ -72,6 +72,9 @@
     <ClInclude Include="OrdersDriver.h">
       <Filter>Header Files\Orders</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerDriver.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Map.cpp">
@@ -106,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="OrdersDriver.cpp">
       <Filter>Source Files\Orders</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDriver.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

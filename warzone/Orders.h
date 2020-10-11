@@ -5,9 +5,7 @@
 
 using namespace std;
 
-
 class Player;
-
 
 class Order {
 public:

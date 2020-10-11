@@ -4,10 +4,6 @@
 
 using std::vector;
 
-// int main() {
-// 	MapDriver::main();
-// }
-
 int MapDriver::main()
 {
 	Map* validMap = getValidMap();

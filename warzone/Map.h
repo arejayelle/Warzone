@@ -5,6 +5,7 @@
 #include "Player.h"
 
 class Continent;
+class Player;
 
 class Territory {
 public:

@@ -115,6 +115,7 @@ namespace Cards {
 		vector<int*>* currentHand;
 
 	public:
+		Hand();
 		Hand(Deck* deck);
 		Hand(Hand* hand);
 		~Hand();
