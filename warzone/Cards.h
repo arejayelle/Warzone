@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include "Orders.h"
+
 using namespace std;
 
 // Card Objects
@@ -17,7 +19,7 @@ public:
 	~Card();
 	Card* operator= (const Card& card);
 
-	virtual void play();
+	virtual Order* play(Player* owner);
 	string getName();
 	friend ostream& operator<< (ostream& out, const Card& card);
 };
@@ -29,7 +31,7 @@ public:
 	~SpyCard();
 	SpyCard* operator= (const SpyCard& card);
 
-	void play();
+	Order* play(Player* owner);
 };
 
 class BombCard :public Card {
@@ -39,7 +41,7 @@ public:
 	~BombCard();
 	BombCard* operator= (const BombCard& card);
 
-	void play();
+	Order* play(Player* owner);
 };
 
 class ReinforcementCard :public Card {
@@ -49,7 +51,7 @@ public:
 	~ReinforcementCard();
 	ReinforcementCard* operator= (const ReinforcementCard& card);
 
-	void play();
+	Order* play(Player* owner);
 };
 
 class BlockadeCard :public Card {
@@ -59,7 +61,7 @@ public:
 	~BlockadeCard();
 	BlockadeCard* operator= (const BlockadeCard& card);
 
-	void play();
+	Order* play(Player* owner);
 };
 
 class AirliftCard :public Card {
@@ -69,7 +71,7 @@ public:
 	~AirliftCard();
 	AirliftCard* operator= (const AirliftCard& card);
 
-	void play();
+	Order* play(Player* owner);
 };
 
 class DiplomacyCard :public Card {
@@ -79,7 +81,7 @@ public:
 	~DiplomacyCard();
 	DiplomacyCard* operator= (const DiplomacyCard& card);
 
-	void play();
+	Order* play(Player* owner);
 };
 
 // Deck Object
@@ -110,16 +112,17 @@ class Hand
 {
 private:
 	Deck* deck;
+	Player* owner;
 	vector<int>* currentHand;
 
 public:
-	Hand(Deck* deck);
+	Hand(Deck* deck, Player* player);
 	Hand(Hand* hand);
 	~Hand();
 	Hand* operator= (const Hand& hand);
 
-	void play(int index);
 	void addCard(int cardId);
+	Order* play(int index);
 	
 	vector<int>* getCurrentHand();
 	
