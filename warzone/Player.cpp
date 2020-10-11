@@ -19,15 +19,9 @@ Player::~Player() {  //destructor
 	delete playerOrdersList;
 }
 
-Player& Player::operator=(const Player& one)  //assignment operator
+Player* Player::operator=(const Player& one)  //assignment operator
 {
-	delete playerHand;
-	this->playerHand = one.playerHand;
-	delete playerTerritories;
-	this->playerTerritories = one.playerTerritories;
-	delete playerOrdersList;
-	this->playerOrdersList = one.playerOrdersList;
-	return *this;
+	return new Player(one);
 }
 
 Player::Player(const Player& player)  //copy constructor

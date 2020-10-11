@@ -13,7 +13,7 @@ public:
 	Player();
 	Player(vector<Territory*>* territoriesToAdd,  OrdersList* playerList, Cards::Deck* deckToTakeFrom);  //constructor
 	~Player();   //destructor
-	Player& operator= (const Player& one);  //assignment operator
+	Player* operator= (const Player& one);  //assignment operator
 	Player(const Player& player);  //copy constructor 
 
 	friend ostream& operator<< (ostream& output, const Player& player); //stream overloading
