@@ -37,17 +37,13 @@ Player::Player(const Player& player)  //copy constructor
 
 const vector<Territory*>* Player::toDefend()   //returns territories the player can defend
 {
-	vector<Territory*>* toDefend = new vector<Territory*>();
-	if (toDefend->empty())
-		cout << "Player has nothing to defend" << endl; //checks if the player has no territories to defend. if so, print that they have none
+	vector<Territory*>* toDefend = new vector<Territory*>(); //TODO- Add actual territories to defend later
 	return toDefend;
 }
 
 const vector<Territory*>* Player::toAttack()   //returns territories the player can attack
 {
-	vector<Territory*>* toAttack = new vector<Territory*>();
-	if (toAttack->empty())
-		cout << "Player has nothing to attack" << endl; //checks if the player has no territories to attack. if so, print that they have none
+	vector<Territory*>* toAttack = new vector<Territory*>(); //TODO - Add actual territories to attack later
 	return toAttack;
 }
 
@@ -59,15 +55,11 @@ void Player::issueOrder(Order* newOrder)  //allows player to issue an order
 
 const vector<Territory*>* Player::getTerritories()  //returns all the player's territories 
 {
-	if (playerTerritories->empty())
-		cout << "Player has no territories" << endl;  //checks if the player's territories are empty. if so, print that they have none
 	return playerTerritories;
 }
 
 const OrdersList* Player::getOrdersList()   //returns the player's order list
 {
-	if (playerOrdersList->size() == 0)
-		cout << "Player's Order List is Empty" << endl; //checks if the player's order list is empty. if so, print that they have none
 	return playerOrdersList;
 }
 
