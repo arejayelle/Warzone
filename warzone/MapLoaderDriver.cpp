@@ -21,7 +21,7 @@ int MapLoaderDriver::main() {
 	Map* myMap3 = mapL3->convertFileToMap();
 	myMap3->validate();
 
-
+	return 0;
 }
 
 int main() {
