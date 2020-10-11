@@ -14,9 +14,6 @@ Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Car
 }
 
 Player::~Player() {  //destructor 
-	for (Territory* t : *playerTerritories) {
-		delete t;
-	}
 	delete playerTerritories;
 	delete playerHand;
 	delete playerOrdersList;
