@@ -24,7 +24,6 @@ public:
 	void issueOrder(Order* newOrder);  //Issue order method
 
 	//Getters
-
 	vector<Territory*>* getTerritories(); //Get territories
 	Cards::Hand* getHand(); //Get hand
 	OrdersList* getOrdersList(); //Get order list

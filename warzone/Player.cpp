@@ -20,7 +20,7 @@ Player::~Player() {  //destructor
 }
 
 
-Player * Player::operator=(const Player & one)  //assignment operator
+Player* Player::operator=(const Player & one)  //assignment operator
 {
 	return new Player(one);
 }
@@ -85,11 +85,11 @@ void Player::setHand(Cards::Hand* handToAdd)  //sets the cards in the player's h
 	this->playerHand = handToAdd;
 }
 
-ostream& operator<<(ostream& output, const Player& player)  //output stream
+ostream& operator<<(ostream& output, const Player &player)  //output stream
 {
 	output << "Player Information:" << endl;
-	output << "Hand: " << player.playerHand << endl;
-	output << "Territories: " << player.playerTerritories<< endl;
-	output << "Orders list: " << player.playerOrdersList << endl;
+	output << "Hand: " << endl;
+	output << "Territories: " << endl;
+	output << "Orders list: " << endl;
 	return output;
 }
