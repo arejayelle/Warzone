@@ -75,5 +75,4 @@ namespace Cards {
 		}
 		cout << "-------------- All cards played" << endl;
 	}
-
 }

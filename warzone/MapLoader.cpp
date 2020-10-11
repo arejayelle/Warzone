@@ -69,7 +69,7 @@ bool MapLoader::validateMapFormat()
 				}
 				else {
 					valideMap = false;
-					exit(1);
+					throw std::string("Continent not valid");
 				}
 			}
 			//Confirm that the continent part is good
@@ -88,7 +88,7 @@ bool MapLoader::validateMapFormat()
 				}
 				else {
 					valideMap = false;
-					exit(1);
+					throw std::string("Territory not valid");
 				}
 			}
 			//Confirm that the territory part is good
@@ -107,7 +107,7 @@ bool MapLoader::validateMapFormat()
 				}
 				else {
 					valideMap = false;
-					exit(1);
+					throw std::string("Borders not valid");
 				}
 			}
 			//Confirm that the borders part is good
@@ -200,7 +200,6 @@ bool MapLoader::checkContinents(std::string line)
 
 	//Check if its not a good line or an empty line
 	if (!(numberOfInputs == 3 || numberOfInputs == 0)) {
-		std::cout << "Continents format is not Valid.\n";
 		return false;
 	}
 	else {
@@ -218,7 +217,6 @@ bool MapLoader::checkTerritory(std::string line)
 
 	//Check if its not a good line or an empty line
 	if (!(numberOfInputs == 5 || numberOfInputs == 0)) {
-		std::cout << "Territory format is not Valid.\n";
 		return false;
 	}
 	else {
@@ -236,7 +234,6 @@ bool MapLoader::checkBorders(std::string line)
 
 	//Check if its not a good line
 	if (numberOfInputs < 2) {
-		std::cout << "Borders format is not Valid.\n";
 		return false;
 	}
 	else {
@@ -310,4 +307,3 @@ void MapLoader::createBorder(std::string border, Map* map)
 	//Add the border to the map
 	map->addBorder(--currentTerritoryId, &neighbors);
 }
-

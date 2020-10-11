@@ -380,7 +380,6 @@ Deck::Deck()
 	this->drawPile = new std::vector<int>;
 	return;
 }
-
 /**
 	 * Copy constructor
 	 *
@@ -433,8 +432,7 @@ void Deck::add(Card* card)
 {
 	fullDeck->push_back(card);
 	int size = (int)fullDeck->size();
-	drawPile->push_back(size);
-
+	drawPile->push_back(size - 1);
 }
 
 /**
@@ -483,7 +481,6 @@ void Deck::returnToDrawPile(int cardID)
 {
 	drawPile->push_back(cardID);
 }
-
 /**
  * print deck
  *

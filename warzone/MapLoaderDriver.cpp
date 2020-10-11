@@ -11,15 +11,21 @@ int MapLoaderDriver::main() {
 
 	//Wrong formatted map, continent not valid
 	MapLoader* mapL2 = new MapLoader("bigeuropewrong.map");
-	mapL2->validateMapFormat();
-	Map* myMap2 = mapL2->convertFileToMap();
-	myMap2->validate();
-
+	try {
+		mapL2->validateMapFormat();
+	}
+	catch (std::string exception) {
+		std::cout << "Error occurred, as expected, when loading bigeuropewrong.map: " << exception << std::endl;
+	}
+	
 	//Random text, territory format should be not valid
 	MapLoader* mapL3 = new MapLoader("randomText.txt");
-	mapL3->validateMapFormat();
-	Map* myMap3 = mapL3->convertFileToMap();
-	myMap3->validate();
+	try {
+		mapL3->validateMapFormat();
+	}
+	catch (std::string exception) {
+		std::cout << "Error occurred, as expected, when loading randomText.txt: " << exception << std::endl;
+	}
 
 	return 0;
 }
