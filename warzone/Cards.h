@@ -10,7 +10,7 @@ using namespace std;
 class Card
 {
 protected:
-	string* name;
+	string name;
 public:
 	Card();
 	Card(Card* card);

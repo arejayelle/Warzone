@@ -7,7 +7,7 @@
 	 * 
 	 */
 Card::Card() {
-		this->name = new string("Basic Card");
+		this->name = "Basic Card";
 	}
 
 /**
@@ -17,7 +17,7 @@ Card::Card() {
  */
 Card::Card(Card* card)
 {
-	this->name = &card->getName();
+	this->name = card->getName();
 }
 
 /**
@@ -28,7 +28,7 @@ Card::Card(Card* card)
 	 */
 Card::~Card()
 	{
-		delete name;
+
 	}
 
 /**
@@ -45,7 +45,7 @@ void Card::play()
 	 */
 string Card::getName()
 	{
-		return *name;
+		return name;
 	}
 
 /**
@@ -57,7 +57,7 @@ string Card::getName()
  */
 ostream& operator<<(ostream& out, const Card& card)
 {
-	string name = (string) *card.name;
+	string name = card.name;
 	out << name;
 	return out;
 }
@@ -80,7 +80,7 @@ Card* Card::operator=(const Card& card)
 	 */
 SpyCard::SpyCard() : Card()
 	{
-		this->name = new std::string("Spy Card");
+		this->name = "Spy Card";
 	}
 
 /**
@@ -129,7 +129,7 @@ void SpyCard::play()
 	 */
 BombCard::BombCard(): Card()
 	{
-		this->name = new std::string("BombCard");
+		this->name = "BombCard";
 	}
 
 /**
@@ -178,7 +178,7 @@ void BombCard::play()
 	 */
 ReinforcementCard::ReinforcementCard() : Card()
 	{
-		name = new std::string("ReinforcementCard");
+		name = "ReinforcementCard";
 	}
 
 /**
@@ -224,7 +224,7 @@ void ReinforcementCard::play()
  */
 BlockadeCard::BlockadeCard(): Card()
 	{
-		name = new std::string("BlockadeCard");
+		name = "BlockadeCard";
 	}
 
 /**
@@ -273,7 +273,7 @@ void BlockadeCard::play()
 	 */
 AirliftCard::AirliftCard() : Card()
 	{
-		name = new std::string("AirliftCard");
+		name = "AirliftCard";
 	}
 
 /**
@@ -322,7 +322,7 @@ void AirliftCard::play()
 	 */
 DiplomacyCard::DiplomacyCard() : Card()
 	{
-		name = new std::string("DiplomacyCard");
+		name = "DiplomacyCard";
 	}
 
 /**
@@ -479,7 +479,7 @@ void Deck::returnToDrawPile(int* cardID)
 		drawPile->push_back(cardID);
 	}
 
-/**
+	/**
 	 * print deck
 	 * 
 	 * \param out
@@ -500,7 +500,7 @@ ostream& operator<<(ostream& out, const Deck& deck)
 		return out;
 	}
 
-/**
+	/**
 	 * Print drawpile for debug reasons
 	 * 
 	 */
@@ -520,10 +520,10 @@ void Deck::printDrawpile()
 
 // Hand functions
 /**
-	 * Constructor with reference to the Deck
-	 * 
-	 * \param deck
-	 */
+ * Constructor with reference to the Deck
+ * 
+ * \param deck
+ */
 Hand::Hand(Deck* deck)
 	{
 		this->deck = deck;
@@ -547,9 +547,9 @@ Hand::Hand(Hand* hand)
 	}
 
 /**
-	 * Destructor
-	 * 
-	 */
+ * Destructor
+ * 
+ */
 Hand::~Hand()
 	{
 		delete deck;
@@ -558,31 +558,31 @@ Hand::~Hand()
 	}
 
 /**
-	 * Makes a copy and assigns it
-	 * 
-	 * \param hand
-	 * \return 
-	 */
+* Makes a copy and assigns it
+* 
+* \param hand
+* \return 
+*/
 Hand* Hand::operator=(const Hand& hand)
 	{
 		return new Hand(hand);
 	}
 
 /**
-	 * Adds a cardID to the hand
-	 * 
-	 * \param cardId
-	 */
+* Adds a cardID to the hand
+* 
+* \param cardId
+*/
 void Hand::addCard(int* cardId)
 	{
 		currentHand->push_back(cardId);
 	}
 
 /**
-	 * Plays card at hand index
-	 * 
-	 * \param index Index of the card to be played
-	 */
+ * Plays card at hand index
+ * 
+ * \param index Index of the card to be played
+ */
 void Hand::play(int index) 
 	{
 		if (index < currentHand->size()) {
@@ -596,8 +596,8 @@ void Hand::play(int index)
 	}
 
 /**
-	 * \return currentHand
-	 */
+ * \return currentHand
+ */
 vector<int*>* Hand::getCurrentHand()
 	{
 		return this->currentHand;
