@@ -23,13 +23,13 @@ public:
 	void issueOrder(Order* newOrder);  //Issue order method
 
 	//Getters
-	const vector<Territory*>* getTerritories(); //Get territories
-	const Cards::Hand* getHand(); //Get hand
-	const OrdersList* getOrdersList(); //Get order list
+	vector<Territory*>* getTerritories(); //Get territories
+	Cards::Hand* getHand(); //Get hand
+	OrdersList* getOrdersList(); //Get order list
 
 	//Setters
 	void setOrdersList(OrdersList* ordersList); //Set territories
-	const void setTerritories(vector<Territory*>* territoriesToAdd); //Set Orders List
+	void setTerritories(vector<Territory*>* territoriesToAdd); //Set Orders List
 	void setHand(Cards::Hand* handToAdd); //Set hand 
 
 private:

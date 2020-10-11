@@ -53,22 +53,22 @@ void Player::issueOrder(Order* newOrder)  //allows player to issue an order
 	playerOrdersList->add(playerOrder);
 }
 
-const vector<Territory*>* Player::getTerritories()  //returns all the player's territories 
+ vector<Territory*>* Player::getTerritories()  //returns all the player's territories 
 {
 	return playerTerritories;
 }
 
-const OrdersList* Player::getOrdersList()   //returns the player's order list
+ OrdersList* Player::getOrdersList()   //returns the player's order list
 {
 	return playerOrdersList;
 }
 
-const Cards::Hand* Player::getHand()  //returns the cards in the player's hand
+ Cards::Hand* Player::getHand()  //returns the cards in the player's hand
 {
 	return playerHand;
 }
 
-void const Player::setTerritories(vector<Territory*>* territoriesToAdd) //sets all the player's territories 
+void Player::setTerritories(vector<Territory*>* territoriesToAdd) //sets all the player's territories 
 {
 	this->playerTerritories = territoriesToAdd;
 }
