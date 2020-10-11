@@ -396,7 +396,7 @@ OrdersList::~OrdersList() {
 
 // Returns an int representing how many orders are in the vector.
 int OrdersList::size() {
-	return this->orders.size();
+	return (int) this->orders.size();
 }
 
 // To add a new order to the list. The new order is added to the back of the list.

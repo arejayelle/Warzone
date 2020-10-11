@@ -1,16 +1,17 @@
 #include "Player.h"
 
+
 Player::Player() {  //default constructor
 	this->playerTerritories = new vector<Territory*>();
-	this->playerHand = new Cards::Hand();
+	this->playerHand = new Hand();
 	this->playerOrdersList = new OrdersList();
 }
 
 
-Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Cards::Deck* deckToTakeFrom) { //Constructor with all parameters
+Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom) { //Constructor with all parameters
 	this->playerTerritories = territoriesToAdd;
 	this->playerOrdersList = playerList;
-	this->playerHand = new Cards::Hand(deckToTakeFrom);
+	this->playerHand = new Hand(deckToTakeFrom);
 }
 
 Player::~Player() {  //destructor 
@@ -33,7 +34,7 @@ Player::Player(const Player& player)  //copy constructor
 		this->playerTerritories->push_back(t);    //copies each territory in the incoming player's territories 
 	}
 	this->playerOrdersList = new OrdersList(*player.playerOrdersList);
-	this->playerHand = new Cards::Hand(*player.playerHand);
+	this->playerHand = new Hand(*player.playerHand);
 }
 
 const vector<Territory*>* Player::toDefend()   //returns territories the player can defend
@@ -65,7 +66,7 @@ OrdersList* Player::getOrdersList()   //returns the player's order list
 	return playerOrdersList;
 }
 
-Cards::Hand* Player::getHand()  //returns the cards in the player's hand
+Hand* Player::getHand()  //returns the cards in the player's hand
 {
 	return playerHand;
 }
@@ -80,7 +81,7 @@ void Player::setOrdersList(OrdersList* ordersList) //sets the player's order lis
 	this->playerOrdersList = ordersList;
 }
 
-void Player::setHand(Cards::Hand* handToAdd)  //sets the cards in the player's hand
+void Player::setHand(Hand* handToAdd)  //sets the cards in the player's hand
 {
 	this->playerHand = handToAdd;
 }

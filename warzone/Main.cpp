@@ -1,8 +1,11 @@
 #include "Main.h"
 
-int main() {
-    // return Cards::main();
-    // return MapDriver::main();
-    //return OrdersDriver::main();
-    return PlayerDriver::main();
+
+int main()
+{
+	return Cards::main()
+		| MapDriver::main()
+		| OrdersDriver::main()
+		| MapLoaderDriver::main()
+		| PlayerDriver::main();
 }

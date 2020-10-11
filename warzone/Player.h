@@ -1,4 +1,5 @@
 #pragma once
+
 using namespace std;
 #include "Cards.h"
 #include "Orders.h"
@@ -7,11 +8,13 @@ using namespace std;
 class Map;
 class Territory;
 class Order;
+class Deck;
+class Hand;
 
 class Player {
 public:
 	Player();
-	Player(vector<Territory*>* territoriesToAdd,  OrdersList* playerList, Cards::Deck* deckToTakeFrom);  //constructor
+	Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom);  //constructor
 	~Player();   //destructor
 
 	Player* operator= (const Player& one);  //assignment operator
@@ -25,17 +28,17 @@ public:
 
 	//Getters
 	vector<Territory*>* getTerritories(); //Get territories
-	Cards::Hand* getHand(); //Get hand
+	Hand* getHand(); //Get hand
 	OrdersList* getOrdersList(); //Get order list
 
 	//Setters
 	void setOrdersList(OrdersList* ordersList); //Set territories
 	void setTerritories(vector<Territory*>* territoriesToAdd); //Set Orders List
-	void setHand(Cards::Hand* handToAdd); //Set hand 
+	void setHand(Hand* handToAdd); //Set hand 
 
 private:
-	Cards::Hand* playerHand; //returns player's hand
+	Hand* playerHand; //returns player's hand
 	OrdersList* playerOrdersList; //returns player's order list
 	vector<Territory*>* playerTerritories; //returns player's territories
-	Map* playerMap; 
+	Map* playerMap;
 };

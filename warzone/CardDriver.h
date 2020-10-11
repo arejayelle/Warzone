@@ -1,5 +1,6 @@
 #pragma once
 #include "Cards.h"
+#include "Player.h"
 
 namespace Cards {
 	int main();

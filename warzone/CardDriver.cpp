@@ -2,77 +2,77 @@
 
 namespace Cards {
 
-    int main()
-    {
-        Deck* deck = new Deck();
- 
-        cout << "Creating Deck"<<endl;
-        cout << (*deck);
-        
-        cout << "Populating Deck"<<endl;
-        populateDeck(deck);
-        cout << (*deck);
+	int main()
+	{
+		Deck* deck = new Deck();
+		Player* player = new Player();
 
-        cout << "Checking Draw pile" << endl;
-        deck->printDrawpile();
+		cout << "Creating Deck" << endl;
+		cout << (*deck);
 
-        cout << "Drawing 5 random cards" << endl;
-        int handSize = 5;
-        Hand* hand = new Hand(deck);
+		cout << "Populating Deck" << endl;
+		populateDeck(deck);
+		cout << (*deck);
 
-        populateHand(deck, hand, handSize);
-        cout << *hand;
-    
-        cout << "Checking Draw pile" << endl;
-        deck->printDrawpile();
+		cout << "Checking Draw pile" << endl;
+		deck->printDrawpile();
 
-        cout << "\nPlaying all cards in hand" << endl;
-        playAllHand(hand, handSize);
+		cout << "Drawing 5 random cards" << endl;
+		int handSize = 5;
+		Hand* hand = new Hand(deck, player);
 
-        cout << "Checking Draw pile" << endl;
-        deck->printDrawpile();
+		populateHand(deck, hand, handSize);
+		cout << *hand;
 
-        return 0;
-}
+		cout << "Checking Draw pile" << endl;
+		deck->printDrawpile();
 
-    void populateDeck(Deck* deck)
-    {
-        SpyCard* spyCard= new SpyCard();
-        BombCard* bombCard = new BombCard();
-        ReinforcementCard* reinforcementCard = new ReinforcementCard();
-        BlockadeCard* blockadeCard = new BlockadeCard();
-        AirliftCard* airliftCard = new AirliftCard();
-        DiplomacyCard* diplomacyCard = new DiplomacyCard();
+		cout << "\nPlaying all cards in hand" << endl;
+		playAllHand(hand, handSize);
 
-        // add cards
-        for (int i = 0; i < 4; i++) {        
-            deck->add(spyCard);
-            deck->add(bombCard);
-            deck->add(reinforcementCard);
-            deck->add(airliftCard);
-            deck->add(blockadeCard);
-            deck->add(diplomacyCard);
-        }
+		cout << "Checking Draw pile" << endl;
+		deck->printDrawpile();
 
-        return;
-    }
+		return 0;
+	}
 
-    void populateHand(Deck* deck, Hand* hand, int handSize) 
-    {
-        for (int i = 0;i < handSize;i++) 
-        {
-            int* cardID = deck->draw();
-            hand->addCard(cardID);
-        }
-    }
+	void populateDeck(Deck* deck)
+	{
+		SpyCard* spyCard = new SpyCard();
+		BombCard* bombCard = new BombCard();
+		ReinforcementCard* reinforcementCard = new ReinforcementCard();
+		BlockadeCard* blockadeCard = new BlockadeCard();
+		AirliftCard* airliftCard = new AirliftCard();
+		DiplomacyCard* diplomacyCard = new DiplomacyCard();
 
-    void playAllHand(Hand* hand, int handSize)
-    {
-        for (size_t i = 0; i < handSize; i++)
-        {
-            hand->play(0);
-        }
-        cout << "-------------- All cards played" << endl;
-    }
+		// add cards
+		for (int i = 0; i < 4; i++) {
+			deck->add(spyCard);
+			deck->add(bombCard);
+			deck->add(reinforcementCard);
+			deck->add(airliftCard);
+			deck->add(blockadeCard);
+			deck->add(diplomacyCard);
+		}
 
+		return;
+	}
+
+	void populateHand(Deck* deck, Hand* hand, int handSize)
+	{
+		for (int i = 0;i < handSize;i++)
+		{
+			int cardID = deck->draw();
+			hand->addCard(cardID);
+		}
+	}
+
+	void playAllHand(Hand* hand, int handSize)
+	{
+		for (size_t i = 0; i < handSize; i++)
+		{
+			hand->play(0);
+		}
+		cout << "-------------- All cards played" << endl;
+	}
 }
