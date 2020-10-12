@@ -6,6 +6,7 @@
 #include <iostream>
 
 class Continent;
+class Player;
 
 class Territory {
 public:

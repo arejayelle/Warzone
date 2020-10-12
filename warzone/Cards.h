@@ -118,6 +118,8 @@ private:
 	vector<int>* currentHand;
 
 public:
+	Hand();
+	Hand(Deck* deck);
 	Hand(Deck* deck, Player* player);
 	Hand(Hand* hand);
 	~Hand();
