@@ -29,8 +29,8 @@ Player::Player(const Player& player)  //copy constructor
 {
 	for (Territory* t : *player.playerTerritories)
 	{
-		Territory temp = new Territory(t);
-		this->playerTerritories->push_back(t);    //copies each territory in the incoming player's territories 
+		Territory* temp = new Territory(t);
+		this->playerTerritories->push_back(temp);    //copies each territory in the incoming player's territories 
 	}
 	this->playerOrdersList = new OrdersList(*player.playerOrdersList);
 	this->playerHand = new Hand(*player.playerHand);
