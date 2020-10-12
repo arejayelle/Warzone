@@ -1,12 +1,6 @@
 #include "Player.h"
 
 
-Player::Player() {  //default constructor
-	this->playerTerritories = new vector<Territory*>();
-	this->playerOrdersList = new OrdersList();
-}
-
-
 Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom) { //Constructor with all parameters
 	this->playerTerritories = territoriesToAdd;
 	this->playerOrdersList = playerList;

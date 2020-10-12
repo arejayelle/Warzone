@@ -13,7 +13,7 @@ class Hand;
 
 class Player {
 public:
-	Player();
+
 	Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom);  //constructor
 	~Player();   //destructor
 
@@ -40,5 +40,4 @@ private:
 	Hand* playerHand; //returns player's hand
 	OrdersList* playerOrdersList; //returns player's order list
 	vector<Territory*>* playerTerritories; //returns player's territories
-	Map* playerMap;
 };
