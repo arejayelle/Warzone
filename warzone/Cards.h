@@ -86,88 +86,41 @@ public:
 	Order* play(Player* owner);
 };
 
-// Deck Object
-class Deck
-{
+class Deck {
 private:
 	std::vector<Card*>* fullDeck;
-	std::vector <int>* drawPile;
-
 public:
 	Deck();
-	Deck(Deck* deck);
+	Deck(Deck* Deck);
 	~Deck();
 	Deck* operator= (const Deck& deck);
-
-	void add(Card* card);
-	Card* getFromCatalog(int cardID);
-
-	int draw();
-	void returnToDrawPile(int index);
-
-	friend ostream& operator<< (ostream& out, const Deck& deck);
-	void printDrawpile();
-};
-
-// Hand 
-class Hand
-{
-private:
-	Deck* deck;
-	Player* owner;
-	vector<int>* currentHand;
-
-public:
-	Hand();
-	Hand(Deck* deck);
-	Hand(Deck* deck, Player* player);
-	Hand(Hand* hand);
-	~Hand();
-	Hand* operator= (const Hand& hand);
-
-	void addCard(int cardId);
-	void play(int index);
-
-	vector<int>* getCurrentHand();
-
-	friend ostream& operator<< (ostream& out, const Hand& hand);
-};
-
-class Decker {
-private:
-	std::vector<Card*>* fullDeck;
-public:
-	Decker();
-	Decker(Decker* Deck);
-	~Decker();
-	Decker* operator= (const Decker& deck);
 
 	const std::vector<Card*>* getDeck();
 	void add(Card* card);
 
 	Card* draw();
 
-	friend ostream& operator<< (ostream& out, const Decker& deck);
+	friend ostream& operator<< (ostream& out, const Deck& deck);
 };
 
 // Handy
-class Handy {
+class Hand {
 private:
-	Decker* deck;
+	Deck* deck;
 	Player* owner;
 	vector<Card*>* currentHand;
 
 public:
-	Handy(Decker* deck);
-	Handy(Decker* deck, Player* player);
-	Handy(Handy* hand);
-	~Handy();
-	Handy* operator= (const Handy& hand);
+	Hand(Deck* deck);
+	Hand(Deck* deck, Player* player);
+	Hand(Hand* hand);
+	~Hand();
+	Hand* operator= (const Hand& hand);
 
 	void addCard(Card* card);
 	void play(int index);
 
 	const vector<Card*>* getCurrentHand();
 
-	friend ostream& operator<< (ostream& out, const Handy& hand);
+	friend ostream& operator<< (ostream& out, const Hand& hand);
 };
