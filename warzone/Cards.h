@@ -132,3 +132,42 @@ public:
 
 	friend ostream& operator<< (ostream& out, const Hand& hand);
 };
+
+class Decker {
+private:
+	std::vector<Card*>* fullDeck;
+public:
+	Decker();
+	Decker(Decker* Deck);
+	~Decker();
+	Decker* operator= (const Decker& deck);
+
+	const std::vector<Card*>* getDeck();
+	void add(Card* card);
+
+	Card* draw();
+
+	friend ostream& operator<< (ostream& out, const Decker& deck);
+};
+
+// Handy
+class Handy {
+private:
+	Decker* deck;
+	Player* owner;
+	vector<Card*>* currentHand;
+
+public:
+	Handy(Decker* deck);
+	Handy(Decker* deck, Player* player);
+	Handy(Handy* hand);
+	~Handy();
+	Handy* operator= (const Handy& hand);
+
+	void addCard(Card* card);
+	void play(int index);
+
+	const vector<Card*>* getCurrentHand();
+
+	friend ostream& operator<< (ostream& out, const Handy& hand);
+};

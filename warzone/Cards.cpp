@@ -633,3 +633,141 @@ ostream& operator<<(ostream& out, const Hand& hand)
 	return out;
 
 }
+
+Decker::Decker()
+{
+	this->fullDeck = new vector<Card*>();
+}
+
+Decker::Decker(Decker* deck)
+{
+	const vector<Card*>* realDeck = deck->getDeck();
+	for (size_t i = 0; i < realDeck->size() ; i++)
+	{
+		this->fullDeck->push_back(new Card(realDeck->at(i)));
+	}
+}
+
+Decker::~Decker()
+{
+	for (size_t i = 0; i < fullDeck->size(); i++)
+	{
+		delete (*fullDeck)[i];
+	}
+	delete fullDeck;
+}
+
+Decker* Decker::operator=(const Decker& deck)
+{
+	return new Decker(deck);
+}
+
+const std::vector<Card*>* Decker::getDeck()
+{
+	return fullDeck;
+}
+
+void Decker::add(Card* card)
+{
+	this->fullDeck->push_back(card);
+}
+
+Card* Decker::draw()
+{
+	srand((unsigned int)time(NULL));
+	int drawIndex = rand() % fullDeck->size();
+
+	// Retrieve cardID
+	Card* drawnCard = (*fullDeck)[drawIndex];
+
+	// Get iterator at location for erasing
+	std::vector<Card*>::iterator it = (*fullDeck).begin() + drawIndex;
+	fullDeck->erase(it);
+	
+	return drawnCard;
+}
+
+ostream& operator<<(ostream& out, const Decker& deck)
+{
+	out << "Here are the contents of the deck" << endl;
+
+	int i = 0;
+	for (std::vector<Card*>::iterator it = deck.fullDeck->begin(); it != deck.fullDeck->end(); ++it) {
+
+		out << *(*it) << "\t\tID: " << i++ << endl;
+	}
+	out << "----end of deck ----" << endl;
+
+	return out;
+}
+
+Handy::Handy(Decker* deck)
+{
+	this->deck = deck;
+	this->owner = nullptr;
+	this->currentHand = new vector<Card*>();
+}
+
+Handy::Handy(Decker* deck, Player* player)
+{
+	this->deck = deck;
+	this->owner = player;
+	this->currentHand = new vector<Card*>();
+}
+
+Handy::Handy(Handy* hand)
+{
+	this->deck = hand->deck;
+	this->owner = hand->owner;
+	this->currentHand = new vector<Card*>();
+}
+
+Handy::~Handy()
+{
+	delete this->currentHand;
+}
+
+Handy* Handy::operator=(const Handy& hand)
+{
+	return new Handy(hand);
+}
+
+void Handy::addCard(Card* card)
+{
+	this->currentHand->push_back(card);
+}
+
+void Handy::play(int index)
+{
+	if (index < currentHand->size()) {
+
+		Card* cardToPlay = this->currentHand->at(index);
+		Order* newOrder = cardToPlay->play(owner);
+
+		OrdersList* list = owner->getOrdersList();
+		list->add(newOrder);
+
+		deck->add(cardToPlay);
+		std::vector<Card*>::iterator it = currentHand->begin() + index;
+		currentHand->erase(it);
+	}
+}
+
+const vector<Card*>* Handy::getCurrentHand()
+{
+	return currentHand;
+}
+
+ostream& operator<<(ostream& out, const Handy& hand)
+{
+	out << "Here are the contents of the Hand" << endl;
+
+	int i = 0;
+	for (std::vector<Card*>::iterator it = hand.currentHand->begin(); it != hand.currentHand->end(); ++it) {
+
+		out << *(*it) << "\t\tID: " << i++ << endl;
+	}
+	out << "----end of hand ----" << endl;
+
+	return out;
+}
