@@ -48,10 +48,9 @@ public:
 	void addReinforcements(int addedReinforcements);
 
 private:
-	Hand* playerHand; //returns player's hand
-
-	OrdersList* playerOrdersList; //returns player's order list
-	vector<Territory*>* playerTerritories; //returns player's territories
+	Hand* hand; //returns player's hand
+	OrdersList* ordersList; //returns player's order list
+	vector<Territory*>* territories; //returns player's territories
 	int reinforcementPool;
 	vector<Player*> inNegotiatonWith;
 };

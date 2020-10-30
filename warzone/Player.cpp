@@ -2,17 +2,17 @@
 
 
 Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom) { //Constructor with all parameters
-	this->playerTerritories = territoriesToAdd;
-	this->playerOrdersList = playerList;
-	this->playerHand = new Hand(deckToTakeFrom, this);
+	this->territories = territoriesToAdd;
+	this->ordersList = playerList;
+	this->hand = new Hand(deckToTakeFrom, this);
 	this->reinforcementPool = 0;
 	this->inNegotiatonWith = vector<Player*>();
 }
 
 Player::~Player() {  //destructor 
-	delete playerTerritories;
-	delete playerHand;
-	delete playerOrdersList;
+	delete territories;
+	delete hand;
+	delete ordersList;
 }
 
 
@@ -23,13 +23,13 @@ Player* Player::operator=(const Player & one)  //assignment operator
 
 Player::Player(const Player& player)  //copy constructor
 {
-	for (Territory* t : *player.playerTerritories)
+	for (Territory* t : *player.territories)
 	{
 		Territory* temp = new Territory(t);
-		this->playerTerritories->push_back(temp);    //copies each territory in the incoming player's territories 
+		this->territories->push_back(temp);    //copies each territory in the incoming player's territories 
 	}
-	this->playerOrdersList = new OrdersList(*player.playerOrdersList);
-	this->playerHand = new Hand(*player.playerHand);
+	this->ordersList = new OrdersList(*player.ordersList);
+	this->hand = new Hand(*player.hand);
 	this->reinforcementPool = player.reinforcementPool;
 	
 	// Copy each player in the new player's inNegotiationWith vector.
@@ -87,39 +87,39 @@ void Player::removeTerritory(Territory* territoryToRemove)
 
  vector<Territory*>* Player::getTerritories()  //returns all the player's territories 
 {
-	return playerTerritories;
+	return territories;
 }
 
 
 OrdersList* Player::getOrdersList()   //returns the player's order list
 {
-	return playerOrdersList;
+	return ordersList;
 }
 
 Hand* Player::getHand()  //returns the cards in the player's hand
 {
-	return playerHand;
+	return hand;
 }
 
 void Player::setTerritories(vector<Territory*>* territoriesToAdd) //sets all the player's territories 
 {
-	this->playerTerritories = territoriesToAdd;
+	this->territories = territoriesToAdd;
 }
 
 // Used to add a single territory to the list of territories.
 void Player::addTerritory(Territory* territoryToAdd)
 {
-	this->playerTerritories->push_back(territoryToAdd);
+	this->territories->push_back(territoryToAdd);
 }
 
 void Player::setOrdersList(OrdersList* ordersList) //sets the player's order list
 {
-	this->playerOrdersList = ordersList;
+	this->ordersList = ordersList;
 }
 
 void Player::setHand(Hand* handToAdd)  //sets the cards in the player's hand
 {
-	this->playerHand = handToAdd;
+	this->hand = handToAdd;
 }
 
 void Player::addReinforcements(int addedReinforcements)
@@ -136,8 +136,8 @@ int Player::getReinforcements()
 ostream& operator<<(ostream& output, const Player &player)  //output stream
 {
 	output << "Player Information:" << endl;
-	output << "Hand: " << *player.playerHand << endl;
-	output << "Territories: " << player.playerTerritories<< endl;
-	output << "Orders list: " << *player.playerOrdersList<< endl;
+	output << "Hand: " << *player.hand << endl;
+	output << "Territories: " << player.territories<< endl;
+	output << "Orders list: " << *player.ordersList<< endl;
 	return output;
 }
