@@ -132,7 +132,6 @@ int Player::getReinforcements()
 	return this->reinforcementPool;
 }
 
-
 ostream& operator<<(ostream& output, const Player &player)  //output stream
 {
 	output << "Player Information:" << endl;
