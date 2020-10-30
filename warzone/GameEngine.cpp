@@ -1,5 +1,24 @@
 #include "GameEngine.h"
 
+GameEngine::GameEngine()
+{
+    this->map = nullptr;
+    this->players = std::vector<Player*>();
+}
+
+GameEngine::GameEngine(Map* map, std::vector<Player*> players)
+{
+    this->map = map;
+    this->players = players;
+}
+
+GameEngine::~GameEngine() {
+    delete map;
+    for (Player* player : players) {
+        delete player;
+    }
+}
+
 int GameEngine::mainGameLoop()
 {
     reinforcementPhase();

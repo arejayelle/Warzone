@@ -10,7 +10,8 @@ class GameEngine
 {
 public:
 	GameEngine();
-	GameEngine(Map map, std::vector<Player*> Players);
+	GameEngine(Map* map, std::vector<Player*> Players);
+	~GameEngine();
 
 	int mainGameLoop();
 	void reinforcementPhase();
