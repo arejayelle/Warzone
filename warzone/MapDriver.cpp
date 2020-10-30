@@ -45,7 +45,9 @@ int MapDriver::main()
 	}
 	delete mapWithTerritoryInTwoContinents;
 
-	std::cout << "Validation successful" << std::endl;
+	std::cout << std::endl << "Map validation successful" << std::endl;
+	std::cout << "Printing Map" << std::endl;
+	std::cout << *validMap << std::endl;
 	delete validMap;
 
 	return 0;

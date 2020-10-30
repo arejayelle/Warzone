@@ -5,7 +5,9 @@
 int OrdersDriver::main() {
 	// Create an order list and player.
 	OrdersList list1 = new OrdersList();
-	Player* player1 = nullptr;
+	Deck* deck = new Deck();
+	OrdersList* ordersList = new OrdersList();
+	Player* player1 = new Player(nullptr, ordersList, deck);
 	Player* player2 = nullptr;
 
 	// Orders can be added to the orders list with the add method.
