@@ -115,6 +115,10 @@ std::ostream& operator<<(std::ostream& out, const Continent& continent)
 	return out;
 }
 
+int Continent::getValue() {
+	return value;
+}
+
 /**
  * Check if someone owns all territories in a continent. If so, returns the owner of the continent.
  * 

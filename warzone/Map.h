@@ -45,6 +45,7 @@ public:
 	void addTerritory(Territory* territory);
 	const std::vector<Territory*>* getTerritories();
 	friend std::ostream& operator<< (std::ostream& out, const Continent& continent);
+	int getValue();
 
 	Player* getContinentOwner();
 
