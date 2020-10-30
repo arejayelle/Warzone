@@ -2,28 +2,31 @@
 
 int GameEngine::mainGameLoop()
 {
-    return reinforcementPhase();
+    reinforcementPhase();
+    return 0;
 }
 /**
- * Give players armies dependant of the number of territories they own
- * 
- * \return 
+ * Add armies to Player's reinforcement Pool dependant of the number of territories they own
+ * and the continent bonus for continents they own.
+ * if less than 3, gives 3
  */
-int GameEngine::reinforcementPhase()
+void GameEngine::reinforcementPhase()
 {
     for (Player* player : players)
     {
         int reinforcements = player->getTerritories()->size() / 3;
+        if (reinforcements < 3) {
+            reinforcements = 3;
+        }
+        player->addReinforcements(reinforcements);
     }
 
     for (std::vector<Continent*>::const_iterator it = map->getContinents()->begin(); it != map->getContinents()->end(); it++) {
         Player* owner = (**it).getContinentOwner();
         if (owner != nullptr) {
-
+            owner->addReinforcements((**it).getValue());
         }
     }
-
-    return 0;
 }
 
 int GameEngine::issueOrdersPhase()

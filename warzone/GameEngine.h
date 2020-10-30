@@ -13,7 +13,7 @@ public:
 	GameEngine(Map map, std::vector<Player*> Players);
 
 	int mainGameLoop();
-	int reinforcementPhase();
+	void reinforcementPhase();
 	int issueOrdersPhase();
 	int executeOrdersPhase();
 
