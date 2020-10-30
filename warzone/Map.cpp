@@ -115,6 +115,21 @@ std::ostream& operator<<(std::ostream& out, const Continent& continent)
 	return out;
 }
 
+/**
+ * Check if someone owns all territories in a continent. If so, returns the owner of the continent.
+ * 
+ * \return The owner of the continent. Returns nullptr if nobody owns the entire continent.
+ */
+Player* Continent::getContinentOwner() {
+	Player* owner = territories.at(0)->getOwner();
+	for (std::vector<Territory*>::iterator it = territories.begin(); it != territories.end(); it++) {
+		if ((**it).getOwner() != owner) {
+			return nullptr;
+		}
+	}
+	return owner;
+}
+
 // Construct an empty Map
 Map::Map()
 	: territories{}, continents{}

@@ -24,7 +24,7 @@ public:
 	void setOwner(Player* player);
 	int getArmies();
 	friend std::ostream& operator<< (std::ostream& out, const Territory& territory);
-	
+
 private:
 	std::string name;
 	Continent* continent;
@@ -45,6 +45,8 @@ public:
 	void addTerritory(Territory* territory);
 	const std::vector<Territory*>* getTerritories();
 	friend std::ostream& operator<< (std::ostream& out, const Continent& continent);
+
+	Player* getContinentOwner();
 
 private:
 	std::string name;
