@@ -368,126 +368,59 @@ Order* DiplomacyCard::play(Player* owner)
 	return new NegotiateOrder(owner);
 }
 
-// Deck functions
-
-/**
-	 * Default constructor
-	 *
-	 */
 Deck::Deck()
 {
-	this->fullDeck = new std::vector<Card*>;
-	this->drawPile = new std::vector<int>;
-	return;
+	this->fullDeck = new vector<Card*>();
 }
-/**
-	 * Copy constructor
-	 *
-	 * \param deck
-	 */
+
 Deck::Deck(Deck* deck)
 {
-	this->fullDeck = new vector<Card*>;
-	this->drawPile = new vector<int>;
-
-	for (int i = 0; i < deck->fullDeck->size(); i++)
+	const vector<Card*>* realDeck = deck->getDeck();
+	for (size_t i = 0; i < realDeck->size() ; i++)
 	{
-		fullDeck->push_back(deck->fullDeck->at(i));
-	}
-	for (int i = 0; i < deck->drawPile->size(); i++)
-	{
-		drawPile->push_back(deck->drawPile->at(i));
+		this->fullDeck->push_back(new Card(realDeck->at(i)));
 	}
 }
 
-/**
-	 * Does nothing for now. Does not have any attributes not owned by the parent Card Class
-	 *
-	 */
 Deck::~Deck()
 {
-	fullDeck->clear();
+	for (size_t i = 0; i < fullDeck->size(); i++)
+	{
+		delete (*fullDeck)[i];
+	}
 	delete fullDeck;
-	drawPile->clear();
-	delete drawPile;
 }
 
-/**
-	 * Makes a copy of the passed deck and assigns it
-	 *
-	 * \param deck
-	 * \return
-	 */
 Deck* Deck::operator=(const Deck& deck)
 {
 	return new Deck(deck);
 }
 
-/**
-	 * Adds the passed card to the deck.
-	 *
-	 * \param card
-	 */
+const std::vector<Card*>* Deck::getDeck()
+{
+	return fullDeck;
+}
+
 void Deck::add(Card* card)
 {
-	fullDeck->push_back(card);
-	int size = (int)fullDeck->size();
-	drawPile->push_back(size - 1);
+	this->fullDeck->push_back(card);
 }
 
-/**
-	 * Returns a card based on its ID
-	 *
-	 * \param cardID
-	 * \return
-	 */
-Card* Deck::getFromCatalog(int cardID)
+Card* Deck::draw()
 {
-	if ((size_t)cardID < fullDeck->size())
-	{
-		return this->fullDeck->at((size_t)cardID);
-	}
-	return nullptr;
-}
-
-/**
-	 * Randomly chooses a card from the drawpile and retrieves the stored ID
-	 * removes value from the draw pile
-	 *
-	 * \return cardID of drawn card
-	 */
-int Deck::draw()
-{
-	// randomly choose a value from the draw pile
 	srand((unsigned int)time(NULL));
-	int drawIndex = rand() % drawPile->size();
+	int drawIndex = rand() % fullDeck->size();
 
 	// Retrieve cardID
-	int cardID = drawPile->operator[](drawIndex);
+	Card* drawnCard = (*fullDeck)[drawIndex];
 
 	// Get iterator at location for erasing
-	std::vector<int>::iterator it = drawPile->begin() + drawIndex;
-	drawPile->erase(it);
-
-	return cardID;
+	std::vector<Card*>::iterator it = (*fullDeck).begin() + drawIndex;
+	fullDeck->erase(it);
+	
+	return drawnCard;
 }
 
-/**
-	 * Takes cardID and adds it to the bottom of the drawpile
-	 *
-	 * \param cardID
-	 */
-void Deck::returnToDrawPile(int cardID)
-{
-	drawPile->push_back(cardID);
-}
-/**
- * print deck
- *
- * \param out
- * \param deck
- * \return
- */
 ostream& operator<<(ostream& out, const Deck& deck)
 {
 	out << "Here are the contents of the deck" << endl;
@@ -495,141 +428,80 @@ ostream& operator<<(ostream& out, const Deck& deck)
 	int i = 0;
 	for (std::vector<Card*>::iterator it = deck.fullDeck->begin(); it != deck.fullDeck->end(); ++it) {
 
-		out << *(*it) << "\t\tID: " << i++ << endl;
+		out << *(*it) << endl;
 	}
 	out << "----end of deck ----" << endl;
 
 	return out;
 }
 
-/**
- * Print drawpile for debug reasons
- *
- */
-void Deck::printDrawpile()
+Hand::Hand(Deck* deck)
 {
-	cout << "Here are the contents of the drawpile" << endl;
-	cout << "index\tCard ID" << endl;
-
-	int i = 0;
-	for (std::vector<int>::iterator it = drawPile->begin(); it != drawPile->end(); ++it) {
-
-		int cardID = *it;
-		cout << i++ << "\t" << cardID << endl;
-	}
-	cout << "----------------" << endl;
+	this->deck = deck;
+	this->owner = nullptr;
+	this->currentHand = new vector<Card*>();
 }
 
-// Hand functions
-/**
- * Constructor with reference to the Deck
- *
- * \param deck
- */
 Hand::Hand(Deck* deck, Player* player)
 {
 	this->deck = deck;
 	this->owner = player;
-	this->currentHand = new vector<int>;
+	this->currentHand = new vector<Card*>();
 }
 
-/**
- * Copy constructor
- *
- * \param hand
- */
 Hand::Hand(Hand* hand)
 {
-	this->deck = new Deck(hand->deck);
-	this->currentHand = new vector<int>;
+	this->deck = hand->deck;
 	this->owner = hand->owner;
-	for (int i = 0; i < hand->currentHand->size(); i++)
-	{
-		currentHand->push_back(hand->currentHand->at(i));
-	}
+	this->currentHand = new vector<Card*>();
 }
 
-/**
- * Destructor
- *
- */
 Hand::~Hand()
 {
-	delete deck;
-	currentHand->clear();
-	delete  currentHand;
+	delete this->currentHand;
 }
 
-/**
-* Makes a copy and assigns it
-*
-* \param hand
-* \return
-*/
 Hand* Hand::operator=(const Hand& hand)
 {
 	return new Hand(hand);
 }
 
-/**
-* Adds a cardID to the hand
-*
-* \param cardId
-*/
-void Hand::addCard(int cardId)
+void Hand::addCard(Card* card)
 {
-	currentHand->push_back(cardId);
+	this->currentHand->push_back(card);
 }
 
-/**
- * Plays card at hand index and adds the created order to the owner's orderlist
- *
- * \param index Index of the card to be played
- */
 void Hand::play(int index)
 {
 	if (index < currentHand->size()) {
 
-		std::vector<int>::iterator it = currentHand->begin() + index;
-		Card* aCard = this->deck->getFromCatalog((*it));
-		Order* newOrder = aCard->play(owner);
+		Card* cardToPlay = this->currentHand->at(index);
+		Order* newOrder = cardToPlay->play(owner);
 
 		OrdersList* list = owner->getOrdersList();
 		list->add(newOrder);
 
-		deck->returnToDrawPile(*it);
+		deck->add(cardToPlay);
+		std::vector<Card*>::iterator it = currentHand->begin() + index;
 		currentHand->erase(it);
 	}
 }
 
-/**
- * \return currentHand
- */
-vector<int>* Hand::getCurrentHand()
+const vector<Card*>* Hand::getCurrentHand()
 {
-	return this->currentHand;
+	return currentHand;
 }
 
-/**
- * Stream operator that prints the hand contents
- *
- * \param out
- * \param hand
- * \return
- */
 ostream& operator<<(ostream& out, const Hand& hand)
 {
-	out << "This is my current hand" << endl;
+	out << "Here are the contents of the Hand" << endl;
 
-	for (int i = 0; i < hand.currentHand->size(); i++)
-	{
-		int cardID = hand.currentHand->operator[](i);
-		Card* card = hand.deck->getFromCatalog(cardID);
+	int i = 0;
+	for (std::vector<Card*>::iterator it = hand.currentHand->begin(); it != hand.currentHand->end(); ++it) {
 
-		out << "ID: " << cardID << ' ' << *card << endl;
+		out << *(*it) << endl;
 	}
-	out << "---------" << endl;
+	out << "----end of hand ----" << endl;
 
 	return out;
-
 }

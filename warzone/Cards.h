@@ -86,49 +86,41 @@ public:
 	Order* play(Player* owner);
 };
 
-// Deck Object
-class Deck
-{
+class Deck {
 private:
 	std::vector<Card*>* fullDeck;
-	std::vector <int>* drawPile;
-
 public:
 	Deck();
-	Deck(Deck* deck);
+	Deck(Deck* Deck);
 	~Deck();
 	Deck* operator= (const Deck& deck);
 
+	const std::vector<Card*>* getDeck();
 	void add(Card* card);
-	Card* getFromCatalog(int cardID);
 
-	int draw();
-	void returnToDrawPile(int index);
+	Card* draw();
 
 	friend ostream& operator<< (ostream& out, const Deck& deck);
-	void printDrawpile();
 };
 
-// Hand 
-class Hand
-{
+// Handy
+class Hand {
 private:
 	Deck* deck;
 	Player* owner;
-	vector<int>* currentHand;
+	vector<Card*>* currentHand;
 
 public:
-	Hand();
 	Hand(Deck* deck);
 	Hand(Deck* deck, Player* player);
 	Hand(Hand* hand);
 	~Hand();
 	Hand* operator= (const Hand& hand);
 
-	void addCard(int cardId);
+	void addCard(Card* card);
 	void play(int index);
 
-	vector<int>* getCurrentHand();
+	const vector<Card*>* getCurrentHand();
 
 	friend ostream& operator<< (ostream& out, const Hand& hand);
 };

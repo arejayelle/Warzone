@@ -15,9 +15,6 @@ namespace Cards {
 		populateDeck(deck);
 		cout << (*deck);
 
-		cout << "Checking Draw pile" << endl;
-		deck->printDrawpile();
-
 		cout << "Drawing 5 random cards" << endl;
 		int handSize = 5;
 		Hand* hand = new Hand(deck, player);
@@ -25,14 +22,14 @@ namespace Cards {
 		populateHand(deck, hand, handSize);
 		cout << *hand;
 
-		cout << "Checking Draw pile" << endl;
-		deck->printDrawpile();
+		cout << "CheckingDeck" << endl;
+		cout << (*deck);
 
 		cout << "\nPlaying all cards in hand" << endl;
 		playAllHand(hand, handSize);
 
-		cout << "Checking Draw pile" << endl;
-		deck->printDrawpile();
+		cout << "CheckingDeck" << endl;
+		cout << (*deck);
 
 		return 0;
 	}
@@ -63,8 +60,8 @@ namespace Cards {
 	{
 		for (int i = 0;i < handSize;i++)
 		{
-			int cardID = deck->draw();
-			hand->addCard(cardID);
+			Card* card = deck->draw();
+			hand->addCard(card);
 		}
 	}
 
