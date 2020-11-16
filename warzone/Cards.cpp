@@ -37,7 +37,9 @@ Card::~Card()
 	 */
 Order* Card::play(Player* owner)
 {
-	return new Order();
+	// TODO
+	// return new Order();
+	return NULL;
 }
 
 /**

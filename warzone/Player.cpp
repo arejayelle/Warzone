@@ -44,8 +44,9 @@ const vector<Territory*>* Player::toAttack()   //returns territories the player 
 
 void Player::issueOrder(Order* newOrder)  //allows player to issue an order
 {
-	Order* playerOrder = new Order(*newOrder);
-	playerOrdersList->add(playerOrder);
+	// TODO
+	// Order* playerOrder = new Order(*newOrder);
+	// playerOrdersList->add(playerOrder);
 }
 
  vector<Territory*>* Player::getTerritories()  //returns all the player's territories 

@@ -5,4 +5,5 @@
 
 namespace OrdersDriver {
 	int main();
+	int oldMain();
 }

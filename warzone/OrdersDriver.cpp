@@ -3,6 +3,18 @@
 
 
 int OrdersDriver::main() {
+	OrdersList* l1 = new OrdersList();
+	Deck* d1 = new Deck();
+	Player* p1 = new Player(nullptr, l1, d1);
+
+	DeployOrder* o1 = new DeployOrder(p1);
+	o1->execute();
+
+	return 0;
+}
+
+int OrdersDriver::oldMain() {
+	/*
 	// Create an order list and player.
 	OrdersList list1 = new OrdersList();
 	Player* player1 = nullptr;
@@ -101,6 +113,8 @@ int OrdersDriver::main() {
 	// Stream insertion operators for Orders and OrdersList.
 	cout << "\nDemonstration of Orders stream insertion operator: " << *regOrd1 << endl;
 	cout << "Demonstration of OrdersList stream insertion operator: " << list1 << endl << endl;
+
+	*/
 
 	return 0;
 }

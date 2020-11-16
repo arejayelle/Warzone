@@ -60,7 +60,9 @@ ostream& operator<<(ostream &strm, const Order &o) {
 
 // Assignment operator which uses the class' copy constructor.
 Order* Order::operator=(const Order &o) {
-	return new Order(o);
+	// TODO
+	// return new Order(o);
+	return NULL;
 }
 
 
@@ -381,7 +383,8 @@ OrdersList::OrdersList(OrdersList* other) {
 	// We make a new vector with pointers to new Order objects.
 	vector<Order*> newOrders = vector<Order*>();
 	for (int i = 0; i < other->orders.size(); i++) {
-		newOrders.push_back(new Order(other->orders.at(i)));
+		// TODO
+		// newOrders.push_back(new Order(other->orders.at(i)));
 	}
 	this->orders = newOrders;
 }

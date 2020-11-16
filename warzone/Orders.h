@@ -14,8 +14,8 @@ public:
 	Order(Order* other);
 	~Order();
 
+	virtual bool execute() = 0;
 	virtual bool validate();
-	virtual bool execute();
 	virtual string toString() const;
 
 private:
