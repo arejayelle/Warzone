@@ -20,10 +20,10 @@ public:
 
 private:
 	friend ostream& operator<<(ostream &strm, const Order &o);
-	Order* operator= (const Order& o);
 
 protected:
 	Player* player;  // The player who created the order.
+	Order& operator= (const Order& o);
 };
 
 
@@ -39,7 +39,7 @@ public:
 
 private:
 	friend ostream& operator<<(ostream& strm, const DeployOrder& o);
-	DeployOrder* operator= (const DeployOrder& o);
+	DeployOrder& operator= (const DeployOrder& o);
 };
 
 

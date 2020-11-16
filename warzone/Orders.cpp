@@ -25,26 +25,12 @@ Order::~Order() { }
 
 // This verifies that there are no problems with the order. Returns true if valid, false otherwise.
 bool Order::validate() {
-	// TODO: More checks once we have more details.
 	if (this->player != NULL) {
 		return true;
 	} 
 	return false;
 }
 
-// First uses the validate method and then executes the order and displays the status.
-bool Order::execute() {
-	cout << "Attempting to execute order... ";
-
-	if(!this->validate()) {
-		cout << "Cannot execute order because it is invalid." << endl;
-		return false;
-	}
-
-	// TODO: Do actions once we have more details.
-	cout << "Order executed." << endl;
-	return true;
-}
 
 // Used to print information about the order.
 string Order::toString() const {
@@ -59,10 +45,11 @@ ostream& operator<<(ostream &strm, const Order &o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-Order* Order::operator=(const Order &o) {
+Order& Order::operator=(const Order &o) {
 	// TODO
 	// return new Order(o);
-	return NULL;
+	player = o.player;
+	return *this;
 }
 
 
@@ -112,8 +99,9 @@ ostream& operator<<(ostream& strm, const DeployOrder& o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-DeployOrder* DeployOrder::operator=(const DeployOrder& o) {
-	return new DeployOrder(o);
+DeployOrder& DeployOrder::operator=(const DeployOrder& o) {
+	Order::operator=(o);
+	return *this;
 }
 
 
