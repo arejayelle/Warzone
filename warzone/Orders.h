@@ -1,9 +1,10 @@
 #pragma once
 
+#include <string>
 #include <vector>
 #include <iostream>
 
-using namespace std;
+// using namespace std;
 
 class Player;
 
@@ -16,10 +17,10 @@ public:
 
 	virtual bool execute() = 0;
 	virtual bool validate();
-	virtual string toString() const;
+	virtual std::string toString() const;
 
 private:
-	friend ostream& operator<<(ostream &strm, const Order &o);
+	friend std::ostream& operator<<(std::ostream &strm, const Order &o);
 
 protected:
 	Player* player;  // The player who created the order.
@@ -35,10 +36,10 @@ public:
 	
 	bool validate();
 	bool execute();
-	string toString() const;
+	std::string toString() const;
 
 private:
-	friend ostream& operator<<(ostream& strm, const DeployOrder& o);
+	friend std::ostream& operator<<(std::ostream& strm, const DeployOrder& o);
 	DeployOrder& operator= (const DeployOrder& o);
 };
 
@@ -51,10 +52,10 @@ public:
 
 	bool validate();
 	bool execute();
-	string toString() const;
+	std::string toString() const;
 
 private:
-	friend ostream& operator<<(ostream& strm, const AdvanceOrder& o);
+	friend std::ostream& operator<<(std::ostream& strm, const AdvanceOrder& o);
 	AdvanceOrder* operator= (const AdvanceOrder& o);
 };
 
@@ -67,10 +68,10 @@ public:
 
 	bool validate();
 	bool execute();
-	string toString() const;
+	std::string toString() const;
 
 private:
-	friend ostream& operator<<(ostream& strm, const BombOrder& o);
+	friend std::ostream& operator<<(std::ostream& strm, const BombOrder& o);
 	BombOrder* operator= (const BombOrder& o);
 };
 
@@ -83,10 +84,10 @@ public:
 
 	bool validate();
 	bool execute();
-	string toString() const;
+	std::string toString() const;
 
 private:
-	friend ostream& operator<<(ostream& strm, const BlockadeOrder& o);
+	friend std::ostream& operator<<(std::ostream& strm, const BlockadeOrder& o);
 	BlockadeOrder* operator= (const BlockadeOrder& o);
 };
 
@@ -99,10 +100,10 @@ public:
 
 	bool validate();
 	bool execute();
-	string toString() const;
+	std::string toString() const;
 
 private:
-	friend ostream& operator<<(ostream& strm, const AirliftOrder& o);
+	friend std::ostream& operator<<(std::ostream& strm, const AirliftOrder& o);
 	AirliftOrder* operator= (const AirliftOrder& o);
 };
 
@@ -115,10 +116,10 @@ public:
 
 	bool validate();
 	bool execute();
-	string toString() const;
+	std::string toString() const;
 
 private:
-	friend ostream& operator<<(ostream& strm, const NegotiateOrder& o);
+	friend std::ostream& operator<<(std::ostream& strm, const NegotiateOrder& o);
 	NegotiateOrder* operator= (const NegotiateOrder& o);
 };
 
@@ -137,7 +138,7 @@ public:
 	bool executeAll();
 
 private:
-	vector<Order*> orders;
-	friend ostream& operator<<(ostream& strm, const OrdersList& o);
+	std::vector<Order*> orders;
+	friend std::ostream& operator<<(std::ostream& strm, const OrdersList& o);
 	OrdersList* operator= (const OrdersList& o);
 };

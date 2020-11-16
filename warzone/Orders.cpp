@@ -1,7 +1,9 @@
 #include "Orders.h"
-#include <iostream>
-#include <string>
+// #include <iostream>
+// #include <string>
 #include <sstream>
+
+using namespace std;
 
 
 // Generic order base class.
