@@ -5,6 +5,7 @@ Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Dec
 	this->playerTerritories = territoriesToAdd;
 	this->playerOrdersList = playerList;
 	this->playerHand = new Hand(deckToTakeFrom, this);
+	this->reinforcementPool = 0;
 }
 
 Player::~Player() {  //destructor 
@@ -28,6 +29,7 @@ Player::Player(const Player& player)  //copy constructor
 	}
 	this->playerOrdersList = new OrdersList(*player.playerOrdersList);
 	this->playerHand = new Hand(*player.playerHand);
+	this->reinforcementPool = player.reinforcementPool;
 }
 
 const vector<Territory*>* Player::toDefend()   //returns territories the player can defend
@@ -78,6 +80,16 @@ void Player::setOrdersList(OrdersList* ordersList) //sets the player's order lis
 void Player::setHand(Hand* handToAdd)  //sets the cards in the player's hand
 {
 	this->playerHand = handToAdd;
+}
+
+void Player::addReinforcements(int addedReinforcements)
+{
+	this->reinforcementPool += addedReinforcements;
+}
+
+int Player::getReinforcements()
+{
+	return this->reinforcementPool;
 }
 
 ostream& operator<<(ostream& output, const Player &player)  //output stream

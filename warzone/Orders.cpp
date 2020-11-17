@@ -1,6 +1,4 @@
 #include "Orders.h"
-// #include <iostream>
-// #include <string>
 #include <sstream>
 
 using namespace std;
@@ -33,7 +31,6 @@ bool Order::validate() {
 	return false;
 }
 
-
 // Used to print information about the order.
 string Order::toString() const {
 	ostringstream strm;
@@ -57,7 +54,7 @@ Order& Order::operator=(const Order &o) {
 
 // Deploy order subclass.
 // Constructor which takes a pointer to a Player object.
-DeployOrder::DeployOrder(Player* player) : Order(player) { }
+DeployOrder::DeployOrder(Player* player, int numArmies) : Order(player), numArmies(numArmies) { }
 
 // Copy constructor taking a pointer to another DeployOrder object.
 DeployOrder::DeployOrder(DeployOrder* other) : Order(other) { }

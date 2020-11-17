@@ -7,6 +7,8 @@
 #include "Orders.h"
 #include "Player.h"
 
+class Order;
+class Player;
 
 using namespace std;
 

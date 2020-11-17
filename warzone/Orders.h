@@ -1,12 +1,15 @@
 #pragma once
 
+#include "Player.h"
+
 #include <string>
 #include <vector>
 #include <iostream>
 
-// using namespace std;
 
 class Player;
+class Territory;
+
 
 class Order {
 public:
@@ -30,7 +33,7 @@ protected:
 
 class DeployOrder : public Order {
 public:
-	DeployOrder(Player* player);
+	DeployOrder(Player* player, int numArmies);
 	DeployOrder(DeployOrder* other);
 	~DeployOrder();
 	
@@ -39,6 +42,9 @@ public:
 	std::string toString() const;
 
 private:
+	int numArmies;
+	Territory* target;
+
 	friend std::ostream& operator<<(std::ostream& strm, const DeployOrder& o);
 	DeployOrder& operator= (const DeployOrder& o);
 };

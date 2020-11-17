@@ -8,6 +8,7 @@ using namespace std;
 class Map;
 class Territory;
 class Order;
+class OrdersList;
 class Deck;
 class Hand;
 
@@ -30,14 +31,17 @@ public:
 	vector<Territory*>* getTerritories(); //Get territories
 	Hand* getHand(); //Get hand
 	OrdersList* getOrdersList(); //Get order list
+	int getReinforcements();
 
 	//Setters
 	void setOrdersList(OrdersList* ordersList); //Set territories
 	void setTerritories(vector<Territory*>* territoriesToAdd); //Set Orders List
 	void setHand(Hand* handToAdd); //Set hand 
+	void addReinforcements(int addedReinforcements);
 
 private:
 	Hand* playerHand; //returns player's hand
 	OrdersList* playerOrdersList; //returns player's order list
 	vector<Territory*>* playerTerritories; //returns player's territories
+	int reinforcementPool;
 };
