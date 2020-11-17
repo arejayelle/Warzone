@@ -18,6 +18,8 @@ public:
 	int issueOrdersPhase();
 	int executeOrdersPhase();
 
+	const std::vector<Player*>* getPlayers();
+
 private:
 	Map* map;
 	std::vector<Player*> players;

@@ -10,6 +10,7 @@ Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Dec
 	this->hand = new Hand(deckToTakeFrom, this);
 	this->reinforcementPool = 0;
 	this->inNegotiatonWith = vector<Player*>();
+	this->territoriesWithAdvanceOrder = new std::vector<Territory*>();
 }
 
 Player::~Player() {  //destructor 
@@ -40,6 +41,7 @@ Player::Player(const Player& player)  //copy constructor
 		Player* newPlayer = new Player(*p);
 		this->inNegotiatonWith.push_back(newPlayer);
 	}
+	this->territoriesWithAdvanceOrder = player.territoriesWithAdvanceOrder;
 }
 
 bool compareTerritories(Territory* i, Territory* j) {
@@ -107,17 +109,20 @@ bool Player::issueOrder() {
 
 	// Deploy order
 	if (this->reinforcementPool > 0) {
+		this->territoriesWithAdvanceOrder->clear();
+
 		// Reinforce the highest priority territory with the least armies
-		int min = defendedTerritories->at(0)->getArmies();
+		int min = defendedTerritories->at(0)->getArmies() + defendedTerritories->at(0)->getIncomingArmies();
 		Territory* territoryWithLeast = defendedTerritories->at(0);
 		for (std::vector<Territory*>::const_iterator it = defendedTerritories->begin(); it != defendedTerritories->end(); it++) {
-			if ((*it)->getArmies() < min) {
+			if ((*it)->getArmies() + (*it)->getIncomingArmies() < min) {
 				territoryWithLeast = (*it);
 			}
 		}
 
 		this->reinforcementPool -= 1;
 		//this->ordersList->add(new DeployOrder(this));
+		territoryWithLeast->setIncomingArmies(territoryWithLeast->getIncomingArmies() + 1);
 		return true;
 	}
 
@@ -130,6 +135,57 @@ bool Player::issueOrder() {
 	}
 
 	// Advance orders
+	// Advance order has 
+	// int - number of armies
+	// territory source and territory target
+	// owner
+
+	// Issue one advance order per territory
+	// Move all but 2-3 troops (move all troops?) to an adjacent enemy territory
+	// If there are no adjacent enemy territories move all troops to a random adjacent friendly territory
+	
+	for (auto it = defendedTerritories->begin(); it != defendedTerritories->end(); it++) {
+		if (std::find(this->territoriesWithAdvanceOrder->begin(), this->territoriesWithAdvanceOrder->end(), *it) == this->territoriesWithAdvanceOrder->end()) {
+			
+			Territory* territory = *it;
+			// Don't issue an advance order if there are no armies
+			if (territory->getArmies() + territory->getIncomingArmies() == 0) {
+				territoriesWithAdvanceOrder->push_back(territory);
+				continue;
+			}
+
+			const std::vector<Territory*>* adjacentTerritories = (*it)->getBorders();
+			
+			// Look for adjacent territory that belongs to an enemy
+			for (auto it2 = adjacentTerritories->begin(); it2 != adjacentTerritories->end(); it2++) {
+				if ((*it2)->getOwner() != this) {
+					//It is an enemy territory; attack!
+					int numberOfArmies = territory->getArmies() + territory->getIncomingArmies();
+					Territory* source = territory;
+					Territory* target = (*it2);
+					Player* owner = this;
+					//this->ordersList->add(new AdvanceOrder(this));
+					this->territoriesWithAdvanceOrder->push_back(territory);
+					return true;
+				}
+			}
+
+			// No adjacent territory that belongs to an enemy
+			// Let's send all our troops to a neighbor then
+			srand((unsigned int)time(NULL));
+			int index = rand() % (adjacentTerritories->size() - 1);
+
+			int numberOfArmies = territory->getArmies() + territory->getIncomingArmies();
+			Territory* source = territory;
+			Territory* target = adjacentTerritories->at(index);
+			//this->ordersList->add(new AdvanceOrder(this));
+			this->territoriesWithAdvanceOrder->push_back(territory);
+			return true;
+		}
+	}
+
+	// Done issuing orders
+	return false;
 }
 
  vector<Territory*>* Player::getTerritories()  //returns all the player's territories 

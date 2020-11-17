@@ -5,6 +5,7 @@ using namespace std;
 #include "Orders.h"
 #include "Map.h"
 #include <algorithm>
+#include <cstdlib>
 
 class Map;
 class Territory;
@@ -57,4 +58,5 @@ private:
 	vector<Territory*>* territories; //returns player's territories
 	int reinforcementPool;
 	vector<Player*> inNegotiatonWith;
+	vector<Territory*>* territoriesWithAdvanceOrder;
 };

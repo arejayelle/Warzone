@@ -66,5 +66,13 @@ int GameEngine::issueOrdersPhase()
 
 int GameEngine::executeOrdersPhase()
 {
+    // Get the highest priority order from each player in round-robin fashion
+
+    // Deploy -> Airlift -> Blockage -> All the others
     return 0;
+}
+
+const std::vector<Player*>* GameEngine::getPlayers()
+{
+    return &players;
 }

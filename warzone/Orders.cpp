@@ -502,7 +502,7 @@ bool OrdersList::move(int oldIndex, int newIndex) {
 void OrdersList::print() {
 	cout << "List contents are:\n[";
 	for (int i = 0; i < this->orders.size(); i++) {
-		cout << *(this->orders.at(i)) << ", ";
+		cout << *(this->orders.at(i)) << ", " << endl;
 	}
 	cout << "]\nEnd of list contents." << endl;
 }

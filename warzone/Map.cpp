@@ -69,6 +69,16 @@ int Territory::getArmies() {
 	return this->armies;
 }
 
+void Territory::setIncomingArmies(int armies)
+{
+	incomingArmies = armies;
+}
+
+int Territory::getIncomingArmies()
+{
+	return incomingArmies;
+}
+
 // Stream insertion operator for Territory
 std::ostream& operator<<(std::ostream& out, const Territory& territory)
 {

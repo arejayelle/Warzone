@@ -25,12 +25,15 @@ public:
 	void setOwner(Player* player);
 	int getArmies();
 	friend std::ostream& operator<< (std::ostream& out, const Territory& territory);
+	void setIncomingArmies(int armies);
+	int getIncomingArmies();
 	
 private:
 	std::string name;
 	Continent* continent;
 	Player* owner;
 	int armies;
+	int incomingArmies;
 	int x;
 	int y;
 	std::vector<Territory*> borders;
