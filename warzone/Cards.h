@@ -46,7 +46,7 @@ public:
 	~BombCard();
 	BombCard* operator= (const BombCard& card);
 
-	Order* play(Player* owner);
+	Order* play(Player* owner, Territory* target);
 };
 
 class ReinforcementCard :public Card {

@@ -73,7 +73,7 @@ private:
 
 class BombOrder : public Order {
 public:
-	BombOrder(Player* player);
+	BombOrder(Player* player, Territory* target);
 	BombOrder(BombOrder* other);
 	~BombOrder();
 
@@ -82,6 +82,8 @@ public:
 	std::string toString() const;
 
 private:
+	Territory* target;
+
 	friend std::ostream& operator<<(std::ostream& strm, const BombOrder& o);
 	BombOrder& operator= (const BombOrder& o);
 };

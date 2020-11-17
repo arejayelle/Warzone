@@ -168,10 +168,10 @@ BombCard* BombCard::operator=(const BombCard& card)
 /**
 	 * Creates a Bomb Order
 	 */
-Order* BombCard::play(Player* owner)
+Order* BombCard::play(Player* owner, Territory* target)
 {
 	cout << "Playing BombCard" << endl;
-	return new BombOrder(owner);
+	return new BombOrder(owner, target);
 }
 
 // Reinforcement Cards

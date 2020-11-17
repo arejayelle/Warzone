@@ -209,21 +209,20 @@ AdvanceOrder& AdvanceOrder::operator=(const AdvanceOrder& o) {
 
 // BombOrder subclass.
 // Constructor which takes a pointer to a Player object.
-BombOrder::BombOrder(Player* player) : Order(player) { }
+BombOrder::BombOrder(Player* player, Territory* target) : Order(player), target(target) { }
 
 // Copy constructor taking a pointer to another BombOrder object.
-BombOrder::BombOrder(BombOrder* other) : Order(other) { }
+BombOrder::BombOrder(BombOrder* other) : Order(other), target(other->target) { }
 
 // Destructor.
 BombOrder::~BombOrder() { }
 
 // This verifies that there are no problems with the order. Returns true if valid, false otherwise.
 bool BombOrder::validate() {
-	// TODO: More checks once we have more details.
-	if (this->player != NULL) {
-		return true;
-	}
-	return false;
+	return(
+		(this->player != nullptr) &&
+		(this->target->getOwner() != this->player)
+		);
 }
 
 // First uses the validate method and then executes the order and displays the status.
@@ -235,7 +234,8 @@ bool BombOrder::execute() {
 		return false;
 	}
 
-	// TODO: Do actions once we have more details.
+	// Remove half the armies in the target territory.
+	this->target->removeArmies(this->target->getArmies() / 2);
 	cout << "Bomb order executed." << endl;
 	return true;
 }
