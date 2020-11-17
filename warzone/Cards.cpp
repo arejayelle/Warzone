@@ -266,10 +266,10 @@ BlockadeCard::~BlockadeCard()
 	 * Play function
 	 *
 	 */
-Order* BlockadeCard::play(Player* owner)
+Order* BlockadeCard::play(Player* owner, Territory* target)
 {
 	cout << "Playing BlockadeCard" << endl;
-	return new BlockadeOrder(owner);
+	return new BlockadeOrder(owner, target);
 }
 
 // Airlift Cards

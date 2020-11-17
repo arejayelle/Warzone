@@ -261,21 +261,20 @@ BombOrder& BombOrder::operator=(const BombOrder& o) {
 
 // Blockade order subclass.
 // Constructor which takes a pointer to a Player object.
-BlockadeOrder::BlockadeOrder(Player* player) : Order(player) { }
+BlockadeOrder::BlockadeOrder(Player* player, Territory* target) : Order(player), target(target) { }
 
 // Copy constructor taking a pointer to another BlockadeOrder object.
-BlockadeOrder::BlockadeOrder(BlockadeOrder* other) : Order(other) { }
+BlockadeOrder::BlockadeOrder(BlockadeOrder* other) : Order(other), target(other->target) { }
 
 // Destructor.
 BlockadeOrder::~BlockadeOrder() { }
 
 // This verifies that there are no problems with the order. Returns true if valid, false otherwise.
 bool BlockadeOrder::validate() {
-	// TODO: More checks once we have more details.
-	if (this->player != NULL) {
-		return true;
-	}
-	return false;
+	return(
+		(this->player != nullptr) &&
+		(this->target->getOwner() == this->player)
+		);
 }
 
 // First uses the validate method and then executes the order and displays the status.
@@ -287,7 +286,8 @@ bool BlockadeOrder::execute() {
 		return false;
 	}
 
-	// TODO: Do actions once we have more details.
+	this->target->addArmies(this->target->getArmies() / 2);
+	// TODO Transfer ownership???
 	cout << "Blockade order executed." << endl;
 	return true;
 }

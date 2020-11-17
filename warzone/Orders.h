@@ -91,7 +91,7 @@ private:
 
 class BlockadeOrder : public Order {
 public:
-	BlockadeOrder(Player* player);
+	BlockadeOrder(Player* player, Territory* target);
 	BlockadeOrder(BlockadeOrder* other);
 	~BlockadeOrder();
 
@@ -100,6 +100,8 @@ public:
 	std::string toString() const;
 
 private:
+	Territory* target;
+
 	friend std::ostream& operator<<(std::ostream& strm, const BlockadeOrder& o);
 	BlockadeOrder& operator= (const BlockadeOrder& o);
 };

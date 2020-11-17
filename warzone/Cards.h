@@ -66,7 +66,7 @@ public:
 	~BlockadeCard();
 	BlockadeCard* operator= (const BlockadeCard& card);
 
-	Order* play(Player* owner);
+	Order* play(Player* owner, Territory* target);
 };
 
 class AirliftCard :public Card {
