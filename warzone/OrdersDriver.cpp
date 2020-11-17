@@ -7,7 +7,7 @@ int OrdersDriver::main() {
 	Deck* d1 = new Deck();
 	Player* p1 = new Player(nullptr, l1, d1);
 
-	DeployOrder* o1 = new DeployOrder(p1, 10);
+	DeployOrder* o1 = new DeployOrder(p1, 10, nullptr);
 	o1->execute();
 
 	return 0;

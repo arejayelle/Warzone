@@ -32,6 +32,11 @@ void Territory::addBorders(std::vector<Territory*>* borders) {
 	}
 }
 
+// Add a certain number of armies to the territory.
+void Territory::addArmies(int amount) {
+	this->armies += amount;
+}
+
 // Get a read-only vector of all territories bordering this one
 const std::vector<Territory*>* Territory::getBorders()
 {

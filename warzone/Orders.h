@@ -33,7 +33,7 @@ protected:
 
 class DeployOrder : public Order {
 public:
-	DeployOrder(Player* player, int numArmies);
+	DeployOrder(Player* player, int numArmies, Territory* target);
 	DeployOrder(DeployOrder* other);
 	~DeployOrder();
 	

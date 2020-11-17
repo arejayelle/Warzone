@@ -16,6 +16,7 @@ public:
 	Territory* operator= (const Territory& territory);
 
 	void addBorders(std::vector<Territory*>* borders);
+	void addArmies(int amount);
 	const std::vector<Territory*>* getBorders();
 	Continent* getContinent();
 	friend std::ostream& operator<< (std::ostream& out, const Territory& territory);

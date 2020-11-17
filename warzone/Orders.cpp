@@ -4,7 +4,7 @@
 using namespace std;
 
 
-// Generic order base class.
+// Generic order abstract class.
 // Default constructor.
 Order::Order() {
 	this->player = nullptr;
@@ -54,21 +54,22 @@ Order& Order::operator=(const Order &o) {
 
 // Deploy order subclass.
 // Constructor which takes a pointer to a Player object.
-DeployOrder::DeployOrder(Player* player, int numArmies) : Order(player), numArmies(numArmies) { }
+DeployOrder::DeployOrder(Player* player, int numArmies, Territory* target) : Order(player) , numArmies(numArmies), target(nullptr) { }
 
 // Copy constructor taking a pointer to another DeployOrder object.
-DeployOrder::DeployOrder(DeployOrder* other) : Order(other) { }
+DeployOrder::DeployOrder(DeployOrder* other) : Order(other), numArmies(other->numArmies), target(other->target) { }
 
 // Destructor.
 DeployOrder::~DeployOrder() { }
 
 // This verifies that there are no problems with the order. Returns true if valid, false otherwise.
 bool DeployOrder::validate() {
-	// TODO: More checks once we have more details.
-	if (this->player != NULL) {
-		return true;
-	}
-	return false;
+	// Check validity of player, number of armies deployed, and that the target territory belongs to the player.
+	return(
+		(this->player != nullptr) &&
+		(this->numArmies <= this->player->getReinforcements()) &&
+		(std::find(this->player->getTerritories()->begin(), this->player->getTerritories()->end(),this->target) != this->player->getTerritories()->end())
+		);
 }
 
 // First uses the validate method and then executes the order and displays the status.
@@ -80,8 +81,9 @@ bool DeployOrder::execute() {
 		return false;
 	}
 
-	// TODO: Do actions once we have more details.
-	cout << "Deploy order executed." << endl;
+	// Add the armies to the territory.
+	this->target->addArmies(this->numArmies);
+	cout << "Deploy order executed successfully." << endl;
 	return true;
 }
 

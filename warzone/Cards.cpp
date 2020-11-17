@@ -218,7 +218,7 @@ ReinforcementCard* ReinforcementCard::operator=(const ReinforcementCard& card)
 Order* ReinforcementCard::play(Player* owner)
 {
 	cout << "Playing ReinforcementCard" << endl;
-	return new DeployOrder(owner, 0);
+	return new DeployOrder(owner, 0, nullptr);
 }
 
 // Blockade Cards
