@@ -3,6 +3,7 @@
 
 
 int OrdersDriver::main() {
+	srand(time(0));
 	OrdersList* l1 = new OrdersList();
 	Deck* d1 = new Deck();
 	Player* p1 = new Player(nullptr, l1, d1);
@@ -10,6 +11,12 @@ int OrdersDriver::main() {
 	DeployOrder* o1 = new DeployOrder(p1, 10, nullptr);
 	o1->execute();
 
+	for (int i = 0; i < 10; i++) {
+		int x = 1 + rand() % 10;
+		cout << x << endl;
+	}
+
+	
 	return 0;
 }
 

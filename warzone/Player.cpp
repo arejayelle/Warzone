@@ -72,6 +72,13 @@ void Player::setTerritories(vector<Territory*>* territoriesToAdd) //sets all the
 	this->playerTerritories = territoriesToAdd;
 }
 
+// Used to add a single territory to the list of territories.
+void Player::addTerritory(Territory* territoryToAdd)
+{
+	// TODO Do I need to dereference this?
+	this->playerTerritories->push_back(territoryToAdd);
+}
+
 void Player::setOrdersList(OrdersList* ordersList) //sets the player's order list
 {
 	this->playerOrdersList = ordersList;

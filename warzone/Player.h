@@ -36,6 +36,7 @@ public:
 	//Setters
 	void setOrdersList(OrdersList* ordersList); //Set territories
 	void setTerritories(vector<Territory*>* territoriesToAdd); //Set Orders List
+	void addTerritory(Territory* territoryToAdd);  // Add one territory to player's list of territories.
 	void setHand(Hand* handToAdd); //Set hand 
 	void addReinforcements(int addedReinforcements);
 

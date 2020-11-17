@@ -1,5 +1,6 @@
 #include "Orders.h"
 #include <sstream>
+#include <ctime>
 
 using namespace std;
 
@@ -69,7 +70,7 @@ bool DeployOrder::validate() {
 	return(
 		(this->player != nullptr) &&
 		(this->numArmies <= this->player->getReinforcements()) &&
-		(std::find(this->player->getTerritories()->begin(), this->player->getTerritories()->end(),this->target) != this->player->getTerritories()->end())
+		(this->player == this->target->getOwner())
 		);
 }
 
@@ -124,8 +125,8 @@ bool AdvanceOrder::validate() {
 	// Verify that player is valid, that the source belongs to the player who created the order, and that source contains enough armies.
 	return(
 		(this->player != nullptr) &&
-		(this->numArmies <= this->source->getArmies()) && 
-		(std::find(this->player->getTerritories()->begin(), this->player->getTerritories()->end(), this->source) != this->player->getTerritories()->end())
+		(this->numArmies <= this->source->getArmies()) &&
+		(this->player == this->source->getOwner())
 		);
 }
 
@@ -153,7 +154,35 @@ bool AdvanceOrder::execute() {
 }
 
 void AdvanceOrder::battle() {
+	// Seed the random number generator.
+	// TODO Probably better if this occurs once at the top of main().
+	srand(time(0));
 
+	while (this->source->getArmies() > 0 && this->target->getArmies() > 0) {
+		// Attacker has 60% chance of killing defender.
+		if ((1 + rand() % 100) < 60) { 
+			this->target->removeArmies(1); 
+		}
+		// Defender has 70% chance of killing attacker.
+		if ((1 + rand() % 100) < 70) {
+			this->source->removeArmies(1);
+		}
+	}
+
+	// When attacker wins, the survivors occupy the territory.
+	if (this->source->getArmies() > this->target->getArmies()) {
+		int numArmies = this->source->getArmies();
+
+		// Place remaining armies on the new territory.
+		this->source->removeArmies(numArmies);
+		this->target->addArmies(numArmies);
+
+		// Transfer ownership of territory to the winning player.
+		this->target->setOwner(this->source->getOwner());
+
+		// Add the new territory to the player's list of territories.
+		this->player->addTerritory(this->target);
+	}
 }
 
 // Used to print information about the order.

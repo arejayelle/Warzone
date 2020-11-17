@@ -52,15 +52,20 @@ private:
 
 class AdvanceOrder : public Order {
 public:
-	AdvanceOrder(Player* player);
+	AdvanceOrder(Player* player, int numArmies, Territory* source, Territory* target);
 	AdvanceOrder(AdvanceOrder* other);
 	~AdvanceOrder();
 
 	bool validate();
 	bool execute();
+	void battle();
 	std::string toString() const;
 
 private:
+	int numArmies;
+	Territory* source;
+	Territory* target;
+
 	friend std::ostream& operator<<(std::ostream& strm, const AdvanceOrder& o);
 	AdvanceOrder& operator= (const AdvanceOrder& o);
 };
