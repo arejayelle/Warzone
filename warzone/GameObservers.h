@@ -5,16 +5,26 @@
 
 class Observer {
 public:
-	virtual ~Observer() {};
-	virtual void update();
+	~Observer();
+	virtual void update() = 0;
+protected:
+	Observer();
 };
 
 class Subject {
 public:
-	virtual ~Subject() {};
-	virtual void attach(Observer *observer);
-	virtual void detach(Observer *observer);
+	Subject();
+	~Subject();
+	virtual void attach(Observer* observer);
+	virtual void detach(Observer* observer);
 	virtual void notify();
 protected:
-	std::vector<Observer*> myObservers;
+	std::vector<Observer*> *myObservers;
+};
+
+class ConcreteObserver {
+public:
+	ConcreteObserver();
+	~ConcreteObserver();
+	void update();
 };

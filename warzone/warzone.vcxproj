@@ -157,6 +157,7 @@
     <ClInclude Include="CardDriver.h" />
     <ClInclude Include="Cards.h" />
     <ClInclude Include="GameObservers.h" />
+    <ClInclude Include="GameObserversDriver.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapDriver.h" />

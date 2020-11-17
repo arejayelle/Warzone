@@ -4,5 +4,6 @@
 #include "MapDriver.h"
 #include "MapLoaderDriver.h"
 #include "PlayerDriver.h"
+#include "GameObserversDriver.h"
 
 int main();
