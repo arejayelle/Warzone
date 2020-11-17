@@ -57,7 +57,6 @@ Player* Territory::getOwner() {
 }
 
 void Territory::setOwner(Player* player) {
-	// TODO Do I have to dereference this or something?
 	this->owner = player;
 }
 

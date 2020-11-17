@@ -3,22 +3,55 @@
 int GameLoopDriver::main()
 {
     
-    GameEngine engine();
+    GameLoopDriver::reinforcements();
     return 0;
 }
 
 void GameLoopDriver::reinforcements()
 {
-    // minimum 3 reinforcements
-    Map* map = new Map();
+    cout << "GameLoopDriver Reinforcement Phase" << endl;
+    cout << "Creating sample map with 7 countries, 3 players" << endl;
+
+    Map* map = MapDriver::getValidMap();
+
+    Deck* deck = new Deck();
+
+    vector<Territory*>* player1Territories = new vector<Territory*>();
+    player1Territories->push_back(map->getTerritory(0));
+    player1Territories->push_back(map->getTerritory(1));
+    player1Territories->push_back(map->getTerritory(2));
+    Player* player1 = new Player(player1Territories, new OrdersList(), deck);
     
+    vector<Territory*>* player2Territories = new vector<Territory*>();
+    player2Territories->push_back(map->getTerritory(3));
+    player2Territories->push_back(map->getTerritory(4));
+    player2Territories->push_back(map->getTerritory(6));
+    Player* player2 = new Player(player2Territories, new OrdersList(), deck);
+
+    vector<Territory*>* player3Territories = new vector<Territory*>();
+    player3Territories->push_back(map->getTerritory(5));
+    Player* player3 = new Player(player3Territories, new OrdersList(), deck);
+
+    vector<Player*>* players = new vector<Player*>();
+    players->push_back(player1);
+    players->push_back(player2);
+    players->push_back(player3);
+
+
+    GameEngine* gameEngine = new GameEngine(map, *players);
+    gameEngine->reinforcementPhase();
+    
+    // minimum 3 reinforcements
+    cout << "Player 3 owns one country and part of a continent, should have 3 reinforcements; has " << player3->getReinforcements() << endl;
 
     // continent owned by a player
+    cout << "Player 1 owns a continent worth 5 troops, should have 8 troops total; has " << player1->getReinforcements() << endl;
 
     // continent partially owned by 2 players (no bonus)
+    cout << "Player 2 owns a continent worth 6 troops and owns only part of a continent, should have 9 troops total; has " << player2->getReinforcements() << endl;
 
     // check rounding is done properly (owned territories / 3 rounded down)
-
+    cout << "TODO validate rounding is done properly by giving a player 12 or more territories" << endl;
 
 }
 

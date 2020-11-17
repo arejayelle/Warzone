@@ -38,7 +38,6 @@ public:
 	Hand* getHand(); //Get hand
 	OrdersList* getOrdersList(); //Get order list
 	int getReinforcements();
-	
 
 	//Setters
 	void setOrdersList(OrdersList* ordersList); //Set Orders List 

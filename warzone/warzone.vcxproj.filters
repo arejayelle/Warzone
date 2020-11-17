@@ -43,6 +43,12 @@
     <Filter Include="Source Files\MapLoader">
       <UniqueIdentifier>{32cab156-2ec2-4008-b1e4-e71f81ce29c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameLoop">
+      <UniqueIdentifier>{1fd12fb9-9b6f-4319-b359-841bd432c0f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLoop">
+      <UniqueIdentifier>{f77ad711-d7f9-47bc-b2d3-8bc038b3a1d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
@@ -66,14 +72,20 @@
     <ClInclude Include="OrdersDriver.h">
       <Filter>Header Files\Orders</Filter>
     </ClInclude>
-	<ClInclude Include="MapLoader.h">
-		<Filter>Header Files\MapLoader</Filter>
-	</ClInclude>
+    <ClInclude Include="MapLoader.h">
+      <Filter>Header Files\MapLoader</Filter>
+    </ClInclude>
     <ClInclude Include="PlayerDriver.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
     <ClInclude Include="Cards.h">
       <Filter>Header Files\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLoopDriver.h">
+      <Filter>Header Files\GameLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngine.h">
+      <Filter>Header Files\GameLoop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +124,12 @@
     </ClCompile>
     <ClCompile Include="Cards.cpp">
       <Filter>Source Files\Card</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLoopDriver.cpp">
+      <Filter>Source Files\GameLoop</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngine.cpp">
+      <Filter>Source Files\GameLoop</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

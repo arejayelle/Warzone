@@ -2,6 +2,9 @@
 
 
 Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom) { //Constructor with all parameters
+	for (std::vector<Territory*>::iterator it = territoriesToAdd->begin(); it != territoriesToAdd->end(); it++) {
+		(*it)->setOwner(this);
+	}
 	this->territories = territoriesToAdd;
 	this->ordersList = playerList;
 	this->hand = new Hand(deckToTakeFrom, this);
@@ -96,6 +99,11 @@ OrdersList* Player::getOrdersList()   //returns the player's order list
 	return ordersList;
 }
 
+int Player::getReinforcements()
+{
+	return reinforcementPool;
+}
+
 Hand* Player::getHand()  //returns the cards in the player's hand
 {
 	return hand;
@@ -125,11 +133,6 @@ void Player::setHand(Hand* handToAdd)  //sets the cards in the player's hand
 void Player::addReinforcements(int addedReinforcements)
 {
 	this->reinforcementPool += addedReinforcements;
-}
-
-int Player::getReinforcements()
-{
-	return this->reinforcementPool;
 }
 
 ostream& operator<<(ostream& output, const Player &player)  //output stream
