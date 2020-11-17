@@ -67,6 +67,17 @@ int GameEngine::issueOrdersPhase()
 int GameEngine::executeOrdersPhase()
 {
     // Get the highest priority order from each player in round-robin fashion
+    bool deployOrdersComplete = false;
+    bool airliftOrdersComplete = false;
+    bool blockadeOrdersComplete = false;
+
+    while (!deployOrdersComplete) {
+        deployOrdersComplete = true;
+        for (auto it = players.begin(); it != players.end(); it++) {
+            Player* player = *it;
+            Order* top = player->getOrdersList()->peek();
+        }
+    }
 
     // Deploy -> Airlift -> Blockage -> All the others
     return 0;

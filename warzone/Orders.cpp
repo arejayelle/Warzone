@@ -459,16 +459,22 @@ void OrdersList::add(Order* newOrder) {
 	this->orders.push_back(newOrder);
 }
 
+Order* OrdersList::peek()
+{
+	return orders.at(0);
+}
+
 // Deletes the order at the specified index. Indexes begin at 0. Returns true if successfully removed, false otherwise.
-bool OrdersList::remove(int index) {
+Order* OrdersList::remove(int index) {
 	// Verifies that the specified index is within range.
 	if (index > this->orders.size() - 1 || index < 0) {
 		cout << "Can't delete this order. Invalid index." << endl;
-		return false;
+		throw "Index out of bounds for removing order";
 	}
 
+	Order* order = this->orders.at(index);
 	this->orders.erase(this->orders.begin() + index);
-	return true;
+	return order;
 }
 
 // Allows the player to rearrange orders by removing an order at oldIndex and inserting it at newIndex. Returns true if insertion is successful, otherwise false.

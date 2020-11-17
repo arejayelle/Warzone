@@ -153,7 +153,8 @@ public:
 
 	int size();
 	void add(Order* newOrder);
-	bool remove(int index);
+	Order* peek();
+	Order* remove(int index);
 	bool move(int oldIndex, int newIndex);
 	void print();
 	bool executeAll();

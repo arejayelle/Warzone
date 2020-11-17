@@ -80,3 +80,8 @@ void GameLoopDriver::issueOrdersPhase(GameEngine* gameEngine)
     
 }
 
+void GameLoopDriver::executeOrdersPhase(GameEngine* gameEngine)
+{
+    
+}
+

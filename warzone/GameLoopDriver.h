@@ -6,5 +6,6 @@ namespace GameLoopDriver
 	int main();
 	void reinforcements(GameEngine* gameEngine);
 	void issueOrdersPhase(GameEngine* gameEngine);
+	void executeOrdersPhase(GameEngine* gameEngine);
 };
 
