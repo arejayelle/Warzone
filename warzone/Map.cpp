@@ -25,6 +25,11 @@ Territory* Territory::operator=(const Territory& territory)
 	return new Territory(territory);
 }
 
+std::string Territory::getName()
+{
+	return this->name;
+}
+
 // Add borders between this country and all countries in the provided borders vector
 void Territory::addBorders(std::vector<Territory*>* borders) {
 	for (std::vector<Territory*>::iterator it = borders->begin(); it != borders->end(); ++it) {

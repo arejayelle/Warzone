@@ -50,6 +50,17 @@ void GameEngine::reinforcementPhase()
 
 int GameEngine::issueOrdersPhase()
 {
+    bool allPlayersPassed;
+    do {
+        allPlayersPassed = true;
+        for (Player* player : players) {
+            bool issuedOrder = player->issueOrder();
+            if (issuedOrder) {
+                allPlayersPassed = false;
+            }
+        }
+    } while (!allPlayersPassed);
+
     return 0;
 }
 

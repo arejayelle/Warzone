@@ -4,6 +4,7 @@ using namespace std;
 #include "Cards.h"
 #include "Orders.h"
 #include "Map.h"
+#include <algorithm>
 
 class Map;
 class Territory;
@@ -25,7 +26,11 @@ public:
 
 	const vector<Territory*>* toDefend(); //Returns territories to defend. To keep in Player
 	const vector<Territory*>* toAttack(); //Returns territories to attack
-	void issueOrder(Order* newOrder);  //Issue order method
+
+	// Contains the decision-making for a player to issue an order.
+	// The order should be issued to the player's ordersList
+	// Return true if an order was issued, false if no order was issued
+	bool issueOrder();  //Issue order method
 
 	void addPlayerInNegotiationWith(Player* player);
 	bool isInNegotiationWithPlayer(Player* player);

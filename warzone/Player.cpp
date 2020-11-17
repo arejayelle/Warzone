@@ -42,23 +42,36 @@ Player::Player(const Player& player)  //copy constructor
 	}
 }
 
+bool compareTerritories(Territory* i, Territory* j) {
+	return i->getName().compare(j->getName()) < 0;
+}
+
 const vector<Territory*>* Player::toDefend()   //returns territories the player can defend
 {
-	vector<Territory*>* toDefend = new vector<Territory*>(); //TODO- Add actual territories to defend later
-	return toDefend;
+	std::sort(this->territories->begin(), this->territories->end(), compareTerritories);
+	return this->territories;
 }
 
 const vector<Territory*>* Player::toAttack()   //returns territories the player can attack
 {
-	vector<Territory*>* toAttack = new vector<Territory*>(); //TODO - Add actual territories to attack later
-	return toAttack;
-}
+	// TODO make sure this gets destructed at some point... or return by value
+	vector<Territory*>* toAttack = new vector<Territory*>();
 
-void Player::issueOrder(Order* newOrder)  //allows player to issue an order
-{
-	// TODO
-	// Order* playerOrder = new Order(*newOrder);
-	// playerOrdersList->add(playerOrder);
+	for (std::vector<Territory*>::iterator it = this->territories->begin(); it != this->territories->end(); it++) {
+		Territory* territory = *it;
+
+		for (std::vector<Territory*>::const_iterator it2 = territory->getBorders()->begin(); it2 != territory->getBorders()->end(); it2++) {
+			Territory* neighbor = *it2;
+
+			if (std::find(toAttack->begin(), toAttack->end(), neighbor) == toAttack->end()) {
+				toAttack->push_back(neighbor);
+			}
+		}
+	}
+
+	std::sort(toAttack->begin(), toAttack->end(), compareTerritories);
+
+	return toAttack;
 }
 
 // Add a player to the vector inNegotiationWith.
@@ -80,12 +93,43 @@ void Player::clearInNegotiationWith()
 }
 
 // Remove a territory from the player's list of territories in the case where they lose it.
-void Player::removeTerritory(Territory* territoryToRemove) 
+void Player::removeTerritory(Territory* territoryToRemove)
 {
 	vector<Territory*>::iterator index = std::find(this->getTerritories()->begin(), this->getTerritories()->end(), territoryToRemove);
 	if (index != this->getTerritories()->end()) {
 		this->getTerritories()->erase(index);
 	}
+}
+
+bool Player::issueOrder() {
+	const std::vector<Territory*>* defendedTerritories = this->toDefend();
+	int defendedTerritoryCount = defendedTerritories->size();
+
+	// Deploy order
+	if (this->reinforcementPool > 0) {
+		// Reinforce the highest priority territory with the least armies
+		int min = defendedTerritories->at(0)->getArmies();
+		Territory* territoryWithLeast = defendedTerritories->at(0);
+		for (std::vector<Territory*>::const_iterator it = defendedTerritories->begin(); it != defendedTerritories->end(); it++) {
+			if ((*it)->getArmies() < min) {
+				territoryWithLeast = (*it);
+			}
+		}
+
+		this->reinforcementPool -= 1;
+		//this->ordersList->add(new DeployOrder(this));
+		return true;
+	}
+
+	// Play cards from hand
+	const std::vector<Card*>* cards = this->hand->getCurrentHand();
+	if (cards->size() > 0) {
+		// Because Jun is smart, this will issue the order and add it to the orderList for us.
+		this->hand->play(0);
+		return true;
+	}
+
+	// Advance orders
 }
 
  vector<Territory*>* Player::getTerritories()  //returns all the player's territories 
