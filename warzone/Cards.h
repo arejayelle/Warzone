@@ -9,6 +9,7 @@
 
 class Order;
 class Player;
+class Territory;
 
 using namespace std;
 
@@ -75,7 +76,7 @@ public:
 	~AirliftCard();
 	AirliftCard* operator= (const AirliftCard& card);
 
-	Order* play(Player* owner);
+	Order* play(Player* owner, Territory* source, Territory* target);
 };
 
 class DiplomacyCard :public Card {

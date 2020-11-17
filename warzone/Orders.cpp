@@ -85,7 +85,7 @@ bool DeployOrder::execute() {
 
 	// Add the armies to the territory.
 	this->target->addArmies(this->numArmies);
-	cout << "Deploy order executed successfully." << endl;
+	cout << "Deploy order executed." << endl;
 	return true;
 }
 
@@ -146,7 +146,7 @@ bool AdvanceOrder::execute() {
 	}
 	// Execute battle simulation sequence.
 	else {
-		battle();
+		this->battle();
 	}
 
 	cout << "Advance order executed." << endl;
@@ -186,8 +186,6 @@ void AdvanceOrder::battle() {
 		// Take the card on the top of the deck and add it to the player's hand.
 		this->player->getHand()->drawCardFromDeck();
 	}
-
-
 }
 
 // Used to print information about the order.
@@ -315,24 +313,27 @@ BlockadeOrder& BlockadeOrder::operator=(const BlockadeOrder& o) {
 
 // Airlift order subclass.
 // Constructor which takes a pointer to a Player object.
-AirliftOrder::AirliftOrder(Player* player) : Order(player) { }
+AirliftOrder::AirliftOrder(Player* player, int numArmies, Territory* source, Territory* target) : 
+	Order(player), numArmies(numArmies), source(source), target(target) { }
 
 // Copy constructor taking a pointer to another AirliftOrder object.
-AirliftOrder::AirliftOrder(AirliftOrder* other) : Order(other) { }
+AirliftOrder::AirliftOrder(AirliftOrder* other) : Order(other), numArmies(other->numArmies), source(other->source), target(other->source) { }
 
 // Destructor.
 AirliftOrder::~AirliftOrder() { }
 
-// This verifies that there are no problems with the order. Returns true if valid, false otherwise.
+// Verify that the source and target belong to the player who created the order and that player and number of armies is valid.
 bool AirliftOrder::validate() {
-	// TODO: More checks once we have more details.
-	if (this->player != NULL) {
-		return true;
-	}
-	return false;
+	return(
+		(this->player != nullptr) &&
+		(this->numArmies <= this->source->getArmies()) &&
+		(this->player == this->source->getOwner()) &&
+		(this->player == this->target->getOwner())
+		);
 }
 
 // First uses the validate method and then executes the order and displays the status.
+// Actions take place according to the Warzone rules; that is, the source and target belong to the player.
 bool AirliftOrder::execute() {
 	cout << "Attempting to execute airlift order... ";
 
@@ -341,7 +342,9 @@ bool AirliftOrder::execute() {
 		return false;
 	}
 
-	// TODO: Do actions once we have more details.
+	this->source->removeArmies(numArmies);
+	this->target->addArmies(numArmies);
+
 	cout << "Airlift order executed." << endl;
 	return true;
 }

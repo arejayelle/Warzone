@@ -105,7 +105,7 @@ private:
 
 class AirliftOrder : public Order {
 public:
-	AirliftOrder(Player* player);
+	AirliftOrder(Player* player, Territory* source, Territory* target);
 	AirliftOrder(AirliftOrder* other);
 	~AirliftOrder();
 
@@ -114,6 +114,9 @@ public:
 	std::string toString() const;
 
 private:
+	Territory* source;
+	Territory* target;
+
 	friend std::ostream& operator<<(std::ostream& strm, const AirliftOrder& o);
 	AirliftOrder& operator= (const AirliftOrder& o);
 };
