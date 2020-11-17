@@ -45,7 +45,7 @@ ostream& operator<<(ostream &strm, const Order &o) {
 
 // Assignment operator which uses the class' copy constructor.
 Order& Order::operator=(const Order &o) {
-	// TODO
+	// TODO why is the new way better? (all classes)
 	// return new Order(o);
 	player = o.player;
 	return *this;
@@ -89,6 +89,7 @@ bool DeployOrder::execute() {
 
 // Used to print information about the order.
 string DeployOrder::toString() const {
+	// TODO make nicer (all classes)
 	ostringstream strm;
 	strm << "Deploy order made by player " << this->player;
 	return strm.str();
@@ -152,8 +153,9 @@ ostream& operator<<(ostream& strm, const AdvanceOrder& o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-AdvanceOrder* AdvanceOrder::operator=(const AdvanceOrder& o) {
-	return new AdvanceOrder(o);
+AdvanceOrder& AdvanceOrder::operator=(const AdvanceOrder& o) {
+	player = o.player;
+	return *this;
 }
 
 
@@ -203,8 +205,9 @@ ostream& operator<<(ostream& strm, const BombOrder& o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-BombOrder* BombOrder::operator=(const BombOrder& o) {
-	return new BombOrder(o);
+BombOrder& BombOrder::operator=(const BombOrder& o) {
+	player = o.player;
+	return *this;
 }
 
 
@@ -254,8 +257,9 @@ ostream& operator<<(ostream& strm, const BlockadeOrder& o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-BlockadeOrder* BlockadeOrder::operator=(const BlockadeOrder& o) {
-	return new BlockadeOrder(o);
+BlockadeOrder& BlockadeOrder::operator=(const BlockadeOrder& o) {
+	player = o.player;
+	return *this;
 }
 
 
@@ -305,8 +309,9 @@ ostream& operator<<(ostream& strm, const AirliftOrder& o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-AirliftOrder* AirliftOrder::operator=(const AirliftOrder& o) {
-	return new AirliftOrder(o);
+AirliftOrder& AirliftOrder::operator=(const AirliftOrder& o) {
+	player = o.player;
+	return *this;
 }
 
 
@@ -356,8 +361,9 @@ ostream& operator<<(ostream& strm, const NegotiateOrder& o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-NegotiateOrder* NegotiateOrder::operator=(const NegotiateOrder& o) {
-	return new NegotiateOrder(o);
+NegotiateOrder& NegotiateOrder::operator=(const NegotiateOrder& o) {
+	player = o.player;
+	return *this;
 }
 
 

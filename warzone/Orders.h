@@ -62,7 +62,7 @@ public:
 
 private:
 	friend std::ostream& operator<<(std::ostream& strm, const AdvanceOrder& o);
-	AdvanceOrder* operator= (const AdvanceOrder& o);
+	AdvanceOrder& operator= (const AdvanceOrder& o);
 };
 
 
@@ -78,7 +78,7 @@ public:
 
 private:
 	friend std::ostream& operator<<(std::ostream& strm, const BombOrder& o);
-	BombOrder* operator= (const BombOrder& o);
+	BombOrder& operator= (const BombOrder& o);
 };
 
 
@@ -94,7 +94,7 @@ public:
 
 private:
 	friend std::ostream& operator<<(std::ostream& strm, const BlockadeOrder& o);
-	BlockadeOrder* operator= (const BlockadeOrder& o);
+	BlockadeOrder& operator= (const BlockadeOrder& o);
 };
 
 
@@ -110,7 +110,7 @@ public:
 
 private:
 	friend std::ostream& operator<<(std::ostream& strm, const AirliftOrder& o);
-	AirliftOrder* operator= (const AirliftOrder& o);
+	AirliftOrder& operator= (const AirliftOrder& o);
 };
 
 
@@ -126,7 +126,7 @@ public:
 
 private:
 	friend std::ostream& operator<<(std::ostream& strm, const NegotiateOrder& o);
-	NegotiateOrder* operator= (const NegotiateOrder& o);
+	NegotiateOrder& operator= (const NegotiateOrder& o);
 };
 
 
