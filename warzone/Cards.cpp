@@ -316,10 +316,10 @@ AirliftCard* AirliftCard::operator=(const AirliftCard& card)
 	 * Play function
 	 *
 	 */
-Order* AirliftCard::play(Player* owner, Territory* source, Territory* target)
+Order* AirliftCard::play(Player* owner, int numArmies, Territory* source, Territory* target)
 {
 	cout << "Playing AirliftCard" << endl;
-	return new AirliftOrder(owner, source, target);
+	return new AirliftOrder(owner, numArmies, source, target);
 }
 
 // Diplomacy Cards

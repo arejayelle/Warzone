@@ -76,7 +76,7 @@ public:
 	~AirliftCard();
 	AirliftCard* operator= (const AirliftCard& card);
 
-	Order* play(Player* owner, Territory* source, Territory* target);
+	Order* play(Player* owner, int numArmies, Territory* source, Territory* target);
 };
 
 class DiplomacyCard :public Card {

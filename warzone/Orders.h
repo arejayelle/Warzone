@@ -105,7 +105,7 @@ private:
 
 class AirliftOrder : public Order {
 public:
-	AirliftOrder(Player* player, Territory* source, Territory* target);
+	AirliftOrder(Player* player, int numArmies, Territory* source, Territory* target);
 	AirliftOrder(AirliftOrder* other);
 	~AirliftOrder();
 
@@ -114,6 +114,7 @@ public:
 	std::string toString() const;
 
 private:
+	int numArmies;
 	Territory* source;
 	Territory* target;
 
