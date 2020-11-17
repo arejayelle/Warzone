@@ -182,7 +182,12 @@ void AdvanceOrder::battle() {
 
 		// Add the new territory to the player's list of territories.
 		this->player->addTerritory(this->target);
+
+		// Take the card on the top of the deck and add it to the player's hand.
+		this->player->getHand()->drawCardFromDeck();
 	}
+
+
 }
 
 // Used to print information about the order.

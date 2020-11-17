@@ -474,6 +474,11 @@ void Hand::addCard(Card* card)
 	this->currentHand->push_back(card);
 }
 
+void Hand::drawCardFromDeck()
+{
+	this->addCard(this->deck->draw());
+}
+
 void Hand::play(int index)
 {
 	if (index < currentHand->size()) {

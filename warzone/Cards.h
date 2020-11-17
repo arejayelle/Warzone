@@ -120,6 +120,7 @@ public:
 	Hand* operator= (const Hand& hand);
 
 	void addCard(Card* card);
+	void drawCardFromDeck();
 	void play(int index);
 
 	const vector<Card*>* getCurrentHand();

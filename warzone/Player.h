@@ -42,6 +42,7 @@ public:
 
 private:
 	Hand* playerHand; //returns player's hand
+
 	OrdersList* playerOrdersList; //returns player's order list
 	vector<Territory*>* playerTerritories; //returns player's territories
 	int reinforcementPool;
