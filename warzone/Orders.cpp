@@ -3,6 +3,7 @@
 
 using namespace std;
 
+// TODO comments everywhere
 
 // Generic order abstract class.
 // Default constructor.
@@ -54,7 +55,7 @@ Order& Order::operator=(const Order &o) {
 
 // Deploy order subclass.
 // Constructor which takes a pointer to a Player object.
-DeployOrder::DeployOrder(Player* player, int numArmies, Territory* target) : Order(player) , numArmies(numArmies), target(nullptr) { }
+DeployOrder::DeployOrder(Player* player, int numArmies, Territory* target) : Order(player) , numArmies(numArmies), target(target) { }
 
 // Copy constructor taking a pointer to another DeployOrder object.
 DeployOrder::DeployOrder(DeployOrder* other) : Order(other), numArmies(other->numArmies), target(other->target) { }
@@ -109,21 +110,23 @@ DeployOrder& DeployOrder::operator=(const DeployOrder& o) {
 
 // Advance order subclass.
 // Constructor which takes a pointer to a Player object.
-AdvanceOrder::AdvanceOrder(Player* player) : Order(player) { }
+AdvanceOrder::AdvanceOrder(Player* player, int numArmies, Territory* source, Territory* target) : 
+	Order(player), numArmies(numArmies), source(source), target(target) { }
 
 // Copy constructor taking a pointer to another AdvanceOrder object.
-AdvanceOrder::AdvanceOrder(AdvanceOrder* other) : Order(other) { }
+AdvanceOrder::AdvanceOrder(AdvanceOrder* other) : Order(other), numArmies(other->numArmies), source(other->source), target(other->target) { }
 
 // Destructor.
 AdvanceOrder::~AdvanceOrder() { }
 
 // This verifies that there are no problems with the order. Returns true if valid, false otherwise.
 bool AdvanceOrder::validate() {
-	// TODO: More checks once we have more details.
-	if (this->player != NULL) {
-		return true;
-	}
-	return false;
+	// Verify that player is valid, that the source belongs to the player who created the order, and that source contains enough armies.
+	return(
+		(this->player != nullptr) &&
+		(this->numArmies <= this->source->getArmies()) && 
+		(std::find(this->player->getTerritories()->begin(), this->player->getTerritories()->end(), this->source) != this->player->getTerritories()->end())
+		);
 }
 
 // First uses the validate method and then executes the order and displays the status.
@@ -135,9 +138,22 @@ bool AdvanceOrder::execute() {
 		return false;
 	}
 
-	// TODO: Do actions once we have more details.
+	// Actions for when the source and target territories belong to the same player.
+	if (this->source->getOwner() == this->target->getOwner()) {
+		this->source->removeArmies(numArmies);
+		this->target->addArmies(numArmies);
+	}
+	// Execute battle simulation sequence.
+	else {
+		battle();
+	}
+
 	cout << "Advance order executed." << endl;
 	return true;
+}
+
+void AdvanceOrder::battle() {
+
 }
 
 // Used to print information about the order.

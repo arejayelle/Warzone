@@ -218,6 +218,7 @@ ReinforcementCard* ReinforcementCard::operator=(const ReinforcementCard& card)
 Order* ReinforcementCard::play(Player* owner)
 {
 	cout << "Playing ReinforcementCard" << endl;
+	// TODO
 	return new DeployOrder(owner, 0, nullptr);
 }
 

@@ -37,6 +37,10 @@ void Territory::addArmies(int amount) {
 	this->armies += amount;
 }
 
+void Territory::removeArmies(int amount) {
+	this->armies -= amount;
+}
+
 // Get a read-only vector of all territories bordering this one
 const std::vector<Territory*>* Territory::getBorders()
 {
@@ -46,6 +50,14 @@ const std::vector<Territory*>* Territory::getBorders()
 // Get the continent in which this territory is located
 Continent* Territory::getContinent() {
 	return this->continent;
+}
+
+Player* Territory::getOwner() {
+	return this->owner;
+}
+
+int Territory::getArmies() {
+	return this->armies;
 }
 
 // Stream insertion operator for Territory
