@@ -25,6 +25,11 @@ Territory* Territory::operator=(const Territory& territory)
 	return new Territory(territory);
 }
 
+std::string Territory::getName()
+{
+	return this->name;
+}
+
 // Add borders between this country and all countries in the provided borders vector
 void Territory::addBorders(std::vector<Territory*>* borders) {
 	for (std::vector<Territory*>::iterator it = borders->begin(); it != borders->end(); ++it) {
@@ -57,12 +62,21 @@ Player* Territory::getOwner() {
 }
 
 void Territory::setOwner(Player* player) {
-	// TODO Do I have to dereference this or something?
 	this->owner = player;
 }
 
 int Territory::getArmies() {
 	return this->armies;
+}
+
+void Territory::setIncomingArmies(int armies)
+{
+	incomingArmies = armies;
+}
+
+int Territory::getIncomingArmies()
+{
+	return incomingArmies;
 }
 
 // Stream insertion operator for Territory
@@ -113,6 +127,25 @@ std::ostream& operator<<(std::ostream& out, const Continent& continent)
 {
 	out << continent.name << " " << continent.value;
 	return out;
+}
+
+int Continent::getValue() {
+	return value;
+}
+
+/**
+ * Check if someone owns all territories in a continent. If so, returns the owner of the continent.
+ * 
+ * \return The owner of the continent. Returns nullptr if nobody owns the entire continent.
+ */
+Player* Continent::getContinentOwner() {
+	Player* owner = territories.at(0)->getOwner();
+	for (std::vector<Territory*>::iterator it = territories.begin(); it != territories.end(); it++) {
+		if ((**it).getOwner() != owner) {
+			return nullptr;
+		}
+	}
+	return owner;
 }
 
 // Construct an empty Map

@@ -3,5 +3,5 @@
 
 int main()
 {
-	return OrdersDriver::main();
+	return GameLoopDriver::main();
 }
