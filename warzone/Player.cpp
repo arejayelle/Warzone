@@ -5,6 +5,7 @@ Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Dec
 	this->playerTerritories = territoriesToAdd;
 	this->playerOrdersList = playerList;
 	this->playerHand = new Hand(deckToTakeFrom, this);
+	this->reinforcementPool = 0;
 }
 
 Player::~Player() {  //destructor 
@@ -27,6 +28,7 @@ Player::Player(const Player& player)  //copy constructor
 	}
 	this->playerOrdersList = new OrdersList(*player.playerOrdersList);
 	this->playerHand = new Hand(*player.playerHand);
+	this->reinforcementPool = player.reinforcementPool;
 }
 
 const vector<Territory*>* Player::toDefend()   //returns territories the player can defend

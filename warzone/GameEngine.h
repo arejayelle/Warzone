@@ -15,7 +15,7 @@ class GameEngine
 private:
 	Map* map;
 	std::vector<Player*> playerArray;
-	MapLoader* loader;
+	Deck* gameDeck;
 public:
 	GameEngine();
 	~GameEngine();

@@ -1,15 +1,17 @@
 #include "GameEngine.h"
 
 
-GameEngine::GameEngine() { //FINISH THIS PART
+GameEngine::GameEngine() {
 	map = nullptr;
 	playerArray = std::vector<Player*>();
-	loader = nullptr;
+	gameDeck = new Deck();
 }
 
-GameEngine::~GameEngine() {    //FINISH THIS PART
+GameEngine::~GameEngine() {    
 	delete map;
-	delete loader;
+	for (auto i : playerArray)
+		delete i;
+	delete gameDeck;
 }
 
 void GameEngine::startUpPhase() {
@@ -22,25 +24,29 @@ void GameEngine::startUpPhase() {
 	string mapFileName;
 	bool observersOn= true;
 
+	MapLoader* loader = nullptr;
 	//Map Loading 
 	while (fileInvalid == true) {
 		cout << "What map file would you like?";
 		cin >> mapFileName;
-		*loader = MapLoader(mapFileName);
+		loader = new MapLoader(mapFileName);
 		if (loader->validateMapFormat() == true)
 			fileInvalid = false;
-		else
-			fileInvalid - true;
+		else {
+			fileInvalid = true;
+			delete loader;
+		}
 	}
 	map = loader->convertFileToMap();
+	delete loader;
 
 	//Setting up Observers
 	cout << "Would you like to turn observers on or off? y/n" << endl;
 	cin >> playerAnswer;
 	if (playerAnswer.compare("y") == 0 || playerAnswer.compare("Y") == 0)
-		observersOn == true;
+		observersOn = true;
 	else
-		observersOn == false;
+		observersOn = false;
 
 	//PlayerNumberSetup
 	while (playerInputValid == false) { //Getting number of players
@@ -51,8 +57,8 @@ void GameEngine::startUpPhase() {
 		else
 			playerInputValid = true;
 	}
+
 	//Populate Deck 
-	Deck* gameDeck = new Deck();
 	for (int i = 0; i < 4; i++)
 	{
 		SpyCard* spy = new SpyCard();
@@ -70,7 +76,7 @@ void GameEngine::startUpPhase() {
 	//Create players with reinforcements
 	for (int i = 0; i <= numberOfPlayers; i++)
 	{
-		vector<Territory*>* territories = new vector<Territory*>();
+		vector<Territory*>* territories = new vector<Territory*>(); 
 		OrdersList* orders = new OrdersList();
 		Player* player = new Player(territories, orders, gameDeck);
 		if (numberOfPlayers == 2)
@@ -84,8 +90,7 @@ void GameEngine::startUpPhase() {
 		playerArray.push_back(player);
 	}
 	//Shuffle Player Array 
-	std:random_shuffle(playerArray.begin(), playerArray.end());
-
+	random_shuffle(playerArray.begin(), playerArray.end());
 
 	//Assign Players Their Territories 
 	int territoryIterator = 0;
