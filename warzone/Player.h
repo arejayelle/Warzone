@@ -43,7 +43,8 @@ public:
 	vector<Territory*>* getTerritories(); //Get territories
 	Hand* getHand(); //Get hand
 	OrdersList* getOrdersList(); //Get order list
-	int getReinforcements();
+	int getReinforcements(); // Get reinforcements
+
 
 	//Setters
 	void setOrdersList(OrdersList* ordersList); //Set Orders List 
@@ -51,6 +52,7 @@ public:
 	void addTerritory(Territory* territoryToAdd);  // Add one territory to player's list of territories.
 	void setHand(Hand* handToAdd); //Set hand 
 	void addReinforcements(int addedReinforcements);
+	void grantTerritory(Territory* territory);
 
 private:
 	Hand* hand; //returns player's hand

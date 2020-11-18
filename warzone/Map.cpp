@@ -57,13 +57,15 @@ Continent* Territory::getContinent() {
 	return this->continent;
 }
 
+void Territory::setOwner(Player* player)
+{
+	this->owner = player;
+}
+
 Player* Territory::getOwner() {
 	return this->owner;
 }
 
-void Territory::setOwner(Player* player) {
-	this->owner = player;
-}
 
 int Territory::getArmies() {
 	return this->armies;

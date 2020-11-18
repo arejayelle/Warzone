@@ -19,7 +19,6 @@ Player::~Player() {  //destructor
 	delete ordersList;
 }
 
-
 Player* Player::operator=(const Player & one)  //assignment operator
 {
 	return new Player(one);
@@ -199,16 +198,15 @@ OrdersList* Player::getOrdersList()   //returns the player's order list
 	return ordersList;
 }
 
-int Player::getReinforcements()
-{
-	return reinforcementPool;
-}
 
 Hand* Player::getHand()  //returns the cards in the player's hand
 {
 	return hand;
 }
-
+int Player::getReinforcements()
+{
+	return reinforcementPool;
+}
 void Player::setTerritories(vector<Territory*>* territoriesToAdd) //sets all the player's territories 
 {
 	this->territories = territoriesToAdd;
@@ -234,7 +232,12 @@ void Player::addReinforcements(int addedReinforcements)
 {
 	this->reinforcementPool += addedReinforcements;
 }
+void Player::grantTerritory(Territory* territory)
+{
+	territory->setOwner(this);
+	this->territories->push_back(territory);
 
+}
 ostream& operator<<(ostream& output, const Player &player)  //output stream
 {
 	output << "Player Information:" << endl;
