@@ -20,12 +20,27 @@ GameEngine* GameEngine::operator=(const GameEngine& engine) //assignment operato
 
 GameEngine::GameEngine(const GameEngine& Engine) //Copy constructor
 {
-
+	this->map = Engine.map;
+	this->gameDeck = Engine.gameDeck;
+	for (Player* p : Engine.playerArray)
+	{
+		Player* player = new Player(*p);
+		this->playerArray.push_back(player); 
+	}
 }
 
 ostream& operator<<(ostream& output, const GameEngine& engine)  //stream overloading
 {
-	// TODO: insert return statement here
+	output << "Game Engine Information:" << endl;
+	output << "Deck: " << *engine.gameDeck << endl;
+	output << "Territories: " << engine.map->getTerritories() << endl;
+	for (int i = 0; i < engine.playerArray.size(); i++) {
+		output << "Player: " << engine.playerArray.at(i)->getTerritories();
+		output << "Player: " << engine.playerArray.at(i)->getHand();
+		output << "Player: " << engine.playerArray.at(i)->getOrdersList();
+}
+	return output;
+
 }
 
 void GameEngine::startUpPhase() {
