@@ -1,10 +1,12 @@
 #include "Orders.h"
-#include <iostream>
-#include <string>
 #include <sstream>
+#include <ctime>
 
+using namespace std;
 
-// Generic order base class.
+// TODO comments everywhere
+
+// Generic order abstract class.
 // Default constructor.
 Order::Order() {
 	this->player = nullptr;
@@ -25,25 +27,10 @@ Order::~Order() { }
 
 // This verifies that there are no problems with the order. Returns true if valid, false otherwise.
 bool Order::validate() {
-	// TODO: More checks once we have more details.
 	if (this->player != NULL) {
 		return true;
 	} 
 	return false;
-}
-
-// First uses the validate method and then executes the order and displays the status.
-bool Order::execute() {
-	cout << "Attempting to execute order... ";
-
-	if(!this->validate()) {
-		cout << "Cannot execute order because it is invalid." << endl;
-		return false;
-	}
-
-	// TODO: Do actions once we have more details.
-	cout << "Order executed." << endl;
-	return true;
 }
 
 // Used to print information about the order.
@@ -59,28 +46,32 @@ ostream& operator<<(ostream &strm, const Order &o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-Order* Order::operator=(const Order &o) {
-	return new Order(o);
+Order& Order::operator=(const Order &o) {
+	// TODO why is the new way better? (all classes)
+	// return new Order(o);
+	player = o.player;
+	return *this;
 }
 
 
 // Deploy order subclass.
 // Constructor which takes a pointer to a Player object.
-DeployOrder::DeployOrder(Player* player) : Order(player) { }
+DeployOrder::DeployOrder(Player* player, int numArmies, Territory* target) : Order(player) , numArmies(numArmies), target(target) { }
 
 // Copy constructor taking a pointer to another DeployOrder object.
-DeployOrder::DeployOrder(DeployOrder* other) : Order(other) { }
+DeployOrder::DeployOrder(DeployOrder* other) : Order(other), numArmies(other->numArmies), target(other->target) { }
 
 // Destructor.
 DeployOrder::~DeployOrder() { }
 
 // This verifies that there are no problems with the order. Returns true if valid, false otherwise.
 bool DeployOrder::validate() {
-	// TODO: More checks once we have more details.
-	if (this->player != NULL) {
-		return true;
-	}
-	return false;
+	// Check validity of player, number of armies deployed, and that the target territory belongs to the player.
+	return(
+		(this->player != nullptr) &&
+		(this->numArmies <= this->player->getReinforcements()) &&
+		(this->player == this->target->getOwner())
+		);
 }
 
 // First uses the validate method and then executes the order and displays the status.
@@ -92,13 +83,15 @@ bool DeployOrder::execute() {
 		return false;
 	}
 
-	// TODO: Do actions once we have more details.
+	// Add the armies to the territory.
+	this->target->addArmies(this->numArmies);
 	cout << "Deploy order executed." << endl;
 	return true;
 }
 
 // Used to print information about the order.
 string DeployOrder::toString() const {
+	// TODO make nicer (all classes)
 	ostringstream strm;
 	strm << "Deploy order made by player " << this->player;
 	return strm.str();
@@ -110,28 +103,32 @@ ostream& operator<<(ostream& strm, const DeployOrder& o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-DeployOrder* DeployOrder::operator=(const DeployOrder& o) {
-	return new DeployOrder(o);
+DeployOrder& DeployOrder::operator=(const DeployOrder& o) {
+	Order::operator=(o);
+	return *this;
 }
 
 
 // Advance order subclass.
 // Constructor which takes a pointer to a Player object.
-AdvanceOrder::AdvanceOrder(Player* player) : Order(player) { }
+AdvanceOrder::AdvanceOrder(Player* player, int numArmies, Territory* source, Territory* target) : 
+	Order(player), numArmies(numArmies), source(source), target(target) { }
 
 // Copy constructor taking a pointer to another AdvanceOrder object.
-AdvanceOrder::AdvanceOrder(AdvanceOrder* other) : Order(other) { }
+AdvanceOrder::AdvanceOrder(AdvanceOrder* other) : Order(other), numArmies(other->numArmies), source(other->source), target(other->target) { }
 
 // Destructor.
 AdvanceOrder::~AdvanceOrder() { }
 
 // This verifies that there are no problems with the order. Returns true if valid, false otherwise.
 bool AdvanceOrder::validate() {
-	// TODO: More checks once we have more details.
-	if (this->player != NULL) {
-		return true;
-	}
-	return false;
+	// Verify that player is valid, that the source belongs to the player who created the order, and that source contains enough armies.
+	return(
+		(this->player != nullptr) &&
+		(this->numArmies <= this->source->getArmies()) &&
+		(this->player == this->source->getOwner()) &&
+		!(this->player->isInNegotiationWithPlayer(this->target->getOwner())) // Make order invalid if the source and target owners are in negotiation with each other.
+		);
 }
 
 // First uses the validate method and then executes the order and displays the status.
@@ -143,9 +140,54 @@ bool AdvanceOrder::execute() {
 		return false;
 	}
 
-	// TODO: Do actions once we have more details.
+	// Actions for when the source and target territories belong to the same player.
+	if (this->source->getOwner() == this->target->getOwner()) {
+		this->source->removeArmies(numArmies);
+		this->target->addArmies(numArmies);
+	}
+	// Execute battle simulation sequence.
+	else {
+		this->battle();
+	}
+
 	cout << "Advance order executed." << endl;
 	return true;
+}
+
+void AdvanceOrder::battle() {
+	// Seed the random number generator.
+	// TODO Probably better if this occurs once at the top of main().
+	srand(time(0));
+
+	while (this->source->getArmies() > 0 && this->target->getArmies() > 0) {
+		// Attacker has 60% chance of killing defender.
+		if ((1 + rand() % 100) < 60) { 
+			this->target->removeArmies(1); 
+		}
+		// Defender has 70% chance of killing attacker.
+		if ((1 + rand() % 100) < 70) {
+			this->source->removeArmies(1);
+		}
+	}
+
+	// When attacker wins, the survivors occupy the territory.
+	if (this->source->getArmies() > this->target->getArmies()) {
+		int numArmies = this->source->getArmies();
+
+		// Place remaining armies on the new territory.
+		this->source->removeArmies(numArmies);
+		this->target->addArmies(numArmies);
+
+		// Remove territory from losing player's vector of territories and transfer ownership of territory to the winning player.
+		this->target->getOwner()->removeTerritory(this->target);
+		this->target->setOwner(this->source->getOwner());
+
+		// Add the new territory to the player's list of territories.
+		this->player->addTerritory(this->target);
+
+		// Take the card on the top of the deck and add it to the player's hand.
+		this->player->getHand()->drawCardFromDeck();
+	}
 }
 
 // Used to print information about the order.
@@ -161,28 +203,28 @@ ostream& operator<<(ostream& strm, const AdvanceOrder& o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-AdvanceOrder* AdvanceOrder::operator=(const AdvanceOrder& o) {
-	return new AdvanceOrder(o);
+AdvanceOrder& AdvanceOrder::operator=(const AdvanceOrder& o) {
+	player = o.player;
+	return *this;
 }
 
 
 // BombOrder subclass.
 // Constructor which takes a pointer to a Player object.
-BombOrder::BombOrder(Player* player) : Order(player) { }
+BombOrder::BombOrder(Player* player, Territory* target) : Order(player), target(target) { }
 
 // Copy constructor taking a pointer to another BombOrder object.
-BombOrder::BombOrder(BombOrder* other) : Order(other) { }
+BombOrder::BombOrder(BombOrder* other) : Order(other), target(other->target) { }
 
 // Destructor.
 BombOrder::~BombOrder() { }
 
 // This verifies that there are no problems with the order. Returns true if valid, false otherwise.
 bool BombOrder::validate() {
-	// TODO: More checks once we have more details.
-	if (this->player != NULL) {
-		return true;
-	}
-	return false;
+	return(
+		(this->player != nullptr) &&
+		(this->target->getOwner() != this->player)
+		);
 }
 
 // First uses the validate method and then executes the order and displays the status.
@@ -194,7 +236,8 @@ bool BombOrder::execute() {
 		return false;
 	}
 
-	// TODO: Do actions once we have more details.
+	// Remove half the armies in the target territory.
+	this->target->removeArmies(this->target->getArmies() / 2);
 	cout << "Bomb order executed." << endl;
 	return true;
 }
@@ -212,28 +255,28 @@ ostream& operator<<(ostream& strm, const BombOrder& o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-BombOrder* BombOrder::operator=(const BombOrder& o) {
-	return new BombOrder(o);
+BombOrder& BombOrder::operator=(const BombOrder& o) {
+	player = o.player;
+	return *this;
 }
 
 
 // Blockade order subclass.
 // Constructor which takes a pointer to a Player object.
-BlockadeOrder::BlockadeOrder(Player* player) : Order(player) { }
+BlockadeOrder::BlockadeOrder(Player* player, Territory* target) : Order(player), target(target) { }
 
 // Copy constructor taking a pointer to another BlockadeOrder object.
-BlockadeOrder::BlockadeOrder(BlockadeOrder* other) : Order(other) { }
+BlockadeOrder::BlockadeOrder(BlockadeOrder* other) : Order(other), target(other->target) { }
 
 // Destructor.
 BlockadeOrder::~BlockadeOrder() { }
 
 // This verifies that there are no problems with the order. Returns true if valid, false otherwise.
 bool BlockadeOrder::validate() {
-	// TODO: More checks once we have more details.
-	if (this->player != NULL) {
-		return true;
-	}
-	return false;
+	return(
+		(this->player != nullptr) &&
+		(this->target->getOwner() == this->player)
+		);
 }
 
 // First uses the validate method and then executes the order and displays the status.
@@ -245,7 +288,8 @@ bool BlockadeOrder::execute() {
 		return false;
 	}
 
-	// TODO: Do actions once we have more details.
+	this->target->addArmies(this->target->getArmies() / 2);
+	this->target->setOwner(nullptr);
 	cout << "Blockade order executed." << endl;
 	return true;
 }
@@ -263,31 +307,35 @@ ostream& operator<<(ostream& strm, const BlockadeOrder& o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-BlockadeOrder* BlockadeOrder::operator=(const BlockadeOrder& o) {
-	return new BlockadeOrder(o);
+BlockadeOrder& BlockadeOrder::operator=(const BlockadeOrder& o) {
+	player = o.player;
+	return *this;
 }
 
 
 // Airlift order subclass.
 // Constructor which takes a pointer to a Player object.
-AirliftOrder::AirliftOrder(Player* player) : Order(player) { }
+AirliftOrder::AirliftOrder(Player* player, int numArmies, Territory* source, Territory* target) : 
+	Order(player), numArmies(numArmies), source(source), target(target) { }
 
 // Copy constructor taking a pointer to another AirliftOrder object.
-AirliftOrder::AirliftOrder(AirliftOrder* other) : Order(other) { }
+AirliftOrder::AirliftOrder(AirliftOrder* other) : Order(other), numArmies(other->numArmies), source(other->source), target(other->source) { }
 
 // Destructor.
 AirliftOrder::~AirliftOrder() { }
 
-// This verifies that there are no problems with the order. Returns true if valid, false otherwise.
+// Verify that the source and target belong to the player who created the order and that player and number of armies is valid.
 bool AirliftOrder::validate() {
-	// TODO: More checks once we have more details.
-	if (this->player != NULL) {
-		return true;
-	}
-	return false;
+	return(
+		(this->player != nullptr) &&
+		(this->numArmies <= this->source->getArmies()) &&
+		(this->player == this->source->getOwner()) &&
+		(this->player == this->target->getOwner())
+		);
 }
 
 // First uses the validate method and then executes the order and displays the status.
+// Actions take place according to the Warzone rules; that is, the source and target belong to the player.
 bool AirliftOrder::execute() {
 	cout << "Attempting to execute airlift order... ";
 
@@ -296,7 +344,9 @@ bool AirliftOrder::execute() {
 		return false;
 	}
 
-	// TODO: Do actions once we have more details.
+	this->source->removeArmies(numArmies);
+	this->target->addArmies(numArmies);
+
 	cout << "Airlift order executed." << endl;
 	return true;
 }
@@ -314,28 +364,28 @@ ostream& operator<<(ostream& strm, const AirliftOrder& o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-AirliftOrder* AirliftOrder::operator=(const AirliftOrder& o) {
-	return new AirliftOrder(o);
+AirliftOrder& AirliftOrder::operator=(const AirliftOrder& o) {
+	player = o.player;
+	return *this;
 }
 
 
 // Negotiate order subclass.
 // Constructor which takes a pointer to a Player object.
-NegotiateOrder::NegotiateOrder(Player* player) : Order(player) { }
+NegotiateOrder::NegotiateOrder(Player* player, Player* targeted) : Order(player), targeted(targeted) { }
 
 // Copy constructor taking a pointer to another NegotiateOrder object.
-NegotiateOrder::NegotiateOrder(NegotiateOrder* other) : Order(other) { }
+NegotiateOrder::NegotiateOrder(NegotiateOrder* other) : Order(other), targeted(other->targeted) { }
 
 // Destructor.
 NegotiateOrder::~NegotiateOrder() { }
 
 // This verifies that there are no problems with the order. Returns true if valid, false otherwise.
 bool NegotiateOrder::validate() {
-	// TODO: More checks once we have more details.
-	if (this->player != NULL) {
-		return true;
-	}
-	return false;
+	return(
+		(this->player != nullptr) &&
+		(this->player != this->targeted)
+		);
 }
 
 // First uses the validate method and then executes the order and displays the status.
@@ -347,7 +397,10 @@ bool NegotiateOrder::execute() {
 		return false;
 	}
 
-	// TODO: Do actions once we have more details.
+	// Executing a NegotiateOrder involves adding these players to each others' inNegotiationWith vectors.
+	this->player->addPlayerInNegotiationWith(this->targeted);
+	this->targeted->addPlayerInNegotiationWith(this->player);
+
 	cout << "Negotiate order executed." << endl;
 	return true;
 }
@@ -365,8 +418,9 @@ ostream& operator<<(ostream& strm, const NegotiateOrder& o) {
 }
 
 // Assignment operator which uses the class' copy constructor.
-NegotiateOrder* NegotiateOrder::operator=(const NegotiateOrder& o) {
-	return new NegotiateOrder(o);
+NegotiateOrder& NegotiateOrder::operator=(const NegotiateOrder& o) {
+	player = o.player;
+	return *this;
 }
 
 
@@ -381,7 +435,8 @@ OrdersList::OrdersList(OrdersList* other) {
 	// We make a new vector with pointers to new Order objects.
 	vector<Order*> newOrders = vector<Order*>();
 	for (int i = 0; i < other->orders.size(); i++) {
-		newOrders.push_back(new Order(other->orders.at(i)));
+		// TODO
+		// newOrders.push_back(new Order(other->orders.at(i)));
 	}
 	this->orders = newOrders;
 }

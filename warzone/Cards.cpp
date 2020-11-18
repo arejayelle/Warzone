@@ -37,7 +37,9 @@ Card::~Card()
 	 */
 Order* Card::play(Player* owner)
 {
-	return new Order();
+	// TODO
+	// return new Order();
+	return NULL;
 }
 
 /**
@@ -117,10 +119,10 @@ SpyCard* SpyCard::operator=(const SpyCard& card)
 	 * Play function
 	 *
 	 */
-Order* SpyCard::play(Player* owner)
+Order* SpyCard::play(Player* owner, Player* targeted)
 {
 	cout << "Playing " + name;
-	return new NegotiateOrder(owner);
+	return new NegotiateOrder(owner, targeted);
 }
 
 // Bomb Cards
@@ -166,10 +168,10 @@ BombCard* BombCard::operator=(const BombCard& card)
 /**
 	 * Creates a Bomb Order
 	 */
-Order* BombCard::play(Player* owner)
+Order* BombCard::play(Player* owner, Territory* target)
 {
 	cout << "Playing BombCard" << endl;
-	return new BombOrder(owner);
+	return new BombOrder(owner, target);
 }
 
 // Reinforcement Cards
@@ -216,7 +218,8 @@ ReinforcementCard* ReinforcementCard::operator=(const ReinforcementCard& card)
 Order* ReinforcementCard::play(Player* owner)
 {
 	cout << "Playing ReinforcementCard" << endl;
-	return new DeployOrder(owner);
+	// TODO
+	return new DeployOrder(owner, 0, nullptr);
 }
 
 // Blockade Cards
@@ -263,10 +266,10 @@ BlockadeCard::~BlockadeCard()
 	 * Play function
 	 *
 	 */
-Order* BlockadeCard::play(Player* owner)
+Order* BlockadeCard::play(Player* owner, Territory* target)
 {
 	cout << "Playing BlockadeCard" << endl;
-	return new BlockadeOrder(owner);
+	return new BlockadeOrder(owner, target);
 }
 
 // Airlift Cards
@@ -313,10 +316,10 @@ AirliftCard* AirliftCard::operator=(const AirliftCard& card)
 	 * Play function
 	 *
 	 */
-Order* AirliftCard::play(Player* owner)
+Order* AirliftCard::play(Player* owner, int numArmies, Territory* source, Territory* target)
 {
 	cout << "Playing AirliftCard" << endl;
-	return new AirliftOrder(owner);
+	return new AirliftOrder(owner, numArmies, source, target);
 }
 
 // Diplomacy Cards
@@ -362,10 +365,10 @@ DiplomacyCard* DiplomacyCard::operator=(const DiplomacyCard& card)
 	 * Play function
 	 *
 	 */
-Order* DiplomacyCard::play(Player* owner)
+Order* DiplomacyCard::play(Player* owner, Player* targeted)
 {
 	cout << "Playing DiplomacyCard" << endl;
-	return new NegotiateOrder(owner);
+	return new NegotiateOrder(owner, targeted);
 }
 
 Deck::Deck()
@@ -469,6 +472,11 @@ Hand* Hand::operator=(const Hand& hand)
 void Hand::addCard(Card* card)
 {
 	this->currentHand->push_back(card);
+}
+
+void Hand::drawCardFromDeck()
+{
+	this->addCard(this->deck->draw());
 }
 
 void Hand::play(int index)

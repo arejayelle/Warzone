@@ -17,9 +17,10 @@ int PlayerDriver::main() {
 	p1->getOrdersList()->print();
 
 	cout << "Player deployed following order: ";
-	Order* playerOrder = new Order();
-	cout << playerOrder->toString() << endl;
-	p1->issueOrder(playerOrder);  //issuing an order
+	// TODO
+	// Order* playerOrder = new Order();
+	// cout << playerOrder->toString() << endl;
+	// p1->issueOrder(playerOrder);  //issuing an order
 
 	p1->getOrdersList()->print();
 

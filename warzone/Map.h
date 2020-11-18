@@ -17,7 +17,12 @@ public:
 
 	void addBorders(std::vector<Territory*>* borders);
 	const std::vector<Territory*>* getBorders();
+	void addArmies(int amount);
+	void removeArmies(int amount);
 	Continent* getContinent();
+	Player* getOwner();
+	void setOwner(Player* player);
+	int getArmies();
 	friend std::ostream& operator<< (std::ostream& out, const Territory& territory);
 	
 private:

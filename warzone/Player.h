@@ -8,6 +8,7 @@ using namespace std;
 class Map;
 class Territory;
 class Order;
+class OrdersList;
 class Deck;
 class Hand;
 
@@ -26,18 +27,31 @@ public:
 	const vector<Territory*>* toAttack(); //Returns territories to attack
 	void issueOrder(Order* newOrder);  //Issue order method
 
+	void addPlayerInNegotiationWith(Player* player);
+	bool isInNegotiationWithPlayer(Player* player);
+	void clearInNegotiationWith();
+
+	void removeTerritory(Territory* territoryToRemove);
+
 	//Getters
 	vector<Territory*>* getTerritories(); //Get territories
 	Hand* getHand(); //Get hand
 	OrdersList* getOrdersList(); //Get order list
+	int getReinforcements();
+	
 
 	//Setters
-	void setOrdersList(OrdersList* ordersList); //Set territories
-	void setTerritories(vector<Territory*>* territoriesToAdd); //Set Orders List
+	void setOrdersList(OrdersList* ordersList); //Set Orders List 
+	void setTerritories(vector<Territory*>* territoriesToAdd); //Set territories
+	void addTerritory(Territory* territoryToAdd);  // Add one territory to player's list of territories.
 	void setHand(Hand* handToAdd); //Set hand 
+	void addReinforcements(int addedReinforcements);
 
 private:
 	Hand* playerHand; //returns player's hand
+
 	OrdersList* playerOrdersList; //returns player's order list
 	vector<Territory*>* playerTerritories; //returns player's territories
+	int reinforcementPool;
+	vector<Player*> inNegotiatonWith;
 };

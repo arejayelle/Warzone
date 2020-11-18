@@ -3,6 +3,17 @@
 
 
 int OrdersDriver::main() {
+	OrdersList* l1 = new OrdersList();
+	Deck* d1 = new Deck();
+	Player* p1 = new Player(nullptr, l1, d1);
+
+	// TODO
+	cout << "TODO" << endl;
+
+	return 0;
+}
+
+	/*
 	// Create an order list and player.
 	OrdersList list1 = new OrdersList();
 	Deck* deck = new Deck();
@@ -104,5 +115,4 @@ int OrdersDriver::main() {
 	cout << "\nDemonstration of Orders stream insertion operator: " << *regOrd1 << endl;
 	cout << "Demonstration of OrdersList stream insertion operator: " << list1 << endl << endl;
 
-	return 0;
-}
+	*/
