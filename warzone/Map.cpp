@@ -51,7 +51,7 @@ void Territory::setOwner(Player* player)
 // Stream insertion operator for Territory
 std::ostream& operator<<(std::ostream& out, const Territory& territory)
 {
-	out << territory.name;
+	out << territory.name <<  " owned by " << territory.owner << " holding " << territory.armies << " armies.";
 	return out;
 }
 
@@ -94,7 +94,7 @@ const std::vector<Territory*>* Continent::getTerritories() {
 // Stream insertion operator for Continent
 std::ostream& operator<<(std::ostream& out, const Continent& continent)
 {
-	out << continent.name;
+	out << continent.name << " " << continent.value;
 	return out;
 }
 
@@ -314,12 +314,12 @@ std::ostream& operator<<(std::ostream& out, const Map& map)
 
 	out << "Continents:" << std::endl;
 	for (std::vector<Continent*>::const_iterator it = map.continents.begin(); it != map.continents.end(); it++) {
-		out << *it << std::endl;
+		out << **it << std::endl;
 	}
 
 	out << "Territories:" << std::endl;
 	for (std::vector<Territory*>::const_iterator it = map.territories.begin(); it != map.territories.end(); it++) {
-		out << *it << std::endl;
+		out << **it << std::endl;
 	}
 
 	return out;
