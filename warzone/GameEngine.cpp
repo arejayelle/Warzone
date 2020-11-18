@@ -206,6 +206,7 @@ int GameEngine::executeOrdersPhase()
             if (top->getPriority() == currentPriority) {
                 Order* popped = player->getOrdersList()->pop();
                 _ASSERT(popped != nullptr);
+                cout << "Executing order " << top->toString() << endl;
                 top->execute();
                 currentPriorityOrdersRemain = true;
             }
