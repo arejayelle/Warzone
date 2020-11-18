@@ -6,6 +6,7 @@ Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Dec
 	this->playerOrdersList = playerList;
 	this->playerHand = new Hand(deckToTakeFrom, this);
 	this->reinforcementPool = 0;
+	this->inNegotiatonWith = vector<Player*>();
 }
 
 Player::~Player() {  //destructor 
@@ -30,6 +31,12 @@ Player::Player(const Player& player)  //copy constructor
 	this->playerOrdersList = new OrdersList(*player.playerOrdersList);
 	this->playerHand = new Hand(*player.playerHand);
 	this->reinforcementPool = player.reinforcementPool;
+	
+	// Copy each player in the new player's inNegotiationWith vector.
+	for (Player* p : player.inNegotiatonWith) {
+		Player* newPlayer = new Player(*p);
+		this->inNegotiatonWith.push_back(newPlayer);
+	}
 }
 
 const vector<Territory*>* Player::toDefend()   //returns territories the player can defend
@@ -49,6 +56,24 @@ void Player::issueOrder(Order* newOrder)  //allows player to issue an order
 	// TODO
 	// Order* playerOrder = new Order(*newOrder);
 	// playerOrdersList->add(playerOrder);
+}
+
+// Add a player to the vector inNegotiationWith.
+void Player::addPlayerInNegotiationWith(Player* player)
+{
+	this->inNegotiatonWith.push_back(player);
+}
+
+// Return true if the player is found in the vector and false if not found.
+bool Player::isInNegotiationWithPlayer(Player* player)
+{
+	return(std::find(this->inNegotiatonWith.begin(), this->inNegotiatonWith.end(), player) != this->inNegotiatonWith.end());
+}
+
+// Removes everything from the vector inNegotiationWith. Should be called at the end of a turn.
+void Player::clearInNegotiationWith()
+{
+	this->inNegotiatonWith.erase(this->inNegotiatonWith.begin(), this->inNegotiatonWith.end());
 }
 
  vector<Territory*>* Player::getTerritories()  //returns all the player's territories 
@@ -98,6 +123,7 @@ int Player::getReinforcements()
 {
 	return this->reinforcementPool;
 }
+
 
 ostream& operator<<(ostream& output, const Player &player)  //output stream
 {

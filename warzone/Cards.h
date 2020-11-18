@@ -36,7 +36,7 @@ public:
 	~SpyCard();
 	SpyCard* operator= (const SpyCard& card);
 
-	Order* play(Player* owner);
+	Order* play(Player* owner, Player* targeted);
 };
 
 class BombCard :public Card {
@@ -86,7 +86,7 @@ public:
 	~DiplomacyCard();
 	DiplomacyCard* operator= (const DiplomacyCard& card);
 
-	Order* play(Player* owner);
+	Order* play(Player* owner, Player* targeted);
 };
 
 class Deck {

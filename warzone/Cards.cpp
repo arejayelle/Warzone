@@ -119,10 +119,10 @@ SpyCard* SpyCard::operator=(const SpyCard& card)
 	 * Play function
 	 *
 	 */
-Order* SpyCard::play(Player* owner)
+Order* SpyCard::play(Player* owner, Player* targeted)
 {
 	cout << "Playing " + name;
-	return new NegotiateOrder(owner);
+	return new NegotiateOrder(owner, targeted);
 }
 
 // Bomb Cards
@@ -365,10 +365,10 @@ DiplomacyCard* DiplomacyCard::operator=(const DiplomacyCard& card)
 	 * Play function
 	 *
 	 */
-Order* DiplomacyCard::play(Player* owner)
+Order* DiplomacyCard::play(Player* owner, Player* targeted)
 {
 	cout << "Playing DiplomacyCard" << endl;
-	return new NegotiateOrder(owner);
+	return new NegotiateOrder(owner, targeted);
 }
 
 Deck::Deck()

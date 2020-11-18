@@ -126,7 +126,8 @@ bool AdvanceOrder::validate() {
 	return(
 		(this->player != nullptr) &&
 		(this->numArmies <= this->source->getArmies()) &&
-		(this->player == this->source->getOwner())
+		(this->player == this->source->getOwner()) &&
+		!(this->player->isInNegotiationWithPlayer(this->target->getOwner())) // Make order invalid if the source and target owners are in negotiation with each other.
 		);
 }
 
@@ -370,21 +371,20 @@ AirliftOrder& AirliftOrder::operator=(const AirliftOrder& o) {
 
 // Negotiate order subclass.
 // Constructor which takes a pointer to a Player object.
-NegotiateOrder::NegotiateOrder(Player* player) : Order(player) { }
+NegotiateOrder::NegotiateOrder(Player* player, Player* targeted) : Order(player), targeted(targeted) { }
 
 // Copy constructor taking a pointer to another NegotiateOrder object.
-NegotiateOrder::NegotiateOrder(NegotiateOrder* other) : Order(other) { }
+NegotiateOrder::NegotiateOrder(NegotiateOrder* other) : Order(other), targeted(other->targeted) { }
 
 // Destructor.
 NegotiateOrder::~NegotiateOrder() { }
 
 // This verifies that there are no problems with the order. Returns true if valid, false otherwise.
 bool NegotiateOrder::validate() {
-	// TODO: More checks once we have more details.
-	if (this->player != NULL) {
-		return true;
-	}
-	return false;
+	return(
+		(this->player != nullptr) &&
+		(this->player != this->targeted)
+		);
 }
 
 // First uses the validate method and then executes the order and displays the status.
@@ -396,7 +396,10 @@ bool NegotiateOrder::execute() {
 		return false;
 	}
 
-	// TODO: Do actions once we have more details.
+	// Executing a NegotiateOrder involves adding these players to each others' inNegotiationWith vectors.
+	this->player->addPlayerInNegotiationWith(this->targeted);
+	this->targeted->addPlayerInNegotiationWith(this->player);
+
 	cout << "Negotiate order executed." << endl;
 	return true;
 }

@@ -27,11 +27,16 @@ public:
 	const vector<Territory*>* toAttack(); //Returns territories to attack
 	void issueOrder(Order* newOrder);  //Issue order method
 
+	void addPlayerInNegotiationWith(Player* player);
+	bool isInNegotiationWithPlayer(Player* player);
+	void clearInNegotiationWith();
+
 	//Getters
 	vector<Territory*>* getTerritories(); //Get territories
 	Hand* getHand(); //Get hand
 	OrdersList* getOrdersList(); //Get order list
 	int getReinforcements();
+	
 
 	//Setters
 	void setOrdersList(OrdersList* ordersList); //Set territories
@@ -46,4 +51,5 @@ private:
 	OrdersList* playerOrdersList; //returns player's order list
 	vector<Territory*>* playerTerritories; //returns player's territories
 	int reinforcementPool;
+	vector<Player*> inNegotiatonWith;
 };

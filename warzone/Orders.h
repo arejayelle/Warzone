@@ -129,7 +129,7 @@ private:
 
 class NegotiateOrder : public Order {
 public:
-	NegotiateOrder(Player* player);
+	NegotiateOrder(Player* player, Player* targeted);
 	NegotiateOrder(NegotiateOrder* other);
 	~NegotiateOrder();
 
@@ -138,8 +138,7 @@ public:
 	std::string toString() const;
 
 private:
-	/*Player* 
-	Player* target;*/
+	Player* targeted;
 
 	friend std::ostream& operator<<(std::ostream& strm, const NegotiateOrder& o);
 	NegotiateOrder& operator= (const NegotiateOrder& o);
