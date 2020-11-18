@@ -32,7 +32,7 @@ void GameEngine::startUpPhase() {
 		else
 			fileInvalid - true;
 	}
-	*map = loader->convertFileToMap();
+	map = loader->convertFileToMap();
 
 	//Setting up Observers
 	cout << "Would you like to turn observers on or off? y/n" << endl;
@@ -83,8 +83,16 @@ void GameEngine::startUpPhase() {
 			player->addReinforcements(25);
 		playerArray.push_back(player);
 	}
+	//Shuffle Player Array 
+	std:random_shuffle(playerArray.begin(), playerArray.end());
 
 
+	//Assign Players Their Territories 
+	int territoryIterator = 0;
+	while (territoryIterator != map->getTerritories()->size()) {
+		playerArray[territoryIterator % playerArray.size()]->grantTerritory(map->getTerritories()->at(territoryIterator));
+		territoryIterator++;
+	}
 
 }
 
