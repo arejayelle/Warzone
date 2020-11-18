@@ -13,7 +13,6 @@ Player::~Player() {  //destructor
 	delete playerOrdersList;
 }
 
-
 Player* Player::operator=(const Player & one)  //assignment operator
 {
 	return new Player(one);
