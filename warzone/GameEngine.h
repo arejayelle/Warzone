@@ -5,6 +5,7 @@
 
 #include "Map.h"
 #include "Player.h"
+#include "GameObservers.h"
 
 class GameEngine
 {
@@ -23,6 +24,7 @@ public:
 private:
 	Map* map;
 	std::vector<Player*> players;
-
+	PhaseObservable* phaseObservable;
+	StatsObservable* statsObservable;
 };
 

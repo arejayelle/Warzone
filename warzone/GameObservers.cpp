@@ -49,12 +49,11 @@ PhaseObserver::~PhaseObserver(){
 }
 
 void PhaseObserver::update(){
-	std::cout << "I have been notified overrid method\n";
+	std::cout << "\n\n\n\n\n\n\n\n\n";
 }
 
 void PhaseObserver::update(std::string output){
-	std::cout << "I have been notified\n";
-	std::cout << "Output: " << output;
+	std::cout << output;
 	
 }
 
@@ -67,12 +66,11 @@ StatsObserver::~StatsObserver() {
 }
 
 void StatsObserver::update() {
-	std::cout << "Stats I have been notified\n";
+	std::cout << "\n\n\n\n\n\n\n\n\n";
 }
 
 void StatsObserver::update(std::string output){
-	std::cout << "I have been notified\n";
-	std::cout << "Output: " << output;
+	std::cout << output;
 }
 
 
