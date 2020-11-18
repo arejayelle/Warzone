@@ -98,8 +98,6 @@ void GameEngine::startUpPhase() {
 	//Populate Deck 
 	for (int i = 0; i < 4; i++)
 	{
-		SpyCard* spy = new SpyCard();
-		gameDeck->add(spy);
 		ReinforcementCard* reinforce = new ReinforcementCard();
 		gameDeck->add(reinforce);
 		AirliftCard* airlift = new AirliftCard();
@@ -146,8 +144,13 @@ void GameEngine::startUpPhase() {
 
 int GameEngine::mainGameLoop()
 {
-    reinforcementPhase();
-    return 0;
+	while (playerArray.size() > 1) {
+		reinforcementPhase();
+		issueOrdersPhase();
+		executeOrdersPhase();
+	}
+
+	return 0;
 }
 /**
  * Add armies to Player's reinforcement Pool dependant of the number of territories they own
@@ -191,33 +194,51 @@ int GameEngine::issueOrdersPhase()
 
 int GameEngine::executeOrdersPhase()
 {
-    // Get the highest priority order from each player in round-robin fashion
-    int currentPriority = 3;
+	// Get the highest priority order from each player in round-robin fashion
+	int currentPriority = 3;
 
-    while (currentPriority >= 0) {
-        bool currentPriorityOrdersRemain = false;
-        for (auto it = playerArray.begin(); it != playerArray.end(); it++) {
-            Player* player = *it;
-            if (player->getOrdersList()->size() == 0) {
-                continue;
-            }
-            Order* top = player->getOrdersList()->peek();
-            
-            if (top->getPriority() == currentPriority) {
-                Order* popped = player->getOrdersList()->pop();
-                _ASSERT(popped != nullptr);
-                cout << "Executing order " << top->toString() << endl;
-                top->execute();
-                currentPriorityOrdersRemain = true;
-            }
-        }
+	while (currentPriority >= 0) {
+		bool currentPriorityOrdersRemain = false;
+		for (auto it = playerArray.begin(); it != playerArray.end(); it++) {
+			Player* player = *it;
+			if (player->getOrdersList()->size() == 0) {
+				continue;
+			}
+			Order* top = player->getOrdersList()->peek();
 
-        if (!currentPriorityOrdersRemain) {
-            currentPriority -= 1;
-        }
-    }
+			if (top->getPriority() == currentPriority) {
+				Order* popped = player->getOrdersList()->pop();
+				_ASSERT(popped != nullptr);
+				cout << "Executing order " << top->toString() << endl;
+				top->execute();
+				currentPriorityOrdersRemain = true;
+			}
+		}
 
-    return 0;
+		if (!currentPriorityOrdersRemain) {
+			currentPriority -= 1;
+		}
+	}
+
+	std::vector<Player*> removeList;
+	for (auto it = playerArray.begin(); it != playerArray.end(); it++)
+	{
+		if ((*it)->getTerritories()->size() == 0) {
+			removeList.push_back((*it));
+		}
+	}
+
+	for (auto it = removeList.begin(); it != removeList.end(); it++)
+	{
+		auto removed = std::find(playerArray.begin(), playerArray.end(), (*it));
+		if (removed != playerArray.end()) {
+			cout << "removed player " << *removed;
+			playerArray.erase(removed);
+		}
+	}
+
+
+	return 0;
 }
 
 const std::vector<Player*>* GameEngine::getPlayers()
