@@ -2,14 +2,14 @@
 
 // Creates a Territory with the given name and position, and belonging to the given Continent.
 Territory::Territory(std::string name, Continent* continent, int x, int y)
-	: name{ name }, armies{ 0 }, x{ x }, y{ y }, borders{}, continent{ continent }, owner{ nullptr }
+	: name{ name }, armies{ 0 }, x{ x }, y{ y }, borders{}, continent{ continent }, owner{ nullptr }, incomingArmies{ 0 }
 {
 
 }
 
 // Copy constructor of Territory
 Territory::Territory(Territory* other)
-	: name{ other->name }, armies{ other->armies }, x{ other->x }, y{ other->y }, borders{ other->borders }, continent{ other->continent }, owner{ other->owner }
+	: name{ other->name }, armies{ other->armies }, x{ other->x }, y{ other->y }, borders{ other->borders }, continent{ other->continent }, owner{ other->owner }, incomingArmies{ other->incomingArmies }
 {
 
 }

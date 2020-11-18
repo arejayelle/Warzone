@@ -26,6 +26,7 @@ public:
 
 	const std::vector<Player*>* getPlayers();
 	const std::vector<Card*>* getDeck();
+	Map* getMap();
 
 private:
 	Map* map;
