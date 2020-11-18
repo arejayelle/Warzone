@@ -7,6 +7,13 @@ int GameLoopDriver::main()
     Map* map = MapDriver::getValidMap();
 
     Deck* deck = new Deck();
+    for (int i = 0; i < 4; i++) {
+        deck->add(new ReinforcementCard());
+        deck->add(new BlockadeCard());
+        deck->add(new DiplomacyCard());
+        deck->add(new BombCard());
+        deck->add(new AirliftCard());
+    }
 
     vector<Territory*>* player1Territories = new vector<Territory*>();
     player1Territories->push_back(map->getTerritory(0));
@@ -86,6 +93,8 @@ void GameLoopDriver::executeOrdersPhase(GameEngine* gameEngine)
     cout << "=== GameLoopDriver Execute Orders Phase ===" << endl;
     gameEngine->executeOrdersPhase();
 
-    // The output should show the orders executed in order of priority.
+    // The output should show the orders executed in order of priority
+    // Let's finish off by printing the map
+    cout << *gameEngine->getMap() << endl;
 }
 
