@@ -2,14 +2,14 @@
 
 // Creates a Territory with the given name and position, and belonging to the given Continent.
 Territory::Territory(std::string name, Continent* continent, int x, int y)
-	: name{ name }, armies{ 0 }, x{ x }, y{ y }, borders{}, continent{ continent }, owner{ nullptr }
+	: name{ name }, armies{ 0 }, x{ x }, y{ y }, borders{}, continent{ continent }, owner{ nullptr }, incomingArmies{ 0 }
 {
 
 }
 
 // Copy constructor of Territory
 Territory::Territory(Territory* other)
-	: name{ other->name }, armies{ other->armies }, x{ other->x }, y{ other->y }, borders{ other->borders }, continent{ other->continent }, owner{ other->owner }
+	: name{ other->name }, armies{ other->armies }, x{ other->x }, y{ other->y }, borders{ other->borders }, continent{ other->continent }, owner{ other->owner }, incomingArmies{ other->incomingArmies }
 {
 
 }
@@ -23,6 +23,11 @@ Territory::~Territory() {
 Territory* Territory::operator=(const Territory& territory)
 {
 	return new Territory(territory);
+}
+
+std::string Territory::getName()
+{
+	return this->name;
 }
 
 // Add borders between this country and all countries in the provided borders vector
@@ -52,6 +57,11 @@ Continent* Territory::getContinent() {
 	return this->continent;
 }
 
+void Territory::setOwner(Player* player)
+{
+	this->owner = player;
+}
+
 Player* Territory::getOwner() {
 	return this->owner;
 }
@@ -62,6 +72,16 @@ void Territory::setOwner(Player* player) {
 
 int Territory::getArmies() {
 	return this->armies;
+}
+
+void Territory::setIncomingArmies(int armies)
+{
+	incomingArmies = armies;
+}
+
+int Territory::getIncomingArmies()
+{
+	return incomingArmies;
 }
 
 // Stream insertion operator for Territory
@@ -112,6 +132,25 @@ std::ostream& operator<<(std::ostream& out, const Continent& continent)
 {
 	out << continent.name << " " << continent.value;
 	return out;
+}
+
+int Continent::getValue() {
+	return value;
+}
+
+/**
+ * Check if someone owns all territories in a continent. If so, returns the owner of the continent.
+ * 
+ * \return The owner of the continent. Returns nullptr if nobody owns the entire continent.
+ */
+Player* Continent::getContinentOwner() {
+	Player* owner = territories.at(0)->getOwner();
+	for (std::vector<Territory*>::iterator it = territories.begin(); it != territories.end(); it++) {
+		if ((**it).getOwner() != owner) {
+			return nullptr;
+		}
+	}
+	return owner;
 }
 
 // Construct an empty Map

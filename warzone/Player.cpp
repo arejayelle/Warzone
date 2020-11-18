@@ -2,19 +2,22 @@
 
 
 Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom) { //Constructor with all parameters
-	this->playerTerritories = territoriesToAdd;
-	this->playerOrdersList = playerList;
-	this->playerHand = new Hand(deckToTakeFrom, this);
+	for (std::vector<Territory*>::iterator it = territoriesToAdd->begin(); it != territoriesToAdd->end(); it++) {
+		(*it)->setOwner(this);
+	}
+	this->territories = territoriesToAdd;
+	this->ordersList = playerList;
+	this->hand = new Hand(deckToTakeFrom, this);
 	this->reinforcementPool = 0;
 	this->inNegotiationWith = vector<Player*>();
+	this->territoriesWithAdvanceOrder = new std::vector<Territory*>();
 }
 
 Player::~Player() {  //destructor 
-	delete playerTerritories;
-	delete playerHand;
-	delete playerOrdersList;
+	delete territories;
+	delete hand;
+	delete ordersList;
 }
-
 
 Player* Player::operator=(const Player & one)  //assignment operator
 {
@@ -23,13 +26,13 @@ Player* Player::operator=(const Player & one)  //assignment operator
 
 Player::Player(const Player& player)  //copy constructor
 {
-	for (Territory* t : *player.playerTerritories)
+	for (Territory* t : *player.territories)
 	{
 		Territory* temp = new Territory(t);
-		this->playerTerritories->push_back(temp);    //copies each territory in the incoming player's territories 
+		this->territories->push_back(temp);    //copies each territory in the incoming player's territories 
 	}
-	this->playerOrdersList = new OrdersList(*player.playerOrdersList);
-	this->playerHand = new Hand(*player.playerHand);
+	this->ordersList = new OrdersList(*player.ordersList);
+	this->hand = new Hand(*player.hand);
 	this->reinforcementPool = player.reinforcementPool;
 	
 	// Copy each player in the new player's inNegotiationWith vector.
@@ -37,25 +40,39 @@ Player::Player(const Player& player)  //copy constructor
 		Player* newPlayer = new Player(*p);
 		this->inNegotiationWith.push_back(newPlayer);
 	}
+	this->territoriesWithAdvanceOrder = player.territoriesWithAdvanceOrder;
+}
+
+bool compareTerritories(Territory* i, Territory* j) {
+	return i->getName().compare(j->getName()) < 0;
 }
 
 const vector<Territory*>* Player::toDefend()   //returns territories the player can defend
 {
-	vector<Territory*>* toDefend = new vector<Territory*>(); //TODO- Add actual territories to defend later
-	return toDefend;
+	std::sort(this->territories->begin(), this->territories->end(), compareTerritories);
+	return this->territories;
 }
 
 const vector<Territory*>* Player::toAttack()   //returns territories the player can attack
 {
-	vector<Territory*>* toAttack = new vector<Territory*>(); //TODO - Add actual territories to attack later
-	return toAttack;
-}
+	// TODO make sure this gets destructed at some point... or return by value
+	vector<Territory*>* toAttack = new vector<Territory*>();
 
-void Player::issueOrder(Order* newOrder)  //allows player to issue an order
-{
-	// TODO
-	// Order* playerOrder = new Order(*newOrder);
-	// playerOrdersList->add(playerOrder);
+	for (std::vector<Territory*>::iterator it = this->territories->begin(); it != this->territories->end(); it++) {
+		Territory* territory = *it;
+
+		for (std::vector<Territory*>::const_iterator it2 = territory->getBorders()->begin(); it2 != territory->getBorders()->end(); it2++) {
+			Territory* neighbor = *it2;
+
+			if (std::find(toAttack->begin(), toAttack->end(), neighbor) == toAttack->end()) {
+				toAttack->push_back(neighbor);
+			}
+		}
+	}
+
+	std::sort(toAttack->begin(), toAttack->end(), compareTerritories);
+
+	return toAttack;
 }
 
 // Add a player to the vector inNegotiationWith.
@@ -77,7 +94,7 @@ void Player::clearInNegotiationWith()
 }
 
 // Remove a territory from the player's list of territories in the case where they lose it.
-void Player::removeTerritory(Territory* territoryToRemove) 
+void Player::removeTerritory(Territory* territoryToRemove)
 {
 	vector<Territory*>:: iterator index = std::find(this->getTerritories()->begin(), this->getTerritories()->end(), territoryToRemove);
 	if (index != this->getTerritories()->end()) {
@@ -85,59 +102,201 @@ void Player::removeTerritory(Territory* territoryToRemove)
 	}
 }
 
+BombOrder* Player::useBomb() {
+	// Execute on the adjacent enemy territory with the most troops
+	auto enemies = toAttack();
+	int maxTroops = enemies->at(0)->getArmies();
+	Territory* territoryWithMaxTroops = enemies->at(0);
+	for (auto it = enemies->begin(); it != enemies->end(); it++) {
+		if ((*it)->getArmies() > maxTroops) {
+			maxTroops = (*it)->getArmies();
+			territoryWithMaxTroops = (*it);
+		}
+	}
+
+	return new BombOrder(this, territoryWithMaxTroops);
+}
+
+NegotiateOrder* Player::useDiplomacy() {
+	// Use on a player adjacent to us
+	return new NegotiateOrder(this, toAttack()->at(0)->getOwner());
+}
+
+AirliftOrder* Player::useAirlift() {
+	// Randomly move some troops around
+	auto defend = toDefend();
+
+	srand((unsigned int)time(NULL));
+	int index1 = rand() % defend->size();
+	int index2 = rand() % defend->size();
+	return new AirliftOrder(this, 3, defend->at(index1), defend->at(index2));
+}
+
+BlockadeOrder* Player::useBlockade() {
+	// Blockade a random territory
+	auto defend = toDefend();
+	srand((unsigned int)time(NULL));
+	int index = rand() % defend->size();
+	return new BlockadeOrder(this, defend->at(index));
+}
+
+DeployOrder* Player::useReinforcement() {
+	// Reinforce our territory with least reinforcements
+	auto defendedTerritories = toDefend();
+
+	int min = defendedTerritories->at(0)->getArmies() + defendedTerritories->at(0)->getIncomingArmies();
+	Territory* territoryWithLeast = defendedTerritories->at(0);
+
+	for (std::vector<Territory*>::const_iterator it = defendedTerritories->begin(); it != defendedTerritories->end(); it++) {
+		if ((*it)->getArmies() + (*it)->getIncomingArmies() < min) {
+			territoryWithLeast = (*it);
+		}
+	}
+
+	return new DeployOrder(this, 7, territoryWithLeast);
+}
+
+bool Player::issueOrder() {
+	const std::vector<Territory*>* defendedTerritories = this->toDefend();
+	int defendedTerritoryCount = defendedTerritories->size();
+
+	// Deploy order
+	if (this->reinforcementPool > 0) {
+		this->territoriesWithAdvanceOrder->clear();
+
+		// Reinforce the highest priority territory with the least armies
+		int min = defendedTerritories->at(0)->getArmies() + defendedTerritories->at(0)->getIncomingArmies();
+		Territory* territoryWithLeast = defendedTerritories->at(0);
+		for (std::vector<Territory*>::const_iterator it = defendedTerritories->begin(); it != defendedTerritories->end(); it++) {
+			if ((*it)->getArmies() + (*it)->getIncomingArmies() < min) {
+				territoryWithLeast = (*it);
+			}
+		}
+
+		this->reinforcementPool -= 1;
+		this->ordersList->add(new DeployOrder(this, 1, territoryWithLeast));
+		territoryWithLeast->setIncomingArmies(territoryWithLeast->getIncomingArmies() + 1);
+		return true;
+	}
+
+	// Play cards from hand
+	const std::vector<Card*>* cards = this->hand->getCurrentHand();
+	if (cards->size() > 0) {
+		// Because Jun is smart, this will issue the order and add it to the orderList for us.
+		this->hand->play(0);
+		return true;
+	}
+
+	// Advance orders
+	// Advance order has 
+	// int - number of armies
+	// territory source and territory target
+	// owner
+
+	// Issue one advance order per territory
+	// Move all but 2-3 troops (move all troops?) to an adjacent enemy territory
+	// If there are no adjacent enemy territories move all troops to a random adjacent friendly territory
+	
+	for (auto it = defendedTerritories->begin(); it != defendedTerritories->end(); it++) {
+		if (std::find(this->territoriesWithAdvanceOrder->begin(), this->territoriesWithAdvanceOrder->end(), *it) == this->territoriesWithAdvanceOrder->end()) {
+			
+			Territory* territory = *it;
+			// Don't issue an advance order if there are no armies
+			if (territory->getArmies() + territory->getIncomingArmies() == 0) {
+				territoriesWithAdvanceOrder->push_back(territory);
+				continue;
+			}
+
+			const std::vector<Territory*>* adjacentTerritories = (*it)->getBorders();
+			
+			// Look for adjacent territory that belongs to an enemy
+			for (auto it2 = adjacentTerritories->begin(); it2 != adjacentTerritories->end(); it2++) {
+				if ((*it2)->getOwner() != this) {
+					//It is an enemy territory; attack!
+					int numberOfArmies = territory->getArmies() + territory->getIncomingArmies();
+					Territory* source = territory;
+					Territory* target = (*it2);
+					Player* owner = this;
+					this->ordersList->add(new AdvanceOrder(this, numberOfArmies, source, target));
+					this->territoriesWithAdvanceOrder->push_back(territory);
+					return true;
+				}
+			}
+
+			// No adjacent territory that belongs to an enemy
+			// Let's send all our troops to a neighbor then
+			srand((unsigned int)time(NULL));
+			int index = rand() % (adjacentTerritories->size());
+
+			int numberOfArmies = territory->getArmies() + territory->getIncomingArmies();
+			Territory* source = territory;
+			Territory* target = adjacentTerritories->at(index);
+			this->ordersList->add(new AdvanceOrder(this, numberOfArmies, source, target));
+			this->territoriesWithAdvanceOrder->push_back(territory);
+			return true;
+		}
+	}
+
+	// Done issuing orders
+	return false;
+}
+
  vector<Territory*>* Player::getTerritories()  //returns all the player's territories 
 {
-	return playerTerritories;
+	return territories;
 }
 
 
 OrdersList* Player::getOrdersList()   //returns the player's order list
 {
-	return playerOrdersList;
+	return ordersList;
 }
+
 
 Hand* Player::getHand()  //returns the cards in the player's hand
 {
-	return playerHand;
+	return hand;
 }
-
+int Player::getReinforcements()
+{
+	return reinforcementPool;
+}
 void Player::setTerritories(vector<Territory*>* territoriesToAdd) //sets all the player's territories 
 {
-	this->playerTerritories = territoriesToAdd;
+	this->territories = territoriesToAdd;
 }
 
 // Used to add a single territory to the list of territories.
 void Player::addTerritory(Territory* territoryToAdd)
 {
-	this->playerTerritories->push_back(territoryToAdd);
+	this->territories->push_back(territoryToAdd);
 }
 
 void Player::setOrdersList(OrdersList* ordersList) //sets the player's order list
 {
-	this->playerOrdersList = ordersList;
+	this->ordersList = ordersList;
 }
 
 void Player::setHand(Hand* handToAdd)  //sets the cards in the player's hand
 {
-	this->playerHand = handToAdd;
+	this->hand = handToAdd;
 }
 
 void Player::addReinforcements(int addedReinforcements)
 {
 	this->reinforcementPool += addedReinforcements;
 }
-
-int Player::getReinforcements()
+void Player::grantTerritory(Territory* territory)
 {
-	return this->reinforcementPool;
+	territory->setOwner(this);
+	this->territories->push_back(territory);
+
 }
-
-
 ostream& operator<<(ostream& output, const Player &player)  //output stream
 {
 	output << "Player Information:" << endl;
-	output << "Hand: " << *player.playerHand << endl;
-	output << "Territories: " << player.playerTerritories<< endl;
-	output << "Orders list: " << *player.playerOrdersList<< endl;
+	output << "Hand: " << *player.hand << endl;
+	output << "Territories: " << player.territories<< endl;
+	output << "Orders list: " << *player.ordersList<< endl;
 	return output;
 }
