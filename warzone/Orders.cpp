@@ -76,16 +76,12 @@ bool DeployOrder::validate() {
 
 // First uses the validate method and then executes the order and displays the status.
 bool DeployOrder::execute() {
-	cout << "Attempting to execute deploy order... ";
-
 	if (!this->validate()) {
-		cout << "Cannot execute deploy order because it is invalid." << endl;
 		return false;
 	}
 
 	// Add the armies to the territory.
 	this->target->addArmies(this->numArmies);
-	cout << "Deploy order executed." << endl;
 	return true;
 }
 
@@ -134,10 +130,7 @@ bool AdvanceOrder::validate() {
 
 // First uses the validate method and then executes the order and displays the status.
 bool AdvanceOrder::execute() {
-	cout << "Attempting to execute advance order... ";
-
 	if (!this->validate()) {
-		cout << "Cannot execute advance order because it is invalid." << endl;
 		return false;
 	}
 
@@ -151,7 +144,6 @@ bool AdvanceOrder::execute() {
 		this->battle();
 	}
 
-	cout << "Advance order executed." << endl;
 	return true;
 }
 
@@ -230,16 +222,12 @@ bool BombOrder::validate() {
 
 // First uses the validate method and then executes the order and displays the status.
 bool BombOrder::execute() {
-	cout << "Attempting to execute bomb order... ";
-
 	if (!this->validate()) {
-		cout << "Cannot execute bomb order because it is invalid." << endl;
 		return false;
 	}
 
 	// Remove half the armies in the target territory.
 	this->target->removeArmies(this->target->getArmies() / 2);
-	cout << "Bomb order executed." << endl;
 	return true;
 }
 
@@ -282,16 +270,13 @@ bool BlockadeOrder::validate() {
 
 // First uses the validate method and then executes the order and displays the status.
 bool BlockadeOrder::execute() {
-	cout << "Attempting to execute blockade order... ";
-
 	if (!this->validate()) {
-		cout << "Cannot execute blockade order because it is invalid." << endl;
 		return false;
 	}
 
 	this->target->addArmies(this->target->getArmies());
 	this->target->setOwner(nullptr);
-	cout << "Blockade order executed." << endl;
+
 	return true;
 }
 
@@ -338,17 +323,13 @@ bool AirliftOrder::validate() {
 // First uses the validate method and then executes the order and displays the status.
 // Actions take place according to the Warzone rules; that is, the source and target belong to the player.
 bool AirliftOrder::execute() {
-	cout << "Attempting to execute airlift order... ";
-
 	if (!this->validate()) {
-		cout << "Cannot execute airlift order because it is invalid." << endl;
 		return false;
 	}
 
 	this->source->removeArmies(numArmies);
 	this->target->addArmies(numArmies);
 
-	cout << "Airlift order executed." << endl;
 	return true;
 }
 
@@ -391,10 +372,7 @@ bool NegotiateOrder::validate() {
 
 // First uses the validate method and then executes the order and displays the status.
 bool NegotiateOrder::execute() {
-	cout << "Attempting to execute negotiate order... ";
-
 	if (!this->validate()) {
-		cout << "Cannot execute negotiate order because it is invalid." << endl;
 		return false;
 	}
 
@@ -402,7 +380,6 @@ bool NegotiateOrder::execute() {
 	this->player->addPlayerInNegotiationWith(this->targeted);
 	this->targeted->addPlayerInNegotiationWith(this->player);
 
-	cout << "Negotiate order executed." << endl;
 	return true;
 }
 
