@@ -36,7 +36,6 @@ namespace Cards {
 
 	void populateDeck(Deck* deck)
 	{
-		SpyCard* spyCard = new SpyCard();
 		BombCard* bombCard = new BombCard();
 		ReinforcementCard* reinforcementCard = new ReinforcementCard();
 		BlockadeCard* blockadeCard = new BlockadeCard();
@@ -45,7 +44,6 @@ namespace Cards {
 
 		// add cards
 		for (int i = 0; i < 4; i++) {
-			deck->add(spyCard);
 			deck->add(bombCard);
 			deck->add(reinforcementCard);
 			deck->add(airliftCard);

@@ -102,6 +102,60 @@ void Player::removeTerritory(Territory* territoryToRemove)
 	}
 }
 
+BombOrder* Player::useBomb() {
+	// Execute on the adjacent enemy territory with the most troops
+	auto enemies = toAttack();
+	int maxTroops = enemies->at(0)->getArmies();
+	Territory* territoryWithMaxTroops = enemies->at(0);
+	for (auto it = enemies->begin(); it != enemies->end(); it++) {
+		if ((*it)->getArmies() > maxTroops) {
+			maxTroops = (*it)->getArmies();
+			territoryWithMaxTroops = (*it);
+		}
+	}
+
+	return new BombOrder(this, territoryWithMaxTroops);
+}
+
+NegotiateOrder* Player::useDiplomacy() {
+	// Use on a player adjacent to us
+	return new NegotiateOrder(this, toAttack()->at(0)->getOwner());
+}
+
+AirliftOrder* Player::useAirlift() {
+	// Randomly move some troops around
+	auto defend = toDefend();
+
+	srand((unsigned int)time(NULL));
+	int index1 = rand() % defend->size();
+	int index2 = rand() % defend->size();
+	return new AirliftOrder(this, 3, defend->at(index1), defend->at(index2));
+}
+
+BlockadeOrder* Player::useBlockade() {
+	// Blockade a random territory
+	auto defend = toDefend();
+	srand((unsigned int)time(NULL));
+	int index = rand() % defend->size();
+	return new BlockadeOrder(this, defend->at(index));
+}
+
+DeployOrder* Player::useReinforcement() {
+	// Reinforce our territory with least reinforcements
+	auto defendedTerritories = toDefend();
+
+	int min = defendedTerritories->at(0)->getArmies() + defendedTerritories->at(0)->getIncomingArmies();
+	Territory* territoryWithLeast = defendedTerritories->at(0);
+
+	for (std::vector<Territory*>::const_iterator it = defendedTerritories->begin(); it != defendedTerritories->end(); it++) {
+		if ((*it)->getArmies() + (*it)->getIncomingArmies() < min) {
+			territoryWithLeast = (*it);
+		}
+	}
+
+	return new DeployOrder(this, 7, territoryWithLeast);
+}
+
 bool Player::issueOrder() {
 	const std::vector<Territory*>* defendedTerritories = this->toDefend();
 	int defendedTerritoryCount = defendedTerritories->size();
@@ -120,7 +174,7 @@ bool Player::issueOrder() {
 		}
 
 		this->reinforcementPool -= 1;
-		//this->ordersList->add(new DeployOrder(this));
+		this->ordersList->add(new DeployOrder(this, 1, territoryWithLeast));
 		territoryWithLeast->setIncomingArmies(territoryWithLeast->getIncomingArmies() + 1);
 		return true;
 	}
@@ -163,7 +217,7 @@ bool Player::issueOrder() {
 					Territory* source = territory;
 					Territory* target = (*it2);
 					Player* owner = this;
-					//this->ordersList->add(new AdvanceOrder(this));
+					this->ordersList->add(new AdvanceOrder(this, numberOfArmies, source, target));
 					this->territoriesWithAdvanceOrder->push_back(territory);
 					return true;
 				}
@@ -172,12 +226,12 @@ bool Player::issueOrder() {
 			// No adjacent territory that belongs to an enemy
 			// Let's send all our troops to a neighbor then
 			srand((unsigned int)time(NULL));
-			int index = rand() % (adjacentTerritories->size() - 1);
+			int index = rand() % (adjacentTerritories->size());
 
 			int numberOfArmies = territory->getArmies() + territory->getIncomingArmies();
 			Territory* source = territory;
 			Territory* target = adjacentTerritories->at(index);
-			//this->ordersList->add(new AdvanceOrder(this));
+			this->ordersList->add(new AdvanceOrder(this, numberOfArmies, source, target));
 			this->territoriesWithAdvanceOrder->push_back(territory);
 			return true;
 		}

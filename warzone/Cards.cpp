@@ -37,9 +37,7 @@ Card::~Card()
 	 */
 Order* Card::play(Player* owner)
 {
-	// TODO
-	// return new Order();
-	return NULL;
+	throw "Can't play base card object";
 }
 
 /**
@@ -72,57 +70,8 @@ ostream& operator<<(ostream& out, const Card& card)
  */
 Card* Card::operator=(const Card& card)
 {
-	return new Card(card);
-}
-
-// Spy Cards
-/**
-	 * Spy Card default Constructor
-	 *
-	 */
-SpyCard::SpyCard() : Card()
-{
-	this->name = "Spy Card";
-}
-
-/**
-	 * Spy Card Copy Constructor
-	 *
-	 * \param spycard Card to be copied
-	 */
-SpyCard::SpyCard(SpyCard* spycard) : Card(spycard)
-{
-}
-
-/**
-	 * Spy Card Destructor
-	 *
-	 * Does nothing for now. Does not have any attributes not owned by the parent Card Class
-	 *
-	 */
-SpyCard::~SpyCard()
-{
-}
-
-/**
-	 * Assignment operator
-	 *
-	 * \param card
-	 * \return
-	 */
-SpyCard* SpyCard::operator=(const SpyCard& card)
-{
-	return new SpyCard(card);
-}
-
-/**
-	 * Play function
-	 *
-	 */
-Order* SpyCard::play(Player* owner, Player* targeted)
-{
-	cout << "Playing " + name;
-	return new NegotiateOrder(owner, targeted);
+	this->name = card.name;
+	return this;
 }
 
 // Bomb Cards
@@ -168,10 +117,9 @@ BombCard* BombCard::operator=(const BombCard& card)
 /**
 	 * Creates a Bomb Order
 	 */
-Order* BombCard::play(Player* owner, Territory* target)
+Order* BombCard::play(Player* owner)
 {
-	cout << "Playing BombCard" << endl;
-	return new BombOrder(owner, target);
+	return owner->useBomb();
 }
 
 // Reinforcement Cards
@@ -217,9 +165,7 @@ ReinforcementCard* ReinforcementCard::operator=(const ReinforcementCard& card)
 	 */
 Order* ReinforcementCard::play(Player* owner)
 {
-	cout << "Playing ReinforcementCard" << endl;
-	// TODO
-	return new DeployOrder(owner, 0, nullptr);
+	return owner->useReinforcement();
 }
 
 // Blockade Cards
@@ -266,10 +212,9 @@ BlockadeCard::~BlockadeCard()
 	 * Play function
 	 *
 	 */
-Order* BlockadeCard::play(Player* owner, Territory* target)
+Order* BlockadeCard::play(Player* owner)
 {
-	cout << "Playing BlockadeCard" << endl;
-	return new BlockadeOrder(owner, target);
+	return owner->useBlockade();
 }
 
 // Airlift Cards
@@ -316,10 +261,9 @@ AirliftCard* AirliftCard::operator=(const AirliftCard& card)
 	 * Play function
 	 *
 	 */
-Order* AirliftCard::play(Player* owner, int numArmies, Territory* source, Territory* target)
+Order* AirliftCard::play(Player* owner)
 {
-	cout << "Playing AirliftCard" << endl;
-	return new AirliftOrder(owner, numArmies, source, target);
+	return owner->useAirlift();
 }
 
 // Diplomacy Cards
@@ -365,10 +309,9 @@ DiplomacyCard* DiplomacyCard::operator=(const DiplomacyCard& card)
 	 * Play function
 	 *
 	 */
-Order* DiplomacyCard::play(Player* owner, Player* targeted)
+Order* DiplomacyCard::play(Player* owner)
 {
-	cout << "Playing DiplomacyCard" << endl;
-	return new NegotiateOrder(owner, targeted);
+	return owner->useDiplomacy();
 }
 
 Deck::Deck()
@@ -381,7 +324,8 @@ Deck::Deck(Deck* deck)
 	const vector<Card*>* realDeck = deck->getDeck();
 	for (size_t i = 0; i < realDeck->size() ; i++)
 	{
-		this->fullDeck->push_back(new Card(realDeck->at(i)));
+		//TODO
+		//this->fullDeck->push_back(new Card(realDeck->at(i)));
 	}
 }
 

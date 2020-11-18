@@ -10,6 +10,11 @@ using namespace std;
 class Map;
 class Territory;
 class Order;
+class BombOrder;
+class NegotiateOrder;
+class AirliftOrder;
+class BlockadeOrder;
+class DeployOrder;
 class OrdersList;
 class Deck;
 class Hand;
@@ -38,6 +43,13 @@ public:
 	void clearInNegotiationWith();
 
 	void removeTerritory(Territory* territoryToRemove);
+
+	// Play Cards
+	BombOrder* useBomb();
+	NegotiateOrder* useDiplomacy();
+	AirliftOrder* useAirlift();
+	BlockadeOrder* useBlockade();
+	DeployOrder* useReinforcement();
 
 	//Getters
 	vector<Territory*>* getTerritories(); //Get territories
