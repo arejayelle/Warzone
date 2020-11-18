@@ -557,7 +557,7 @@ bool OrdersList::move(int oldIndex, int newIndex) {
 
 // Prints all information about orders in the orders list for debugging/demonstration purposes.
 void OrdersList::print() {
-	cout << "List contents are:\n[";
+	cout << "List contents are:\n[\n";
 	for (int i = 0; i < this->orders.size(); i++) {
 		cout << *(this->orders.at(i)) << ", " << endl;
 	}

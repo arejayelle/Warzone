@@ -31,6 +31,18 @@ int GameLoopDriver::main()
     player3Territories->push_back(map->getTerritory(5));
     Player* player3 = new Player("Casimir", player3Territories, new OrdersList(), deck);
 
+    cout << "giving player 1 a BombCard and a DiplomacyCard" << endl;
+    player1->getHand()->addCard(new BombCard());
+    player1->getHand()->addCard(new DiplomacyCard());
+    
+    cout << "giving player 2 a ReinforcementCard and a AirliftCard" << endl;
+    player2->getHand()->addCard(new ReinforcementCard());
+    player2->getHand()->addCard(new AirliftCard());
+    
+    cout << "giving player 3 a BlockadeCard and a BombCard" << endl;
+    player3->getHand()->addCard(new BlockadeCard());
+    player3->getHand()->addCard(new BombCard());
+
     vector<Player*>* players = new vector<Player*>();
     players->push_back(player1);
     players->push_back(player2);
