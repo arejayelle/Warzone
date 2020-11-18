@@ -53,5 +53,5 @@ private:
 	OrdersList* playerOrdersList; //returns player's order list
 	vector<Territory*>* playerTerritories; //returns player's territories
 	int reinforcementPool;
-	vector<Player*> inNegotiatonWith;
+	vector<Player*> inNegotiationWith;
 };

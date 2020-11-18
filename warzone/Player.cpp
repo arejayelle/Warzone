@@ -6,7 +6,7 @@ Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Dec
 	this->playerOrdersList = playerList;
 	this->playerHand = new Hand(deckToTakeFrom, this);
 	this->reinforcementPool = 0;
-	this->inNegotiatonWith = vector<Player*>();
+	this->inNegotiationWith = vector<Player*>();
 }
 
 Player::~Player() {  //destructor 
@@ -33,9 +33,9 @@ Player::Player(const Player& player)  //copy constructor
 	this->reinforcementPool = player.reinforcementPool;
 	
 	// Copy each player in the new player's inNegotiationWith vector.
-	for (Player* p : player.inNegotiatonWith) {
+	for (Player* p : player.inNegotiationWith) {
 		Player* newPlayer = new Player(*p);
-		this->inNegotiatonWith.push_back(newPlayer);
+		this->inNegotiationWith.push_back(newPlayer);
 	}
 }
 
@@ -61,25 +61,25 @@ void Player::issueOrder(Order* newOrder)  //allows player to issue an order
 // Add a player to the vector inNegotiationWith.
 void Player::addPlayerInNegotiationWith(Player* player)
 {
-	this->inNegotiatonWith.push_back(player);
+	this->inNegotiationWith.push_back(player);
 }
 
 // Return true if the player is found in the vector and false if not found.
 bool Player::isInNegotiationWithPlayer(Player* player)
 {
-	return(std::find(this->inNegotiatonWith.begin(), this->inNegotiatonWith.end(), player) != this->inNegotiatonWith.end());
+	return(std::find(this->inNegotiationWith.begin(), this->inNegotiationWith.end(), player) != this->inNegotiationWith.end());
 }
 
 // Removes everything from the vector inNegotiationWith. Should be called at the end of a turn.
 void Player::clearInNegotiationWith()
 {
-	this->inNegotiatonWith.erase(this->inNegotiatonWith.begin(), this->inNegotiatonWith.end());
+	this->inNegotiationWith.erase(this->inNegotiationWith.begin(), this->inNegotiationWith.end());
 }
 
 // Remove a territory from the player's list of territories in the case where they lose it.
 void Player::removeTerritory(Territory* territoryToRemove) 
 {
-	vector<Territory*>::iterator index = std::find(this->getTerritories()->begin(), this->getTerritories()->end(), territoryToRemove);
+	vector<Territory*>:: iterator index = std::find(this->getTerritories()->begin(), this->getTerritories()->end(), territoryToRemove);
 	if (index != this->getTerritories()->end()) {
 		this->getTerritories()->erase(index);
 	}

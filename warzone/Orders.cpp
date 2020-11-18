@@ -93,7 +93,8 @@ bool DeployOrder::execute() {
 string DeployOrder::toString() const {
 	// TODO make nicer (all classes)
 	ostringstream strm;
-	strm << "Deploy order made by player " << this->player;
+	// strm << "Deploy order made by player " << this->player;
+	strm << this->player << "\n" << this->target->getOwner();
 	return strm.str();
 }
 
@@ -288,7 +289,7 @@ bool BlockadeOrder::execute() {
 		return false;
 	}
 
-	this->target->addArmies(this->target->getArmies() / 2);
+	this->target->addArmies(this->target->getArmies());
 	this->target->setOwner(nullptr);
 	cout << "Blockade order executed." << endl;
 	return true;
