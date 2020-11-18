@@ -245,3 +245,8 @@ const std::vector<Player*>* GameEngine::getPlayers()
 {
     return &playerArray;
 }
+
+Map* GameEngine::getMap()
+{
+    return map;
+}

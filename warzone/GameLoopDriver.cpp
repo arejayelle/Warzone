@@ -93,6 +93,8 @@ void GameLoopDriver::executeOrdersPhase(GameEngine* gameEngine)
     cout << "=== GameLoopDriver Execute Orders Phase ===" << endl;
     gameEngine->executeOrdersPhase();
 
-    // The output should show the orders executed in order of priority.
+    // The output should show the orders executed in order of priority
+    // Let's finish off by printing the map
+    cout << *gameEngine->getMap() << endl;
 }
 
