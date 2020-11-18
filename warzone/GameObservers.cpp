@@ -1,7 +1,6 @@
 #include "GameObservers.h"
 
 
-
 Observer::Observer() {
 
 }
@@ -56,10 +55,14 @@ StatsObserver::StatsObserver() {
 	std::cout << "Hello, I am the stats observer\n";
 }
 
+StatsObserver::StatsObserver(Player player){
+
+}
+
 StatsObserver::~StatsObserver() {
 
 }
 
 void StatsObserver::update() {
-
+	std::cout << "Stats I have been notified\n";
 }

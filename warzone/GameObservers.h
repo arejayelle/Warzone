@@ -2,6 +2,9 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include "Player.h"
+
+class Player;
 
 
 class Observer {
@@ -26,13 +29,17 @@ protected:
 class PhaseObserver: public Observer {
 public:
 	PhaseObserver();
+	//PhaseObserver(GameEngine* ge);
 	~PhaseObserver();
 	void update() override;
+private:
+	//Gameengine* _subject;
 };
 
 class StatsObserver : public Observer {
 public:
 	StatsObserver();
+	StatsObserver(Player player);
 	~StatsObserver();
 	void update() override;
 };
