@@ -74,7 +74,7 @@ bool DeployOrder::validate() {
 	// Check validity of player, number of armies deployed, and that the target territory belongs to the player.
 	return(
 		(this->player != nullptr) &&
-		(this->numArmies <= this->player->getReinforcements()) &&
+		(this->numArmies > 0) &&
 		(this->player == this->target->getOwner())
 		);
 }
