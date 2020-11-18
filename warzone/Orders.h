@@ -1,11 +1,16 @@
 #pragma once
 
+#include "Player.h"
+
+#include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
-using namespace std;
 
 class Player;
+class Territory;
+
 
 class Order {
 public:
@@ -14,112 +19,137 @@ public:
 	Order(Order* other);
 	~Order();
 
+	virtual bool execute() = 0;
 	virtual bool validate();
-	virtual bool execute();
-	virtual string toString() const;
+	virtual std::string toString() const;
+	virtual int getPriority();
 
 private:
-	friend ostream& operator<<(ostream &strm, const Order &o);
-	Order* operator= (const Order& o);
+	friend std::ostream& operator<<(std::ostream &strm, const Order &o);
 
 protected:
 	Player* player;  // The player who created the order.
+	Order& operator= (const Order& o);
 };
 
 
 class DeployOrder : public Order {
 public:
-	DeployOrder(Player* player);
+	DeployOrder(Player* player, int numArmies, Territory* target);
 	DeployOrder(DeployOrder* other);
 	~DeployOrder();
 	
 	bool validate();
 	bool execute();
-	string toString() const;
+	std::string toString() const;
+	int getPriority();
 
 private:
-	friend ostream& operator<<(ostream& strm, const DeployOrder& o);
-	DeployOrder* operator= (const DeployOrder& o);
+	int numArmies;
+	Territory* target;
+
+	friend std::ostream& operator<<(std::ostream& strm, const DeployOrder& o);
+	DeployOrder& operator= (const DeployOrder& o);
 };
 
 
 class AdvanceOrder : public Order {
 public:
-	AdvanceOrder(Player* player);
+	AdvanceOrder(Player* player, int numArmies, Territory* source, Territory* target);
 	AdvanceOrder(AdvanceOrder* other);
 	~AdvanceOrder();
 
 	bool validate();
 	bool execute();
-	string toString() const;
+	void battle();
+	std::string toString() const;
+	int getPriority();
 
 private:
-	friend ostream& operator<<(ostream& strm, const AdvanceOrder& o);
-	AdvanceOrder* operator= (const AdvanceOrder& o);
+	int numArmies;
+	Territory* source;
+	Territory* target;
+
+	friend std::ostream& operator<<(std::ostream& strm, const AdvanceOrder& o);
+	AdvanceOrder& operator= (const AdvanceOrder& o);
 };
 
 
 class BombOrder : public Order {
 public:
-	BombOrder(Player* player);
+	BombOrder(Player* player, Territory* target);
 	BombOrder(BombOrder* other);
 	~BombOrder();
 
 	bool validate();
 	bool execute();
-	string toString() const;
+	std::string toString() const;
+	int getPriority();
 
 private:
-	friend ostream& operator<<(ostream& strm, const BombOrder& o);
-	BombOrder* operator= (const BombOrder& o);
+	Territory* target;
+
+	friend std::ostream& operator<<(std::ostream& strm, const BombOrder& o);
+	BombOrder& operator= (const BombOrder& o);
 };
 
 
 class BlockadeOrder : public Order {
 public:
-	BlockadeOrder(Player* player);
+	BlockadeOrder(Player* player, Territory* target);
 	BlockadeOrder(BlockadeOrder* other);
 	~BlockadeOrder();
 
 	bool validate();
 	bool execute();
-	string toString() const;
+	std::string toString() const;
+	int getPriority();
 
 private:
-	friend ostream& operator<<(ostream& strm, const BlockadeOrder& o);
-	BlockadeOrder* operator= (const BlockadeOrder& o);
+	Territory* target;
+
+	friend std::ostream& operator<<(std::ostream& strm, const BlockadeOrder& o);
+	BlockadeOrder& operator= (const BlockadeOrder& o);
 };
 
 
 class AirliftOrder : public Order {
 public:
-	AirliftOrder(Player* player);
+	AirliftOrder(Player* player, int numArmies, Territory* source, Territory* target);
 	AirliftOrder(AirliftOrder* other);
 	~AirliftOrder();
 
 	bool validate();
 	bool execute();
-	string toString() const;
+	std::string toString() const;
+	int getPriority();
 
 private:
-	friend ostream& operator<<(ostream& strm, const AirliftOrder& o);
-	AirliftOrder* operator= (const AirliftOrder& o);
+	int numArmies;
+	Territory* source;
+	Territory* target;
+
+	friend std::ostream& operator<<(std::ostream& strm, const AirliftOrder& o);
+	AirliftOrder& operator= (const AirliftOrder& o);
 };
 
 
 class NegotiateOrder : public Order {
 public:
-	NegotiateOrder(Player* player);
+	NegotiateOrder(Player* player, Player* targeted);
 	NegotiateOrder(NegotiateOrder* other);
 	~NegotiateOrder();
 
 	bool validate();
 	bool execute();
-	string toString() const;
+	std::string toString() const;
+	int getPriority();
 
 private:
-	friend ostream& operator<<(ostream& strm, const NegotiateOrder& o);
-	NegotiateOrder* operator= (const NegotiateOrder& o);
+	Player* targeted;
+
+	friend std::ostream& operator<<(std::ostream& strm, const NegotiateOrder& o);
+	NegotiateOrder& operator= (const NegotiateOrder& o);
 };
 
 
@@ -131,13 +161,15 @@ public:
 
 	int size();
 	void add(Order* newOrder);
-	bool remove(int index);
+	Order* pop();
+	Order* peek();
+	Order* remove(int index);
 	bool move(int oldIndex, int newIndex);
 	void print();
 	bool executeAll();
 
 private:
-	vector<Order*> orders;
-	friend ostream& operator<<(ostream& strm, const OrdersList& o);
+	std::vector<Order*> orders;
+	friend std::ostream& operator<<(std::ostream& strm, const OrdersList& o);
 	OrdersList* operator= (const OrdersList& o);
 };

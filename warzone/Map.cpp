@@ -25,11 +25,25 @@ Territory* Territory::operator=(const Territory& territory)
 	return new Territory(territory);
 }
 
+std::string Territory::getName()
+{
+	return this->name;
+}
+
 // Add borders between this country and all countries in the provided borders vector
 void Territory::addBorders(std::vector<Territory*>* borders) {
 	for (std::vector<Territory*>::iterator it = borders->begin(); it != borders->end(); ++it) {
 		this->borders.push_back(*it);
 	}
+}
+
+// Add a certain number of armies to the territory.
+void Territory::addArmies(int amount) {
+	this->armies += amount;
+}
+
+void Territory::removeArmies(int amount) {
+	this->armies -= amount;
 }
 
 // Get a read-only vector of all territories bordering this one
@@ -43,10 +57,32 @@ Continent* Territory::getContinent() {
 	return this->continent;
 }
 
+Player* Territory::getOwner() {
+	return this->owner;
+}
+
+void Territory::setOwner(Player* player) {
+	this->owner = player;
+}
+
+int Territory::getArmies() {
+	return this->armies;
+}
+
+void Territory::setIncomingArmies(int armies)
+{
+	incomingArmies = armies;
+}
+
+int Territory::getIncomingArmies()
+{
+	return incomingArmies;
+}
+
 // Stream insertion operator for Territory
 std::ostream& operator<<(std::ostream& out, const Territory& territory)
 {
-	out << territory.name;
+	out << territory.name <<  " owned by " << territory.owner << " holding " << territory.armies << " armies.";
 	return out;
 }
 
@@ -89,8 +125,27 @@ const std::vector<Territory*>* Continent::getTerritories() {
 // Stream insertion operator for Continent
 std::ostream& operator<<(std::ostream& out, const Continent& continent)
 {
-	out << continent.name;
+	out << continent.name << " " << continent.value;
 	return out;
+}
+
+int Continent::getValue() {
+	return value;
+}
+
+/**
+ * Check if someone owns all territories in a continent. If so, returns the owner of the continent.
+ * 
+ * \return The owner of the continent. Returns nullptr if nobody owns the entire continent.
+ */
+Player* Continent::getContinentOwner() {
+	Player* owner = territories.at(0)->getOwner();
+	for (std::vector<Territory*>::iterator it = territories.begin(); it != territories.end(); it++) {
+		if ((**it).getOwner() != owner) {
+			return nullptr;
+		}
+	}
+	return owner;
 }
 
 // Construct an empty Map
@@ -309,12 +364,12 @@ std::ostream& operator<<(std::ostream& out, const Map& map)
 
 	out << "Continents:" << std::endl;
 	for (std::vector<Continent*>::const_iterator it = map.continents.begin(); it != map.continents.end(); it++) {
-		out << *it << std::endl;
+		out << **it << std::endl;
 	}
 
 	out << "Territories:" << std::endl;
 	for (std::vector<Territory*>::const_iterator it = map.territories.begin(); it != map.territories.end(); it++) {
-		out << *it << std::endl;
+		out << **it << std::endl;
 	}
 
 	return out;

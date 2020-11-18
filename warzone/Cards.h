@@ -7,6 +7,9 @@
 #include "Orders.h"
 #include "Player.h"
 
+class Order;
+class Player;
+class Territory;
 
 using namespace std;
 
@@ -33,7 +36,7 @@ public:
 	~SpyCard();
 	SpyCard* operator= (const SpyCard& card);
 
-	Order* play(Player* owner);
+	Order* play(Player* owner, Player* targeted);
 };
 
 class BombCard :public Card {
@@ -43,7 +46,7 @@ public:
 	~BombCard();
 	BombCard* operator= (const BombCard& card);
 
-	Order* play(Player* owner);
+	Order* play(Player* owner, Territory* target);
 };
 
 class ReinforcementCard :public Card {
@@ -63,7 +66,7 @@ public:
 	~BlockadeCard();
 	BlockadeCard* operator= (const BlockadeCard& card);
 
-	Order* play(Player* owner);
+	Order* play(Player* owner, Territory* target);
 };
 
 class AirliftCard :public Card {
@@ -73,7 +76,7 @@ public:
 	~AirliftCard();
 	AirliftCard* operator= (const AirliftCard& card);
 
-	Order* play(Player* owner);
+	Order* play(Player* owner, int numArmies, Territory* source, Territory* target);
 };
 
 class DiplomacyCard :public Card {
@@ -83,7 +86,7 @@ public:
 	~DiplomacyCard();
 	DiplomacyCard* operator= (const DiplomacyCard& card);
 
-	Order* play(Player* owner);
+	Order* play(Player* owner, Player* targeted);
 };
 
 class Deck {
@@ -118,6 +121,7 @@ public:
 	Hand* operator= (const Hand& hand);
 
 	void addCard(Card* card);
+	void drawCardFromDeck();
 	void play(int index);
 
 	const vector<Card*>* getCurrentHand();
