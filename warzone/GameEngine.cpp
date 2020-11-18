@@ -51,12 +51,36 @@ void GameEngine::startUpPhase() {
 		else
 			playerInputValid = true;
 	}
+	//Populate Deck 
+	Deck* gameDeck = new Deck();
+	for (int i = 0; i < 4; i++)
+	{
+		SpyCard* spy = new SpyCard();
+		gameDeck->add(spy);
+		ReinforcementCard* reinforce = new ReinforcementCard();
+		gameDeck->add(reinforce);
+		AirliftCard* airlift = new AirliftCard();
+		gameDeck->add(airlift);
+		BlockadeCard* blockade = new BlockadeCard();
+		gameDeck->add(blockade);
+		BombCard* bomb = new BombCard();
+		gameDeck->add(bomb);
+	}
+
+	//Create players with reinforcements
 	for (int i = 0; i <= numberOfPlayers; i++)
 	{
-		vector<Territory*>* territories = nullptr;
-		OrdersList* orders = nullptr;
-		Deck* gameDeck = nullptr;
+		vector<Territory*>* territories = new vector<Territory*>();
+		OrdersList* orders = new OrdersList();
 		Player* player = new Player(territories, orders, gameDeck);
+		if (numberOfPlayers == 2)
+			player->addReinforcements(40);
+		else if (numberOfPlayers == 3)
+			player->addReinforcements(35);
+		else if (numberOfPlayers == 4)
+			player->addReinforcements(30);
+		else if (numberOfPlayers == 5)
+			player->addReinforcements(25);
 		playerArray.push_back(player);
 	}
 

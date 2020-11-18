@@ -19,6 +19,7 @@ public:
 	const std::vector<Territory*>* getBorders();
 	Continent* getContinent();
 	friend std::ostream& operator<< (std::ostream& out, const Territory& territory);
+	void setOwner(Player* player);
 	
 private:
 	std::string name;

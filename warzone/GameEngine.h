@@ -1,13 +1,14 @@
 #pragma once
+#include <algorithm>
+#include <random>
 #include <string>
 #include <iostream>
 #include "Player.h" 
 #include "Map.h"
 #include "MapLoader.h"
-
-
-
 using namespace std;
+
+
 
 class GameEngine
 {
@@ -18,7 +19,6 @@ private:
 public:
 	GameEngine();
 	~GameEngine();
-	void setUpPhase();
 	void startUpPhase();
 };
 

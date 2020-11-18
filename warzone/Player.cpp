@@ -62,7 +62,10 @@ Hand* Player::getHand()  //returns the cards in the player's hand
 {
 	return playerHand;
 }
-
+int Player::getReinforcements()
+{
+	return reinforcementPool;
+}
 void Player::setTerritories(vector<Territory*>* territoriesToAdd) //sets all the player's territories 
 {
 	this->playerTerritories = territoriesToAdd;
@@ -77,7 +80,16 @@ void Player::setHand(Hand* handToAdd)  //sets the cards in the player's hand
 {
 	this->playerHand = handToAdd;
 }
+void Player::addReinforcements(int addedReinforcements)
+{
+	this->reinforcementPool += addedReinforcements;
+}
+void Player::grantTerritory(Territory* territory)
+{
+	territory->setOwner(this);
+	this->playerTerritories->push_back(territory);
 
+}
 ostream& operator<<(ostream& output, const Player &player)  //output stream
 {
 	output << "Player Information:" << endl;

@@ -43,6 +43,11 @@ Continent* Territory::getContinent() {
 	return this->continent;
 }
 
+void Territory::setOwner(Player* player)
+{
+	this->owner = player;
+}
+
 // Stream insertion operator for Territory
 std::ostream& operator<<(std::ostream& out, const Territory& territory)
 {

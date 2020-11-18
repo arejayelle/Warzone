@@ -30,14 +30,18 @@ public:
 	vector<Territory*>* getTerritories(); //Get territories
 	Hand* getHand(); //Get hand
 	OrdersList* getOrdersList(); //Get order list
+	int getReinforcements(); // Get reinforcements
 
 	//Setters
 	void setOrdersList(OrdersList* ordersList); //Set territories
 	void setTerritories(vector<Territory*>* territoriesToAdd); //Set Orders List
 	void setHand(Hand* handToAdd); //Set hand 
+	void addReinforcements(int addedReinforcements);
+	void grantTerritory(Territory* territory);
 
 private:
 	Hand* playerHand; //returns player's hand
 	OrdersList* playerOrdersList; //returns player's order list
 	vector<Territory*>* playerTerritories; //returns player's territories
+	int reinforcementPool; 
 };
