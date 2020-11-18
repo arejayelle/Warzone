@@ -105,6 +105,7 @@ void GameLoopDriver::executeOrdersPhase(GameEngine* gameEngine)
     cout << "=== GameLoopDriver Execute Orders Phase ===" << endl;
     gameEngine->executeOrdersPhase();
 
+    cout << "Order priority is Deploy > Airlift > Blockade > Others " << endl;
     // The output should show the orders executed in order of priority
     // Let's finish off by printing the map
     cout << *gameEngine->getMap() << endl;
