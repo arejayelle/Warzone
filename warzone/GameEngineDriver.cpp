@@ -6,6 +6,8 @@ int GameEngineDriver::main()
 	Game->startUpPhase();
 	cout << "Printing Game Deck"<<endl;
 	cout << "---------------------------------------------" << endl;
+	cout << "Number of Cards in Deck:";
+	cout << Game->getDeck()->size()<<endl;
 	for (int i = 0; i < Game->getDeck()->size();i++) {
 		Card* cardToPrint=Game->getDeck()->at(i);
 		cout << *cardToPrint<<endl;
@@ -13,7 +15,9 @@ int GameEngineDriver::main()
 	}
 	for (int i = 0; i < Game->getPlayers()->size(); i++) {
 		Player* playerToPrint = Game->getPlayers()->at(i);
+		cout << "Here is the player's information";
 		cout << *playerToPrint << endl;
+		cout << "Here are the amount of reinforcements a player has:";
 		cout << playerToPrint->getReinforcements() << endl;
 		for (int i = 0; i < playerToPrint->getTerritories()->size(); i++)
 		{
