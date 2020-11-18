@@ -1,6 +1,5 @@
 #include "GameEngine.h"
 
-
 GameEngine::GameEngine() {
 	map = nullptr;
 	playerArray = std::vector<Player*>();
@@ -112,7 +111,7 @@ void GameEngine::startUpPhase() {
 	}
 
 	//Create players with reinforcements
-	for (int i = 0; i <= numberOfPlayers; i++)
+	for (int i = 0; i < numberOfPlayers; i++)
 	{
 		vector<Territory*>* territories = new vector<Territory*>(); 
 		OrdersList* orders = new OrdersList();
@@ -127,6 +126,7 @@ void GameEngine::startUpPhase() {
 			player->addReinforcements(25);
 		playerArray.push_back(player);
 	}
+
 	//Shuffle Player Array and Territories
 	random_shuffle(playerArray.begin(), playerArray.end());
 
@@ -143,8 +143,6 @@ void GameEngine::startUpPhase() {
 	}
 
 }
-
-
 
 int GameEngine::mainGameLoop()
 {
