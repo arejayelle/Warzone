@@ -249,6 +249,7 @@ int GameEngine::executeOrdersPhase()
 	std::vector<Player*> removeList;
 	for (auto it = playerArray.begin(); it != playerArray.end(); it++)
 	{
+		(*it)->clearInNegotiationWith();
 		if ((*it)->getTerritories()->size() == 0) {
 			removeList.push_back((*it));
 			statsObservable->notify((*it)->getName() + std::string(": has been eliminated.\n"));
