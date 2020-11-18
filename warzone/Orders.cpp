@@ -40,6 +40,11 @@ string Order::toString() const {
 	return strm.str();
 }
 
+// TODO Make Order::getPriority abstract
+int Order::getPriority() {
+	throw "Cannot determine the priority of an order in base Order class";
+}
+
 // Stream insertion operator, uses toString method to display order information.
 ostream& operator<<(ostream &strm, const Order &o) {
 	return strm << o.toString();
@@ -95,6 +100,11 @@ string DeployOrder::toString() const {
 	ostringstream strm;
 	strm << "Deploy order made by player " << this->player;
 	return strm.str();
+}
+
+int DeployOrder::getPriority() {
+	// Deploy order has highest priority
+	return 3;
 }
 
 // Stream insertion operator, uses toString method to display order information.
@@ -197,6 +207,11 @@ string AdvanceOrder::toString() const {
 	return strm.str();
 }
 
+int AdvanceOrder::getPriority() {
+	// AdvanceOrder has no particular priority
+	return 0;
+}
+
 // Stream insertion operator, uses toString method to display order information.
 ostream& operator<<(ostream& strm, const AdvanceOrder& o) {
 	return strm << o.toString();
@@ -249,6 +264,11 @@ string BombOrder::toString() const {
 	return strm.str();
 }
 
+int BombOrder::getPriority() {
+	// BombOrder has no particular priority
+	return 0;
+}
+
 // Stream insertion operator, uses toString method to display order information.
 ostream& operator<<(ostream& strm, const BombOrder& o) {
 	return strm << o.toString();
@@ -299,6 +319,11 @@ string BlockadeOrder::toString() const {
 	ostringstream strm;
 	strm << "Blockade order made by player " << this->player;
 	return strm.str();
+}
+
+int BlockadeOrder::getPriority() {
+	// BlockadeOrder has less priority than DeployOrder or AirliftOrder, but more priority than other orders.
+	return 1;
 }
 
 // Stream insertion operator, uses toString method to display order information.
@@ -358,6 +383,11 @@ string AirliftOrder::toString() const {
 	return strm.str();
 }
 
+int AirliftOrder::getPriority() {
+	// AirliftOrder has less priority than DeployOrder, but higher priority than BlockadeOrder and other orders
+	return 1;
+}
+
 // Stream insertion operator, uses toString method to display order information.
 ostream& operator<<(ostream& strm, const AirliftOrder& o) {
 	return strm << o.toString();
@@ -412,6 +442,11 @@ string NegotiateOrder::toString() const {
 	return strm.str();
 }
 
+int NegotiateOrder::getPriority() {
+	// NegotiateOrder has no particular priority
+	return 0;
+}
+
 // Stream insertion operator, uses toString method to display order information.
 ostream& operator<<(ostream& strm, const NegotiateOrder& o) {
 	return strm << o.toString();
@@ -423,6 +458,10 @@ NegotiateOrder& NegotiateOrder::operator=(const NegotiateOrder& o) {
 	return *this;
 }
 
+// Comparison function for orders required for making the orders list a priority queue
+bool compareOrders(Order* order1, Order* order2) {
+	return order1->getPriority() < order2->getPriority();
+}
 
 // OrdersList class. Stores pointers to Order objects in a vector.
 // Constructor for making an empty list.
@@ -438,6 +477,8 @@ OrdersList::OrdersList(OrdersList* other) {
 		// TODO
 		// newOrders.push_back(new Order(other->orders.at(i)));
 	}
+	// make_heap organizes the element in the vector to respect the heap property (highest priority first)
+	make_heap(newOrders.begin(), newOrders.end(), compareOrders);
 	this->orders = newOrders;
 }
 
@@ -457,11 +498,28 @@ int OrdersList::size() {
 // To add a new order to the list. The new order is added to the back of the list.
 void OrdersList::add(Order* newOrder) {
 	this->orders.push_back(newOrder);
+	// push_heap assumes we have just pushed an element to the end of the vector, and will rearrange the vector to insert
+	// the new element at the right spot based on the compare function.
+	push_heap(orders.begin(), orders.end(), compareOrders);
 }
 
 Order* OrdersList::peek()
 {
+	if (orders.empty()) {
+		throw "Cannot peek at an empty OrdersList";
+	}
 	return orders.at(0);
+}
+
+Order* OrdersList::pop()
+{
+	// pop_heap will move the highest priority element in the orders list to the last position in the vector so that we can remove it
+	pop_heap(orders.begin(), orders.end(), compareOrders);
+
+	// pop_back removes the last element but doesn't actually return it which is why we have to call vector::back first
+	Order* order = orders.back();
+	orders.pop_back();
+	return order;
 }
 
 // Deletes the order at the specified index. Indexes begin at 0. Returns true if successfully removed, false otherwise.
@@ -474,6 +532,8 @@ Order* OrdersList::remove(int index) {
 
 	Order* order = this->orders.at(index);
 	this->orders.erase(this->orders.begin() + index);
+	// rearrange the vector so it is in priority order after the remove happened
+	make_heap(orders.begin(), orders.end(), compareOrders);
 	return order;
 }
 
@@ -501,6 +561,8 @@ bool OrdersList::move(int oldIndex, int newIndex) {
 
 	// Regular case, just insert it at the index.
 	this->orders.insert(this->orders.begin() + newIndex, theOrder);
+	// rearrange the vector so it is still ordered by priority
+	make_heap(orders.begin(), orders.end(), compareOrders);
 	return true;
 }
 

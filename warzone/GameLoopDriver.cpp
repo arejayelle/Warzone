@@ -34,6 +34,7 @@ int GameLoopDriver::main()
 
     GameLoopDriver::reinforcements(gameEngine);
     GameLoopDriver::issueOrdersPhase(gameEngine);
+    GameLoopDriver::executeOrdersPhase(gameEngine);
     return 0;
 }
 
@@ -82,6 +83,9 @@ void GameLoopDriver::issueOrdersPhase(GameEngine* gameEngine)
 
 void GameLoopDriver::executeOrdersPhase(GameEngine* gameEngine)
 {
-    
+    cout << "=== GameLoopDriver Execute Orders Phase ===" << endl;
+    gameEngine->executeOrdersPhase();
+
+    // The output should show the orders executed in order of priority.
 }
 

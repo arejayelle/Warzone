@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 
 class Player;
@@ -21,6 +22,7 @@ public:
 	virtual bool execute() = 0;
 	virtual bool validate();
 	virtual std::string toString() const;
+	virtual int getPriority();
 
 private:
 	friend std::ostream& operator<<(std::ostream &strm, const Order &o);
@@ -40,6 +42,7 @@ public:
 	bool validate();
 	bool execute();
 	std::string toString() const;
+	int getPriority();
 
 private:
 	int numArmies;
@@ -60,6 +63,7 @@ public:
 	bool execute();
 	void battle();
 	std::string toString() const;
+	int getPriority();
 
 private:
 	int numArmies;
@@ -80,6 +84,7 @@ public:
 	bool validate();
 	bool execute();
 	std::string toString() const;
+	int getPriority();
 
 private:
 	Territory* target;
@@ -98,6 +103,7 @@ public:
 	bool validate();
 	bool execute();
 	std::string toString() const;
+	int getPriority();
 
 private:
 	Territory* target;
@@ -116,6 +122,7 @@ public:
 	bool validate();
 	bool execute();
 	std::string toString() const;
+	int getPriority();
 
 private:
 	int numArmies;
@@ -136,6 +143,7 @@ public:
 	bool validate();
 	bool execute();
 	std::string toString() const;
+	int getPriority();
 
 private:
 	Player* targeted;
@@ -153,6 +161,7 @@ public:
 
 	int size();
 	void add(Order* newOrder);
+	Order* pop();
 	Order* peek();
 	Order* remove(int index);
 	bool move(int oldIndex, int newIndex);
