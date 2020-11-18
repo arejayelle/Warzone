@@ -73,8 +73,26 @@ void GameLoopDriver::reinforcements(GameEngine* gameEngine)
     cout << "Player 2 owns a continent worth 6 troops and owns only part of a continent, should have 9 troops total; has " << gameEngine->getPlayers()->at(1)->getReinforcements() << endl;
 
     // check rounding is done properly (owned territories / 3 rounded down)
-    cout << "TODO validate rounding is done properly by giving a player 12 or more territories" << endl;
+    cout << "Creating a player with 17 territories" << endl;
 
+    // Create a map with a lot of territories and assign them to one player
+    Map* map = new Map();
+    Continent* continent = new Continent("BigContinent", "Blue", 5);
+    vector<Territory*>* playerTerritories = new vector<Territory*>();
+
+    for (int i = 0; i < 17; i++) {
+        Territory* territory = new Territory("" + i, continent, 0, 0);
+        map->addTerritory(territory);
+        playerTerritories->push_back(territory);
+    }
+    Deck* deck = new Deck();
+    Player* onlyPlayer = new Player(playerTerritories, new OrdersList(), deck);
+
+    // Create a gameengine and run the reinforcement phase
+    GameEngine engine(map, { onlyPlayer });
+    engine.reinforcementPhase();
+
+    cout << "Player with 17 territories should get 5 reinforcements, has: " << onlyPlayer->getReinforcements() << endl;
 }
 
 void GameLoopDriver::issueOrdersPhase(GameEngine* gameEngine)
