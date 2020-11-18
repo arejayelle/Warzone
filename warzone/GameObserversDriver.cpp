@@ -9,15 +9,11 @@ int GameObserversDriver::main() {
 
 	StatsObserver* gameStatisticsObserver = new StatsObserver();
 
-	Observable* subject = new Observable(); 
+	PhaseObservable* subject = new PhaseObservable();
 
 	subject->attach(phaseObserver);
-	subject->attach(gameStatisticsObserver);
 
-	subject->notify();
-
-	subject->detach(gameStatisticsObserver);
-	subject->notify();
+	subject->notify("PLayer 1: Phase 2");
 
 	return 0;
 }

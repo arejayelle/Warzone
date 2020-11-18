@@ -22,24 +22,45 @@ public:
 	virtual void attach(Observer* observer);
 	virtual void detach(Observer* observer);
 	virtual void notify();
-protected:
+private:
 	std::list<Observer*>* myObservers;
 };
+
 
 class PhaseObserver: public Observer {
 public:
 	PhaseObserver();
-	//PhaseObserver(GameEngine* ge);
 	~PhaseObserver();
 	void update() override;
-private:
-	//Gameengine* _subject;
+	void update(std::string output);
 };
 
 class StatsObserver : public Observer {
 public:
 	StatsObserver();
-	StatsObserver(Player player);
 	~StatsObserver();
 	void update() override;
+	void update(std::string output);
+};
+
+class PhaseObservable : public Observable {
+public:
+	PhaseObservable();
+	~PhaseObservable();
+	void attach(PhaseObserver* observer);
+	void detach(PhaseObserver* observer);
+	void notify(std::string textToPrint);
+private:
+	std::list<PhaseObserver*>* myPhaseObservers;
+};
+
+class StatsObservable : public Observable {
+public:
+	StatsObservable();
+	~StatsObservable();
+	void attach(StatsObserver* observer);
+	void detach(StatsObserver* observer);
+	void notify(std::string textToPrint);
+private:
+	std::list<StatsObserver*>* myStatsObservers;
 };
