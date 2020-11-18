@@ -50,10 +50,14 @@ void GameEngine::startUpPhase() {
 
 	//PlayerNumberSetup
 	while (playerInputValid == false) { //Getting number of players
-		cout << "How many players do you want?" << endl;
+		cout << "How many players do you want? Please choose a number between 2 - 5 inclusive" << endl;
 		cin >> numberOfPlayers;
 		if (numberOfPlayers < 2 || numberOfPlayers>6)
+		{
 			playerInputValid = false;
+			cout << "Input invalid. Please choose a number between 2 - 5 inclusive";
+
+		}
 		else
 			playerInputValid = true;
 	}
@@ -89,8 +93,10 @@ void GameEngine::startUpPhase() {
 			player->addReinforcements(25);
 		playerArray.push_back(player);
 	}
-	//Shuffle Player Array 
+	//Shuffle Player Array and Territories
+
 	random_shuffle(playerArray.begin(), playerArray.end());
+	random_shuffle(map->getTerritories()->begin(), map->getTerritories()->end());
 
 	//Assign Players Their Territories 
 	int territoryIterator = 0;
