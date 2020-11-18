@@ -128,14 +128,17 @@ void GameEngine::startUpPhase() {
 		playerArray.push_back(player);
 	}
 	//Shuffle Player Array and Territories
-
 	random_shuffle(playerArray.begin(), playerArray.end());
-	//random_shuffle(map->getTerritories()->begin(), map->getTerritories()->end());
+
+	std::vector<int>territoryIndexes;
+	for (int i = 0; i < map->getTerritories()->size(); i++)
+		territoryIndexes.push_back(i);
+	random_shuffle(territoryIndexes.begin(), territoryIndexes.end());
 
 	//Assign Players Their Territories 
 	int territoryIterator = 0;
 	while (territoryIterator != map->getTerritories()->size()) {
-		playerArray[territoryIterator % playerArray.size()]->grantTerritory(map->getTerritories()->at(territoryIterator));
+		playerArray[territoryIterator % playerArray.size()]->grantTerritory(map->getTerritories()->at(territoryIndexes.at(territoryIterator)));
 		territoryIterator++;
 	}
 
