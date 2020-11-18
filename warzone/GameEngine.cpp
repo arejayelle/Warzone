@@ -13,6 +13,20 @@ GameEngine::~GameEngine() {
 		delete i;
 	delete gameDeck;
 }
+GameEngine* GameEngine::operator=(const GameEngine& engine) //assignment operator
+{
+	return new GameEngine(engine);
+}
+
+GameEngine::GameEngine(const GameEngine& Engine) //Copy constructor
+{
+
+}
+
+ostream& operator<<(ostream& output, const GameEngine& engine)  //stream overloading
+{
+	// TODO: insert return statement here
+}
 
 void GameEngine::startUpPhase() {
 

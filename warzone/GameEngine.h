@@ -17,8 +17,12 @@ private:
 	std::vector<Player*> playerArray;
 	Deck* gameDeck;
 public:
-	GameEngine();
-	~GameEngine();
+	GameEngine();  //Constructor
+	~GameEngine(); //Destructor
+	GameEngine* operator= (const GameEngine& engine);  //assignment operator
+	GameEngine(const GameEngine& Engine);  //copy constructor 
+
+	friend ostream& operator<< (ostream& output, const GameEngine& engine); //stream overloading
 	void startUpPhase();
 };
 
