@@ -14,49 +14,52 @@ void Observer::update() {
 
 }
 
-
-
-Subject::Subject() {
-	this->myObservers = new std::vector<Observer*>();
+Observable::Observable() {
+	this->myObservers = new std::list<Observer*>();
 }
 
 //Destructor for Subject
-Subject::~Subject() {
-	// Delete each pointer in myObservers.
-	for (size_t i = 0; i < myObservers->size(); i++) {
-		delete myObservers->at(i);
-	}
+Observable::~Observable() {
+	delete myObservers;
 }
 
 
-void Subject::attach(Observer* observer){
+void Observable::attach(Observer* observer){
 	this->myObservers->push_back(observer);
 }
 
-void Subject::detach(Observer* observer){
-	std::vector<Observer*>::iterator it;
-
-	it = find(myObservers->begin(), myObservers->end(), observer);
-	if (it != myObservers->end()) {
-		this->myObservers->erase(it);
-	}
-	else {
-		std::cout << "Element not found in myObservers\n";
-	}	
+void Observable::detach(Observer* observer){
+	this->myObservers->remove(observer);
 }
 
-void Subject::notify(){
-	std::vector<Observer*>::iterator it;
-	for (this->myObservers->begin(); it != myObservers->end(); ++it) {
+void Observable::notify(){
+	std::list<Observer*>::iterator it = myObservers->begin();
+	for (; it != myObservers->end(); ++it) {
 		(*it)->update();
 	}
 }
 
-ConcreteObserver::ConcreteObserver(){
+PhaseObserver::PhaseObserver(){
+	std::cout << "Hello, I am the phase observer\n";
 }
 
-ConcreteObserver::~ConcreteObserver(){
+PhaseObserver::~PhaseObserver(){
+
 }
 
-void ConcreteObserver::update(){
+void PhaseObserver::update(){
+	std::cout << "I have been notified\n";
+	
+}
+
+StatsObserver::StatsObserver() {
+	std::cout << "Hello, I am the stats observer\n";
+}
+
+StatsObserver::~StatsObserver() {
+
+}
+
+void StatsObserver::update() {
+
 }

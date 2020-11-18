@@ -5,7 +5,19 @@
 
 int GameObserversDriver::main() {
 
-	std::cout << "Hello";
+	PhaseObserver* phaseObserver = new PhaseObserver();
+
+	StatsObserver* gameStatisticsObserver = new StatsObserver();
+
+	Observable* subject = new Observable();
+
+	subject->attach(phaseObserver);
+
+	subject->notify();
+	subject->notify();
+	subject->notify();
+	subject->notify();
+
 	return 0;
 }
 

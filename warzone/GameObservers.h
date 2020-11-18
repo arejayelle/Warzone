@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <list>
 
 
 class Observer {
@@ -11,20 +12,27 @@ protected:
 	Observer();
 };
 
-class Subject {
+class Observable {
 public:
-	Subject();
-	~Subject();
+	Observable();
+	~Observable();
 	virtual void attach(Observer* observer);
 	virtual void detach(Observer* observer);
 	virtual void notify();
 protected:
-	std::vector<Observer*> *myObservers;
+	std::list<Observer*>* myObservers;
 };
 
-class ConcreteObserver {
+class PhaseObserver: public Observer {
 public:
-	ConcreteObserver();
-	~ConcreteObserver();
-	void update();
+	PhaseObserver();
+	~PhaseObserver();
+	void update() override;
+};
+
+class StatsObserver : public Observer {
+public:
+	StatsObserver();
+	~StatsObserver();
+	void update() override;
 };
