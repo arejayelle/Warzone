@@ -25,6 +25,7 @@ public:
 	int executeOrdersPhase();
 
 	const std::vector<Player*>* getPlayers();
+	const std::vector<Card*>* getDeck();
 
 private:
 	Map* map;
