@@ -187,7 +187,10 @@ void AdvanceOrder::battle() {
 		this->target->addArmies(numArmies);
 
 		// Remove territory from losing player's vector of territories and transfer ownership of territory to the winning player.
-		this->target->getOwner()->removeTerritory(this->target);
+		if (this->target->getOwner() != nullptr) {
+			this->target->getOwner()->removeTerritory(this->target);
+		}
+
 		this->target->setOwner(this->source->getOwner());
 
 		// Add the new territory to the player's list of territories.
@@ -303,6 +306,8 @@ bool BlockadeOrder::execute() {
 	}
 
 	this->target->addArmies(this->target->getArmies() / 2);
+
+	this->target->getOwner()->removeTerritory(this->target);
 	this->target->setOwner(nullptr);
 	return true;
 }
