@@ -76,6 +76,15 @@ void Player::clearInNegotiationWith()
 	this->inNegotiatonWith.erase(this->inNegotiatonWith.begin(), this->inNegotiatonWith.end());
 }
 
+// Remove a territory from the player's list of territories in the case where they lose it.
+void Player::removeTerritory(Territory* territoryToRemove) 
+{
+	vector<Territory*>::iterator index = std::find(this->getTerritories()->begin(), this->getTerritories()->end(), territoryToRemove);
+	if (index != this->getTerritories()->end()) {
+		this->getTerritories()->erase(index);
+	}
+}
+
  vector<Territory*>* Player::getTerritories()  //returns all the player's territories 
 {
 	return playerTerritories;
@@ -100,7 +109,6 @@ void Player::setTerritories(vector<Territory*>* territoriesToAdd) //sets all the
 // Used to add a single territory to the list of territories.
 void Player::addTerritory(Territory* territoryToAdd)
 {
-	// TODO Do I need to dereference this?
 	this->playerTerritories->push_back(territoryToAdd);
 }
 

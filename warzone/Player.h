@@ -31,6 +31,8 @@ public:
 	bool isInNegotiationWithPlayer(Player* player);
 	void clearInNegotiationWith();
 
+	void removeTerritory(Territory* territoryToRemove);
+
 	//Getters
 	vector<Territory*>* getTerritories(); //Get territories
 	Hand* getHand(); //Get hand
@@ -39,8 +41,8 @@ public:
 	
 
 	//Setters
-	void setOrdersList(OrdersList* ordersList); //Set territories
-	void setTerritories(vector<Territory*>* territoriesToAdd); //Set Orders List
+	void setOrdersList(OrdersList* ordersList); //Set Orders List 
+	void setTerritories(vector<Territory*>* territoriesToAdd); //Set territories
 	void addTerritory(Territory* territoryToAdd);  // Add one territory to player's list of territories.
 	void setHand(Hand* handToAdd); //Set hand 
 	void addReinforcements(int addedReinforcements);

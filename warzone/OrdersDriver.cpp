@@ -13,7 +13,6 @@ int OrdersDriver::main() {
 	return 0;
 }
 
-int OrdersDriver::oldMain() {
 	/*
 	// Create an order list and player.
 	OrdersList list1 = new OrdersList();
@@ -115,6 +114,3 @@ int OrdersDriver::oldMain() {
 	cout << "Demonstration of OrdersList stream insertion operator: " << list1 << endl << endl;
 
 	*/
-
-	return 0;
-}
