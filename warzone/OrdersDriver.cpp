@@ -5,41 +5,31 @@
 int OrdersDriver::main() {
 	// Create continents, territories, players to test with.
 	Deck* d = new Deck();
-	Card* c1 = new Card();
-	d->add(c1);
+	BombCard* b = new BombCard();
+	d->add(b);
 
 	OrdersList* l1 = new OrdersList();
 	OrdersList* l2 = new OrdersList();
 
-	Player* p1 = new Player(nullptr, l1, d);
-	p1->addReinforcements(1000);
-
-	Player* p2 = new Player(nullptr, l2, d);
-	p2->addReinforcements(1000);
-
 	Continent* c = new Continent("Candy Land", "Pink", 10);
 
 	Territory* t1 = new Territory("Lollypop Woods", c, 0, 0);
-	t1->setOwner(p1);
 	Territory* t2 = new Territory("Gummy Hills", c, 5, 5);
-	t2->setOwner(p1);
 	Territory* t3 = new Territory("Chocolate Mountain", c, 10, 10);
-	t3->setOwner(p2);
 	Territory* t4 = new Territory("Licorice Lagoon", c, 15, 15);
-	t4->setOwner(p2);
 
 	vector<Territory*>* p1Territories = new vector<Territory*>();
 	p1Territories->push_back(t1);
 	p1Territories->push_back(t2);
-	p1->setTerritories(p1Territories);
 	vector<Territory*>* p2Territories = new vector<Territory*>();
 	p2Territories->push_back(t3);
 	p2Territories->push_back(t4);
-	p2->setTerritories(p2Territories);
 
-	cout << "Created continents, territories, players for demonstration." << endl;
+	Player* p1 = new Player(p1Territories, l1, d);
+	p1->addReinforcements(1000);
 
-	cout << "\n-----\n" << endl;
+	Player* p2 = new Player(p2Territories, l2, d);
+	p2->addReinforcements(1000);
 
 	// DEPLOY ORDER.
 
@@ -81,7 +71,7 @@ int OrdersDriver::main() {
 
 	cout << "\n-----\n" << endl;
 
-	cout << "Demonstrating AdvanceOrder with 2 territories owned by the same player." << endl;
+	cout << "Demonstrating valid AdvanceOrder with 2 territories owned by the same player." << endl;
 	cout << "Territory t1 currently has " << t1->getArmies() << " armies." << endl;
 	cout << "Territory t2 currently has " << t2->getArmies() << " armies." << endl;
 	cout << "AdvanceOrder with source and target belonging to the same player, advancing 5 armies:" << endl;
@@ -98,7 +88,7 @@ int OrdersDriver::main() {
 	// Make sure t3 has some armies.
 	t3->addArmies(3);
 
-	cout << "Demonstrating AdvanceOrder between territories owned by different players." << endl;
+	cout << "Demonstrating valid AdvanceOrder between territories owned by different players." << endl;
 	cout << "Territory t1 currently has " << t1->getArmies() << " armies." << endl;
 	cout << "Territory t1 currently belongs to player p1 " << t1->getOwner() << endl;
 	cout << "p1 currently has " << p1->getHand()->getNumberOfCardsInHand() << " cards in hand." << endl;
