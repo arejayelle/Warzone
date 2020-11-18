@@ -138,6 +138,9 @@ public:
 	std::string toString() const;
 
 private:
+	/*Player* 
+	Player* target;*/
+
 	friend std::ostream& operator<<(std::ostream& strm, const NegotiateOrder& o);
 	NegotiateOrder& operator= (const NegotiateOrder& o);
 };

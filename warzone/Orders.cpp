@@ -287,7 +287,7 @@ bool BlockadeOrder::execute() {
 	}
 
 	this->target->addArmies(this->target->getArmies() / 2);
-	// TODO Transfer ownership???
+	this->target->setOwner(nullptr);
 	cout << "Blockade order executed." << endl;
 	return true;
 }
