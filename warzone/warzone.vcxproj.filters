@@ -49,6 +49,12 @@
     <Filter Include="Header Files\GameObservers">
       <UniqueIdentifier>{02300ae6-6d56-4fdd-9978-aa813e7a5c1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{4045f504-d064-43c1-9724-ef7d6a6c457c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game">
+      <UniqueIdentifier>{edd2269a-99a7-4d4a-bbd1-48d7f6c0b854}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\GameLoop">
       <UniqueIdentifier>{1fd12fb9-9b6f-4319-b359-841bd432c0f6}</UniqueIdentifier>
     </Filter>
@@ -92,6 +98,12 @@
     </ClInclude>
     <ClInclude Include="GameObserversDriver.h">
       <Filter>Header Files\GameObservers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngine.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineDriver.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="GameLoopDriver.h">
       <Filter>Header Files\GameLoop</Filter>
@@ -142,6 +154,12 @@
     </ClCompile>
     <ClCompile Include="GameObserversDriver.cpp">
       <Filter>Source Files\GameObservers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngine.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDriver.cpp">
+      <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="GameLoopDriver.cpp">
       <Filter>Source Files\GameLoop</Filter>

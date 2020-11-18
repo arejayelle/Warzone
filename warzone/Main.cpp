@@ -3,5 +3,7 @@
 
 int main()
 {
-	return GameLoopDriver::main();
+	//return GameEngineDriver::main();
+	return GameObserversDriver::main();
+
 }

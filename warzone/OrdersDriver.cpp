@@ -5,7 +5,7 @@
 int OrdersDriver::main() {
 	OrdersList* l1 = new OrdersList();
 	Deck* d1 = new Deck();
-	Player* p1 = new Player(nullptr, l1, d1);
+	Player* p1 = new Player("Jonathan the 2nd of the human race", nullptr, l1, d1);
 
 	// TODO
 	cout << "TODO" << endl;

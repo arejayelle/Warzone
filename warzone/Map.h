@@ -22,9 +22,9 @@ public:
 	void removeArmies(int amount);
 	Continent* getContinent();
 	Player* getOwner();
-	void setOwner(Player* player);
 	int getArmies();
 	friend std::ostream& operator<< (std::ostream& out, const Territory& territory);
+	void setOwner(Player* player);
 	void setIncomingArmies(int armies);
 	int getIncomingArmies();
 	

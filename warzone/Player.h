@@ -10,6 +10,11 @@ using namespace std;
 class Map;
 class Territory;
 class Order;
+class BombOrder;
+class NegotiateOrder;
+class AirliftOrder;
+class BlockadeOrder;
+class DeployOrder;
 class OrdersList;
 class Deck;
 class Hand;
@@ -17,7 +22,7 @@ class Hand;
 class Player {
 public:
 
-	Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom);  //constructor
+	Player(std::string name, vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom);  //constructor
 	~Player();   //destructor
 
 	Player* operator= (const Player& one);  //assignment operator
@@ -39,11 +44,20 @@ public:
 
 	void removeTerritory(Territory* territoryToRemove);
 
+	// Play Cards
+	BombOrder* useBomb();
+	NegotiateOrder* useDiplomacy();
+	AirliftOrder* useAirlift();
+	BlockadeOrder* useBlockade();
+	DeployOrder* useReinforcement();
+
 	//Getters
 	vector<Territory*>* getTerritories(); //Get territories
 	Hand* getHand(); //Get hand
 	OrdersList* getOrdersList(); //Get order list
-	int getReinforcements();
+	int getReinforcements(); // Get reinforcements
+	string getName();
+
 
 	//Setters
 	void setOrdersList(OrdersList* ordersList); //Set Orders List 
@@ -51,6 +65,7 @@ public:
 	void addTerritory(Territory* territoryToAdd);  // Add one territory to player's list of territories.
 	void setHand(Hand* handToAdd); //Set hand 
 	void addReinforcements(int addedReinforcements);
+	void grantTerritory(Territory* territory);
 
 private:
 	Hand* hand; //returns player's hand
@@ -59,4 +74,5 @@ private:
 	int reinforcementPool;
 	vector<Player*> inNegotiatonWith;
 	vector<Territory*>* territoriesWithAdvanceOrder;
+	string name;
 };

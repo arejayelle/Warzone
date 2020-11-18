@@ -24,19 +24,9 @@ public:
 	~Card();
 	Card* operator= (const Card& card);
 
-	virtual Order* play(Player* owner);
+	virtual Order* play(Player* owner) = 0;
 	string getName();
 	friend ostream& operator<< (ostream& out, const Card& card);
-};
-
-class SpyCard : public Card {
-public:
-	SpyCard();
-	SpyCard(SpyCard* spycard);
-	~SpyCard();
-	SpyCard* operator= (const SpyCard& card);
-
-	Order* play(Player* owner, Player* targeted);
 };
 
 class BombCard :public Card {
@@ -46,7 +36,7 @@ public:
 	~BombCard();
 	BombCard* operator= (const BombCard& card);
 
-	Order* play(Player* owner, Territory* target);
+	Order* play(Player* owner);
 };
 
 class ReinforcementCard :public Card {
@@ -66,7 +56,7 @@ public:
 	~BlockadeCard();
 	BlockadeCard* operator= (const BlockadeCard& card);
 
-	Order* play(Player* owner, Territory* target);
+	Order* play(Player* owner);
 };
 
 class AirliftCard :public Card {
@@ -76,7 +66,7 @@ public:
 	~AirliftCard();
 	AirliftCard* operator= (const AirliftCard& card);
 
-	Order* play(Player* owner, int numArmies, Territory* source, Territory* target);
+	Order* play(Player* owner);
 };
 
 class DiplomacyCard :public Card {
@@ -86,7 +76,7 @@ public:
 	~DiplomacyCard();
 	DiplomacyCard* operator= (const DiplomacyCard& card);
 
-	Order* play(Player* owner, Player* targeted);
+	Order* play(Player* owner);
 };
 
 class Deck {

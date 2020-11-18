@@ -143,6 +143,7 @@
     <ClCompile Include="Cards.cpp" />
     <ClCompile Include="GameObservers.cpp" />
     <ClCompile Include="GameEngine.cpp" />
+    <ClCompile Include="GameEngineDriver.cpp" />
     <ClCompile Include="GameLoopDriver.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="GameObservers.h" />
     <ClInclude Include="GameObserversDriver.h" />
     <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="GameEngineDriver.h" />
     <ClInclude Include="GameLoopDriver.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Map.h" />

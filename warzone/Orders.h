@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Player.h"
+#include "GameObservers.h"
 
 #include <string>
 #include <vector>
@@ -8,8 +9,10 @@
 #include <algorithm>
 
 
+
 class Player;
 class Territory;
+class StatsObservable;
 
 
 class Order {
@@ -64,6 +67,7 @@ public:
 	void battle();
 	std::string toString() const;
 	int getPriority();
+	static StatsObservable* statsObservable;
 
 private:
 	int numArmies;

@@ -7,22 +7,29 @@ int GameLoopDriver::main()
     Map* map = MapDriver::getValidMap();
 
     Deck* deck = new Deck();
+    for (int i = 0; i < 4; i++) {
+        deck->add(new ReinforcementCard());
+        deck->add(new BlockadeCard());
+        deck->add(new DiplomacyCard());
+        deck->add(new BombCard());
+        deck->add(new AirliftCard());
+    }
 
     vector<Territory*>* player1Territories = new vector<Territory*>();
     player1Territories->push_back(map->getTerritory(0));
     player1Territories->push_back(map->getTerritory(1));
     player1Territories->push_back(map->getTerritory(2));
-    Player* player1 = new Player(player1Territories, new OrdersList(), deck);
+    Player* player1 = new Player("Cleopatra", player1Territories, new OrdersList(), deck);
 
     vector<Territory*>* player2Territories = new vector<Territory*>();
     player2Territories->push_back(map->getTerritory(3));
     player2Territories->push_back(map->getTerritory(4));
     player2Territories->push_back(map->getTerritory(6));
-    Player* player2 = new Player(player2Territories, new OrdersList(), deck);
+    Player* player2 = new Player("Rameses II", player2Territories, new OrdersList(), deck);
 
     vector<Territory*>* player3Territories = new vector<Territory*>();
     player3Territories->push_back(map->getTerritory(5));
-    Player* player3 = new Player(player3Territories, new OrdersList(), deck);
+    Player* player3 = new Player("Casimir", player3Territories, new OrdersList(), deck);
 
     vector<Player*>* players = new vector<Player*>();
     players->push_back(player1);
@@ -86,6 +93,8 @@ void GameLoopDriver::executeOrdersPhase(GameEngine* gameEngine)
     cout << "=== GameLoopDriver Execute Orders Phase ===" << endl;
     gameEngine->executeOrdersPhase();
 
-    // The output should show the orders executed in order of priority.
+    // The output should show the orders executed in order of priority
+    // Let's finish off by printing the map
+    cout << *gameEngine->getMap() << endl;
 }
 
