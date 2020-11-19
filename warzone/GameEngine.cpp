@@ -215,6 +215,7 @@ int GameEngine::issueOrdersPhase()
 
     for (Player* player : playerArray) {
         phaseObservable->notify("----------" + player->getName()  + std::string(": Issue Order phase----------\n"));
+		phaseObservable->notify(player->getOrdersList()->print());
     }
 
     return 0;

@@ -35,12 +35,12 @@ int GameLoopDriver::main()
     player1->getHand()->addCard(new BombCard());
     player1->getHand()->addCard(new DiplomacyCard());
     
-    cout << "giving player 2 a ReinforcementCard and a AirliftCard" << endl;
-    player2->getHand()->addCard(new ReinforcementCard());
+    cout << "giving player 2 a BlockadeCard and a AirliftCard" << endl;
+    player2->getHand()->addCard(new BlockadeCard());
     player2->getHand()->addCard(new AirliftCard());
     
-    cout << "giving player 3 a BlockadeCard and a BombCard" << endl;
-    player3->getHand()->addCard(new BlockadeCard());
+    cout << "giving player 3 a ReinforcementCard and a BombCard" << endl;
+    player3->getHand()->addCard(new ReinforcementCard());
     player3->getHand()->addCard(new BombCard());
 
     vector<Player*>* players = new vector<Player*>();
@@ -119,6 +119,7 @@ void GameLoopDriver::issueOrdersPhase(GameEngine* gameEngine)
 void GameLoopDriver::executeOrdersPhase(GameEngine* gameEngine)
 {
     cout << "=== GameLoopDriver Execute Orders Phase ===" << endl;
+    gameEngine->attachObservers();
     gameEngine->executeOrdersPhase();
 
     cout << "Order priority is Deploy > Airlift > Blockade > Others " << endl;

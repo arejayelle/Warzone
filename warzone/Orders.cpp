@@ -173,7 +173,7 @@ void AdvanceOrder::battle() {
 		if (target->getOwner() != nullptr) {
 			playerTakenName = target->getOwner()->getName();
 		}
-		statsObservable->notify("Territory " + target->getName() + " was taken from " + playerTakenName + " by " + source->getOwner()->getName());
+		statsObservable->notify("Territory " + target->getName() + " was taken from " + playerTakenName + " by " + source->getOwner()->getName() + "\n");
 
 		// Place remaining armies on the new territory.
 		this->source->removeArmies(numArmies);
@@ -372,7 +372,7 @@ string AirliftOrder::toString() const {
 
 int AirliftOrder::getPriority() {
 	// AirliftOrder has less priority than DeployOrder, but higher priority than BlockadeOrder and other orders
-	return 1;
+	return 2;
 }
 
 // Stream insertion operator, uses toString method to display order information.
@@ -550,12 +550,14 @@ bool OrdersList::move(int oldIndex, int newIndex) {
 }
 
 // Prints all information about orders in the orders list for debugging/demonstration purposes.
-void OrdersList::print() {
-	cout << "List contents are:\n[\n";
+std::string OrdersList::print() {
+	ostringstream message;
+	message << "List contents are:\n";
 	for (int i = 0; i < this->orders.size(); i++) {
-		cout << *(this->orders.at(i)) << ", " << endl;
+		message << *(this->orders.at(i)) << ", " << endl;
 	}
-	cout << "]\nEnd of list contents." << endl;
+	message << "End of list contents." << endl;
+	return message.str();
 }
 
 // Attempts to execute all orders in the list. Returns true if successful, returns false if at least one order could not be executed.

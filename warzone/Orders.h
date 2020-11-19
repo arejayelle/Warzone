@@ -168,7 +168,7 @@ public:
 	Order* peek();
 	Order* remove(int index);
 	bool move(int oldIndex, int newIndex);
-	void print();
+	std::string print();
 	bool executeAll();
 
 private:
