@@ -52,8 +52,6 @@ ostream& operator<<(ostream &strm, const Order &o) {
 
 // Assignment operator which uses the class' copy constructor.
 Order& Order::operator=(const Order &o) {
-	// TODO why is the new way better? (all classes)
-	// return new Order(o);
 	player = o.player;
 	return *this;
 }
@@ -162,10 +160,6 @@ bool AdvanceOrder::execute() {
 }
 
 void AdvanceOrder::battle() {
-	// Seed the random number generator.
-	// TODO Probably better if this occurs once at the top of main().
-	srand(time(0));
-
 	while (this->source->getArmies() > 0 && this->target->getArmies() > 0) {
 		// Attacker has 60% chance of killing defender.
 		if ((1 + rand() % 100) < 60) { 
@@ -180,14 +174,21 @@ void AdvanceOrder::battle() {
 	// When attacker wins, the survivors occupy the territory.
 	if (this->source->getArmies() > this->target->getArmies()) {
 		int numArmies = this->source->getArmies();
-		statsObservable->notify("Territory " + target->getName() + " was taken from " + target->getOwner()->getName() + " by " + source->getOwner()->getName());
+		std::string playerTakenName = "Nobody";
+		if (target->getOwner() != nullptr) {
+			playerTakenName = target->getOwner()->getName();
+		}
+		statsObservable->notify("Territory " + target->getName() + " was taken from " + playerTakenName + " by " + source->getOwner()->getName());
 
 		// Place remaining armies on the new territory.
 		this->source->removeArmies(numArmies);
 		this->target->addArmies(numArmies);
 
 		// Remove territory from losing player's vector of territories and transfer ownership of territory to the winning player.
-		this->target->getOwner()->removeTerritory(this->target);
+		if (this->target->getOwner() != nullptr) {
+			this->target->getOwner()->removeTerritory(this->target);
+		}
+
 		this->target->setOwner(this->source->getOwner());
 
 		// Add the new territory to the player's list of territories.
@@ -303,6 +304,8 @@ bool BlockadeOrder::execute() {
 	}
 
 	this->target->addArmies(this->target->getArmies() / 2);
+
+	this->target->getOwner()->removeTerritory(this->target);
 	this->target->setOwner(nullptr);
 	return true;
 }
@@ -557,7 +560,7 @@ bool OrdersList::move(int oldIndex, int newIndex) {
 
 // Prints all information about orders in the orders list for debugging/demonstration purposes.
 void OrdersList::print() {
-	cout << "List contents are:\n[";
+	cout << "List contents are:\n[\n";
 	for (int i = 0; i < this->orders.size(); i++) {
 		cout << *(this->orders.at(i)) << ", " << endl;
 	}

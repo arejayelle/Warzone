@@ -191,6 +191,10 @@ void GameEngine::reinforcementPhase()
         phaseObservable->notify("----------" + player->getName() + std::string(": Reinforcement phase----------\n"));
         phaseObservable->notify(player->getName() + " has " + std::to_string(player->getReinforcements()) + std::string(" reinforcements\n\n"));
     }
+	
+	for (auto territory : (*map->getTerritories())) {
+		territory->setIncomingArmies(0);
+	}
 }
 
 int GameEngine::issueOrdersPhase()
@@ -249,6 +253,7 @@ int GameEngine::executeOrdersPhase()
 	std::vector<Player*> removeList;
 	for (auto it = playerArray.begin(); it != playerArray.end(); it++)
 	{
+		(*it)->clearInNegotiationWith();
 		if ((*it)->getTerritories()->size() == 0) {
 			removeList.push_back((*it));
 			statsObservable->notify((*it)->getName() + std::string(": has been eliminated.\n"));

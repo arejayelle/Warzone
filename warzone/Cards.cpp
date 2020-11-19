@@ -324,8 +324,7 @@ Deck::Deck(Deck* deck)
 	const vector<Card*>* realDeck = deck->getDeck();
 	for (size_t i = 0; i < realDeck->size() ; i++)
 	{
-		//TODO
-		//this->fullDeck->push_back(new Card(realDeck->at(i)));
+		this->fullDeck->push_back(new Card(realDeck->at(i)));
 	}
 }
 
@@ -355,7 +354,6 @@ void Deck::add(Card* card)
 
 Card* Deck::draw()
 {
-	srand((unsigned int)time(NULL));
 	int drawIndex = rand() % fullDeck->size();
 
 	// Retrieve cardID
