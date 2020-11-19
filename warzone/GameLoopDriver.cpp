@@ -112,9 +112,7 @@ void GameLoopDriver::issueOrdersPhase(GameEngine* gameEngine)
     // This should show that
     // - Player can only issue DeployOrders if they still have armies in their reinforcement pool
     // - Can issue AdvanceOrders, will have to demonstrate with better printing that they can both defend and attack, but both are being generated here
-    
-    // Does not demonstrate
-    // That the player can issue orders with cards
+    // - That the player can issue orders with cards
     
 }
 
@@ -127,5 +125,36 @@ void GameLoopDriver::executeOrdersPhase(GameEngine* gameEngine)
     // The output should show the orders executed in order of priority
     // Let's finish off by printing the map
     cout << *gameEngine->getMap() << endl;
+
+    cout << "=== GameLoopDriver Show that players are eliminated and a winner will appear" << endl;
+    cout << "We will create a game with 2 territories and 2 players, and give a ton of extra units to player 1 to end the game quickly" << endl;
+
+    Map* map = new Map();
+    Deck* deck = new Deck();
+    deck->add(new BombCard());
+    Continent* continent = new Continent("Test continent", "blue", 10);
+    map->addContinent(continent);
+    Territory* territory1 = new Territory("territory1", continent, 0, 0);
+    Territory* territory2 = new Territory("territory2", continent, 0, 0);
+    vector<Territory*> territory1Borders = { territory2 };
+    vector<Territory*> territory2Borders = { territory1 };
+    territory1->addBorders(&territory1Borders);
+    territory2->addBorders(&territory2Borders);
+    map->addTerritory(territory1);
+    map->addTerritory(territory2);
+    vector<Territory*>* player1Territories = new vector<Territory*>();
+    vector<Territory*>* player2Territories = new vector<Territory*>();
+    player1Territories->push_back(territory1);
+    player2Territories->push_back(territory2);
+
+    Player* player1 = new Player(player1Territories, new OrdersList(), deck);
+    Player* player2 = new Player(player2Territories, new OrdersList(), deck);
+
+    GameEngine* almostDoneGameEngine = new GameEngine(map, { player1, player2 });
+
+    cout << "Executing game loops until the game is over" << endl;
+    almostDoneGameEngine->mainGameLoop();
+    cout << "Game has ended" << endl;
+    cout << "Number of players remaining: " << almostDoneGameEngine->getPlayers()->size();
 }
 

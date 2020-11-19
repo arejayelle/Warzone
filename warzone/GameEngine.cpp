@@ -191,6 +191,11 @@ void GameEngine::reinforcementPhase()
         phaseObservable->notify("----------" + player->getName() + std::string(": Reinforcement phase----------\n"));
         phaseObservable->notify(player->getName() + " has " + std::to_string(player->getReinforcements()) + std::string(" reinforcements\n\n"));
     }
+	
+	for (auto territory : (*map->getTerritories())) {
+		territory->setIncomingArmies(0);
+		cout << territory->getArmies() << endl;
+	}
 }
 
 int GameEngine::issueOrdersPhase()

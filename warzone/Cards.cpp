@@ -355,7 +355,6 @@ void Deck::add(Card* card)
 
 Card* Deck::draw()
 {
-	srand((unsigned int)time(NULL));
 	int drawIndex = rand() % fullDeck->size();
 
 	// Retrieve cardID

@@ -162,10 +162,6 @@ bool AdvanceOrder::execute() {
 }
 
 void AdvanceOrder::battle() {
-	// Seed the random number generator.
-	// TODO Probably better if this occurs once at the top of main().
-	srand(time(0));
-
 	while (this->source->getArmies() > 0 && this->target->getArmies() > 0) {
 		// Attacker has 60% chance of killing defender.
 		if ((1 + rand() % 100) < 60) { 

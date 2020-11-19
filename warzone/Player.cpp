@@ -127,7 +127,6 @@ AirliftOrder* Player::useAirlift() {
 	// Randomly move some troops around
 	auto defend = toDefend();
 
-	srand((unsigned int)time(NULL));
 	int index1 = rand() % defend->size();
 	int index2 = rand() % defend->size();
 	return new AirliftOrder(this, 3, defend->at(index1), defend->at(index2));
@@ -136,7 +135,6 @@ AirliftOrder* Player::useAirlift() {
 BlockadeOrder* Player::useBlockade() {
 	// Blockade a random territory
 	auto defend = toDefend();
-	srand((unsigned int)time(NULL));
 	int index = rand() % defend->size();
 	return new BlockadeOrder(this, defend->at(index));
 }
@@ -226,7 +224,6 @@ bool Player::issueOrder() {
 
 			// No adjacent territory that belongs to an enemy
 			// Let's send all our troops to a neighbor then
-			srand((unsigned int)time(NULL));
 			int index = rand() % (adjacentTerritories->size());
 
 			int numberOfArmies = territory->getArmies() + territory->getIncomingArmies();
