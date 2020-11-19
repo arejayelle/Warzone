@@ -86,7 +86,7 @@ void GameLoopDriver::reinforcements(GameEngine* gameEngine)
         playerTerritories->push_back(territory);
     }
     Deck* deck = new Deck();
-    Player* onlyPlayer = new Player(playerTerritories, new OrdersList(), deck);
+    Player* onlyPlayer = new Player("TheOnlyPlayer", playerTerritories, new OrdersList(), deck);
 
     // Create a gameengine and run the reinforcement phase
     GameEngine engine(map, { onlyPlayer });
@@ -147,8 +147,8 @@ void GameLoopDriver::executeOrdersPhase(GameEngine* gameEngine)
     player1Territories->push_back(territory1);
     player2Territories->push_back(territory2);
 
-    Player* player1 = new Player(player1Territories, new OrdersList(), deck);
-    Player* player2 = new Player(player2Territories, new OrdersList(), deck);
+    Player* player1 = new Player("DuelPlayer1", player1Territories, new OrdersList(), deck);
+    Player* player2 = new Player("DuelPlayer2", player2Territories, new OrdersList(), deck);
 
     GameEngine* almostDoneGameEngine = new GameEngine(map, { player1, player2 });
 

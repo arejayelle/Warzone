@@ -174,7 +174,11 @@ void AdvanceOrder::battle() {
 	// When attacker wins, the survivors occupy the territory.
 	if (this->source->getArmies() > this->target->getArmies()) {
 		int numArmies = this->source->getArmies();
-		statsObservable->notify("Territory " + target->getName() + " was taken from " + target->getOwner()->getName() + " by " + source->getOwner()->getName());
+		std::string playerTakenName = "Nobody";
+		if (target->getOwner() != nullptr) {
+			playerTakenName = target->getOwner()->getName();
+		}
+		statsObservable->notify("Territory " + target->getName() + " was taken from " + playerTakenName + " by " + source->getOwner()->getName());
 
 		// Place remaining armies on the new territory.
 		this->source->removeArmies(numArmies);
