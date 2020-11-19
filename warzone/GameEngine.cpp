@@ -194,7 +194,6 @@ void GameEngine::reinforcementPhase()
 	
 	for (auto territory : (*map->getTerritories())) {
 		territory->setIncomingArmies(0);
-		cout << territory->getArmies() << endl;
 	}
 }
 
