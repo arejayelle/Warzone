@@ -19,7 +19,7 @@ public:
 	Order(Order* other);
 	~Order();
 
-	virtual bool execute() = 0;
+	virtual bool execute() = 0;  // execute() is pure virtual.
 	virtual bool validate();
 	virtual std::string toString() const;
 	virtual int getPriority();
@@ -45,8 +45,8 @@ public:
 	int getPriority();
 
 private:
-	int numArmies;
-	Territory* target;
+	int numArmies;  // Number of armies to deploy.
+	Territory* target;  // Territory to deploy to.
 
 	friend std::ostream& operator<<(std::ostream& strm, const DeployOrder& o);
 	DeployOrder& operator= (const DeployOrder& o);
@@ -61,14 +61,14 @@ public:
 
 	bool validate();
 	bool execute();
-	void battle();
+	void battle();  // The battle simulation sequence.
 	std::string toString() const;
 	int getPriority();
 
 private:
-	int numArmies;
-	Territory* source;
-	Territory* target;
+	int numArmies;  // Number of armies to advance.
+	Territory* source;  // Origin territory.
+	Territory* target;  // Destination territory.
 
 	friend std::ostream& operator<<(std::ostream& strm, const AdvanceOrder& o);
 	AdvanceOrder& operator= (const AdvanceOrder& o);
@@ -87,7 +87,7 @@ public:
 	int getPriority();
 
 private:
-	Territory* target;
+	Territory* target;  // The territory to bomb.
 
 	friend std::ostream& operator<<(std::ostream& strm, const BombOrder& o);
 	BombOrder& operator= (const BombOrder& o);
@@ -106,7 +106,7 @@ public:
 	int getPriority();
 
 private:
-	Territory* target;
+	Territory* target;  // The territory where blockade will be applied (becomes neutral territory).
 
 	friend std::ostream& operator<<(std::ostream& strm, const BlockadeOrder& o);
 	BlockadeOrder& operator= (const BlockadeOrder& o);
@@ -125,9 +125,9 @@ public:
 	int getPriority();
 
 private:
-	int numArmies;
-	Territory* source;
-	Territory* target;
+	int numArmies;  // Number of armies to transport.
+	Territory* source;  // Origin territory.
+	Territory* target;  // Destination territory.
 
 	friend std::ostream& operator<<(std::ostream& strm, const AirliftOrder& o);
 	AirliftOrder& operator= (const AirliftOrder& o);
@@ -146,7 +146,7 @@ public:
 	int getPriority();
 
 private:
-	Player* targeted;
+	Player* targeted;  // The player which the negotiation will take place with.
 
 	friend std::ostream& operator<<(std::ostream& strm, const NegotiateOrder& o);
 	NegotiateOrder& operator= (const NegotiateOrder& o);
