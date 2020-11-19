@@ -43,6 +43,12 @@
     <Filter Include="Source Files\MapLoader">
       <UniqueIdentifier>{32cab156-2ec2-4008-b1e4-e71f81ce29c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameObservers">
+      <UniqueIdentifier>{d38ce94c-d1f4-4bbb-9590-d0bb8ec6880f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObservers">
+      <UniqueIdentifier>{02300ae6-6d56-4fdd-9978-aa813e7a5c1a}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{4045f504-d064-43c1-9724-ef7d6a6c457c}</UniqueIdentifier>
     </Filter>
@@ -86,6 +92,12 @@
     </ClInclude>
     <ClInclude Include="Cards.h">
       <Filter>Header Files\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObservers.h">
+      <Filter>Header Files\GameOberservers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObserversDriver.h">
+      <Filter>Header Files\GameObservers</Filter>
     </ClInclude>
     <ClInclude Include="GameEngine.h">
       <Filter>Header Files\Game</Filter>
@@ -136,6 +148,12 @@
     </ClCompile>
     <ClCompile Include="Cards.cpp">
       <Filter>Source Files\Card</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObservers.cpp">
+      <Filter>Source Files\GameObservers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObserversDriver.cpp">
+      <Filter>Source Files\GameObservers</Filter>
     </ClCompile>
     <ClCompile Include="GameEngine.cpp">
       <Filter>Source Files\Game</Filter>

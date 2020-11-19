@@ -1,9 +1,12 @@
 #include "GameEngine.h"
-
+#include "Orders.h"
+   
 GameEngine::GameEngine() {
 	map = nullptr;
 	playerArray = std::vector<Player*>();
 	gameDeck = new Deck();
+	this->phaseObservable = new PhaseObservable();
+	this->statsObservable = new StatsObservable();
 }
 
 GameEngine::~GameEngine() {    
@@ -11,11 +14,15 @@ GameEngine::~GameEngine() {
 	for (Player* player : playerArray)
 		delete player;
 	delete gameDeck;
+	delete phaseObservable;
+	delete statsObservable;
 }
 GameEngine::GameEngine(Map* map, std::vector<Player*> players)
 {
 	this->map = map;
 	this->playerArray = players;
+	this->phaseObservable = new PhaseObservable();
+    this->statsObservable = new StatsObservable();
 }
 GameEngine* GameEngine::operator=(const GameEngine& engine) //assignment operator
 {
@@ -76,8 +83,10 @@ void GameEngine::startUpPhase() {
 	//Setting up Observers
 	cout << "Would you like to turn observers on or off? y/n" << endl;
 	cin >> playerAnswer;
-	if (playerAnswer.compare("y") == 0 || playerAnswer.compare("Y") == 0)
+	if (playerAnswer.compare("y") == 0 || playerAnswer.compare("Y") == 0) {
+		attachObservers();
 		observersOn = true;
+	}	
 	else
 		observersOn = false;
 
@@ -113,7 +122,7 @@ void GameEngine::startUpPhase() {
 	{
 		vector<Territory*>* territories = new vector<Territory*>(); 
 		OrdersList* orders = new OrdersList();
-		Player* player = new Player(territories, orders, gameDeck);
+		Player* player = new Player("Player " + (i++),territories, orders, gameDeck);
 		if (numberOfPlayers == 2)
 			player->addReinforcements(40);
 		else if (numberOfPlayers == 3)
@@ -150,6 +159,8 @@ int GameEngine::mainGameLoop()
 		executeOrdersPhase();
 	}
 
+	phaseObservable->notify("\n\n\n\n\n " + playerArray.at(0)->getName() + std::string(" is the WINNER!!!!!!\n"));
+
 	return 0;
 }
 /**
@@ -159,6 +170,9 @@ int GameEngine::mainGameLoop()
  */
 void GameEngine::reinforcementPhase()
 {
+    
+	phaseObservable->notify("\n\n\n\n\n\n\n\n\n==================== Reinforcement Phase ====================\n\n");
+    
     for (Player* player : playerArray)
     {
         int reinforcements = player->getTerritories()->size() / 3;
@@ -166,6 +180,8 @@ void GameEngine::reinforcementPhase()
             reinforcements = 3;
         }
         player->addReinforcements(reinforcements);
+      
+        
     }
 
     for (std::vector<Continent*>::const_iterator it = map->getContinents()->begin(); it != map->getContinents()->end(); it++) {
@@ -174,10 +190,16 @@ void GameEngine::reinforcementPhase()
             owner->addReinforcements((**it).getValue());
         }
     }
+
+    for (Player* player : playerArray){
+        phaseObservable->notify("----------" + player->getName() + std::string(": Reinforcement phase----------\n"));
+        phaseObservable->notify(player->getName() + " has " + std::to_string(player->getReinforcements()) + std::string(" reinforcements\n\n"));
+    }
 }
 
 int GameEngine::issueOrdersPhase()
 {
+	phaseObservable->notify("\n\n\n\n\n\n\n\n\n==================== Issue Orders Phase ====================\n\n");
     bool allPlayersPassed;
     do {
         allPlayersPassed = true;
@@ -189,6 +211,11 @@ int GameEngine::issueOrdersPhase()
         }
     } while (!allPlayersPassed);
 
+    for (Player* player : playerArray) {
+        phaseObservable->notify("----------" + player->getName()  + std::string(": Issue Order phase----------\n"));
+        player->getOrdersList()->print();
+    }
+
     return 0;
 }
 
@@ -196,9 +223,11 @@ int GameEngine::executeOrdersPhase()
 {
 	// Get the highest priority order from each player in round-robin fashion
 	int currentPriority = 3;
+	phaseObservable->notify("\n\n\n\n\n\n\n\n\n==================== Execute Orders Phase ====================\n\n");
 
 	while (currentPriority >= 0) {
 		bool currentPriorityOrdersRemain = false;
+		int counter = 1;
 		for (auto it = playerArray.begin(); it != playerArray.end(); it++) {
 			Player* player = *it;
 			if (player->getOrdersList()->size() == 0) {
@@ -209,10 +238,11 @@ int GameEngine::executeOrdersPhase()
 			if (top->getPriority() == currentPriority) {
 				Order* popped = player->getOrdersList()->pop();
 				_ASSERT(popped != nullptr);
-				cout << "Executing order " << top->toString() << endl;
 				top->execute();
 				currentPriorityOrdersRemain = true;
+				phaseObservable->notify(player->getName() + std::string(" has Issued ") + popped->toString() + "\n");
 			}
+			counter++;
 		}
 
 		if (!currentPriorityOrdersRemain) {
@@ -225,6 +255,11 @@ int GameEngine::executeOrdersPhase()
 	{
 		if ((*it)->getTerritories()->size() == 0) {
 			removeList.push_back((*it));
+			statsObservable->notify((*it)->getName() + std::string(": has been eliminated.\n"));
+		}
+		else {
+			float percentageOwned = ((*it)->getTerritories()->size() * 100.0f) / (map->getTerritories()->size() );
+			statsObservable->notify((*it)->getName() + std::string(": has ") + std::to_string(percentageOwned) + "% of all territories\n");
 		}
 	}
 
@@ -232,13 +267,21 @@ int GameEngine::executeOrdersPhase()
 	{
 		auto removed = std::find(playerArray.begin(), playerArray.end(), (*it));
 		if (removed != playerArray.end()) {
-			cout << "removed player " << *removed;
 			playerArray.erase(removed);
 		}
 	}
 
 
 	return 0;
+}
+
+void GameEngine::attachObservers()
+{
+	PhaseObserver* phaseObserver = new PhaseObserver();
+	StatsObserver* gameStatisticsObserver = new StatsObserver();
+	phaseObservable->attach(phaseObserver);
+	statsObservable->attach(gameStatisticsObserver);
+	AdvanceOrder::statsObservable->attach(gameStatisticsObserver);
 }
 
 const std::vector<Player*>* GameEngine::getPlayers()

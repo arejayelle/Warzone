@@ -1,10 +1,11 @@
 #include "Player.h"
 
 
-Player::Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom) { //Constructor with all parameters
+Player::Player(string name, vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom) { //Constructor with all parameters
 	for (std::vector<Territory*>::iterator it = territoriesToAdd->begin(); it != territoriesToAdd->end(); it++) {
 		(*it)->setOwner(this);
 	}
+	this->name = name;
 	this->territories = territoriesToAdd;
 	this->ordersList = playerList;
 	this->hand = new Hand(deckToTakeFrom, this);
@@ -260,6 +261,10 @@ Hand* Player::getHand()  //returns the cards in the player's hand
 int Player::getReinforcements()
 {
 	return reinforcementPool;
+}
+string Player::getName()
+{
+	return this->name;
 }
 void Player::setTerritories(vector<Territory*>* territoriesToAdd) //sets all the player's territories 
 {
