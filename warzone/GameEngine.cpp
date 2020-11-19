@@ -112,13 +112,16 @@ void GameEngine::startUpPhase() {
 		BombCard* bomb = new BombCard();
 		gameDeck->add(bomb);
 	}
+	gameDeck->add(new DiplomacyCard());
 
 	//Create players with reinforcements
 	for (int i = 0; i < numberOfPlayers; i++)
 	{
 		vector<Territory*>* territories = new vector<Territory*>(); 
 		OrdersList* orders = new OrdersList();
-		Player* player = new Player("Player " + (i++),territories, orders, gameDeck);
+		ostringstream name;
+		name << "Player" << i;
+		Player* player = new Player(name.str(), territories, orders, gameDeck);
 		if (numberOfPlayers == 2)
 			player->addReinforcements(40);
 		else if (numberOfPlayers == 3)
@@ -212,7 +215,7 @@ int GameEngine::issueOrdersPhase()
 
     for (Player* player : playerArray) {
         phaseObservable->notify("----------" + player->getName()  + std::string(": Issue Order phase----------\n"));
-        player->getOrdersList()->print();
+		phaseObservable->notify(player->getOrdersList()->print());
     }
 
     return 0;

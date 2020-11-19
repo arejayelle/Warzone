@@ -35,12 +35,12 @@ int GameLoopDriver::main()
     player1->getHand()->addCard(new BombCard());
     player1->getHand()->addCard(new DiplomacyCard());
     
-    cout << "giving player 2 a ReinforcementCard and a AirliftCard" << endl;
-    player2->getHand()->addCard(new ReinforcementCard());
+    cout << "giving player 2 a BlockadeCard and a AirliftCard" << endl;
+    player2->getHand()->addCard(new BlockadeCard());
     player2->getHand()->addCard(new AirliftCard());
     
-    cout << "giving player 3 a BlockadeCard and a BombCard" << endl;
-    player3->getHand()->addCard(new BlockadeCard());
+    cout << "giving player 3 a ReinforcementCard and a BombCard" << endl;
+    player3->getHand()->addCard(new ReinforcementCard());
     player3->getHand()->addCard(new BombCard());
 
     vector<Player*>* players = new vector<Player*>();
@@ -101,13 +101,13 @@ void GameLoopDriver::issueOrdersPhase(GameEngine* gameEngine)
     gameEngine->issueOrdersPhase();
 
     cout << "Player 1 Orders List: " << endl;
-    gameEngine->getPlayers()->at(0)->getOrdersList()->print();
+    cout << gameEngine->getPlayers()->at(0)->getOrdersList()->print() << endl;
     
     cout << "Player 2 Orders List: " << endl;
-    gameEngine->getPlayers()->at(1)->getOrdersList()->print();
+    cout << gameEngine->getPlayers()->at(1)->getOrdersList()->print() << endl;
 
     cout << "Player 3 Orders List: " << endl;
-    gameEngine->getPlayers()->at(2)->getOrdersList()->print();
+    cout << gameEngine->getPlayers()->at(2)->getOrdersList()->print() << endl;
 
     // This should show that
     // - Player can only issue DeployOrders if they still have armies in their reinforcement pool
@@ -119,6 +119,7 @@ void GameLoopDriver::issueOrdersPhase(GameEngine* gameEngine)
 void GameLoopDriver::executeOrdersPhase(GameEngine* gameEngine)
 {
     cout << "=== GameLoopDriver Execute Orders Phase ===" << endl;
+    gameEngine->attachObservers();
     gameEngine->executeOrdersPhase();
 
     cout << "Order priority is Deploy > Airlift > Blockade > Others " << endl;

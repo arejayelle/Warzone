@@ -8,6 +8,8 @@
 #include "Player.h"
 #include "GameObservers.h"
 #include "MapLoader.h"
+#include <sstream>
+
 using namespace std;
 
 class GameEngine
