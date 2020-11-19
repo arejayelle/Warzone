@@ -8,10 +8,11 @@ int GameEngineDriver::main()
 	cout << "---------------------------------------------" << endl;
 	Deck* deck = Game->getDeck();
 	cout << *deck << endl;
+
 	for (int i = 0; i < Game->getPlayers()->size(); i++) {
 		Player* playerToPrint = Game->getPlayers()->at(i);
-		cout << "Here is the player's information";
-		cout << *playerToPrint << endl;
+		cout << "Here is the player's information. Player Name: ";
+		cout << playerToPrint->getName() << endl;
 		cout << "Here are the amount of reinforcements a player has:";
 		cout << playerToPrint->getReinforcements() << endl;
 		for (int i = 0; i < playerToPrint->getTerritories()->size(); i++)
