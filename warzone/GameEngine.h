@@ -28,6 +28,7 @@ public:
 	void attachObservers();
 
 	const std::vector<Player*>* getPlayers();
+	Deck* getDeck();
 	Map* getMap();
 
 private:

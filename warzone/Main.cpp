@@ -3,7 +3,7 @@
 
 int main()
 {
-	//return GameEngineDriver::main();
-	return GameObserversDriver::main();
+	return GameEngineDriver::main();
+	//return GameObserversDriver::main();
 
 }

@@ -62,7 +62,6 @@ void GameEngine::startUpPhase() {
 	int numberOfPlayers;
 	bool fileInvalid = true;
 	string mapFileName;
-	bool observersOn= true;
 
 	MapLoader* loader = nullptr;
 	//Map Loading 
@@ -81,14 +80,11 @@ void GameEngine::startUpPhase() {
 	delete loader;
 
 	//Setting up Observers
-	cout << "Would you like to turn observers on or off? y/n" << endl;
+	cout << "Would you like to turn observers on? y/n" << endl;
 	cin >> playerAnswer;
-	if (playerAnswer.compare("y") == 0 || playerAnswer.compare("Y") == 0) {
+	if (playerAnswer.compare("y") == 0 || playerAnswer.compare("Y") == 0 || playerAnswer.compare("yes") ==0 ||playerAnswer.compare("Yes")==0) 
 		attachObservers();
-		observersOn = true;
-	}	
-	else
-		observersOn = false;
+
 
 	//PlayerNumberSetup
 	while (playerInputValid == false) { //Getting number of players
@@ -288,6 +284,12 @@ const std::vector<Player*>* GameEngine::getPlayers()
 {
     return &playerArray;
 }
+
+Deck* GameEngine::getDeck()
+{
+	return gameDeck;
+}
+
 
 Map* GameEngine::getMap()
 {
