@@ -52,8 +52,6 @@ ostream& operator<<(ostream &strm, const Order &o) {
 
 // Assignment operator which uses the class' copy constructor.
 Order& Order::operator=(const Order &o) {
-	// TODO why is the new way better? (all classes)
-	// return new Order(o);
 	player = o.player;
 	return *this;
 }
