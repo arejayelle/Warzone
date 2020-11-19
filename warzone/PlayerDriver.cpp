@@ -11,7 +11,7 @@ int PlayerDriver::main() {
 	cout << p1->toDefend() << endl; //prints memory address of territory
 
 	cout << "Player can attack: " << endl; //returns territories the player can attack
-	cout << p1->toAttack() << endl;
+	//cout << p1->toAttack() << endl;
 
 	cout << "Player has following orders: " << endl;  //returns the player's order list
 	p1->getOrdersList()->print();

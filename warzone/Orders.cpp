@@ -169,14 +169,21 @@ void AdvanceOrder::battle() {
 	// When attacker wins, the survivors occupy the territory.
 	if (this->source->getArmies() > this->target->getArmies()) {
 		int numArmies = this->source->getArmies();
-		statsObservable->notify("Territory " + target->getName() + " was taken from " + target->getOwner()->getName() + " by " + source->getOwner()->getName());
+		std::string playerTakenName = "Nobody";
+		if (target->getOwner() != nullptr) {
+			playerTakenName = target->getOwner()->getName();
+		}
+		statsObservable->notify("Territory " + target->getName() + " was taken from " + playerTakenName + " by " + source->getOwner()->getName());
 
 		// Place remaining armies on the new territory.
 		this->source->removeArmies(numArmies);
 		this->target->addArmies(numArmies);
 
 		// Remove territory from losing player's vector of territories and transfer ownership of territory to the winning player.
-		this->target->getOwner()->removeTerritory(this->target);
+		if (this->target->getOwner() != nullptr) {
+			this->target->getOwner()->removeTerritory(this->target);
+		}
+
 		this->target->setOwner(this->source->getOwner());
 
 		// Add the new territory to the player's list of territories.
@@ -290,6 +297,7 @@ bool BlockadeOrder::execute() {
 
 	// Double the number of armies on the territory and transfer ownership to neutral player.
 	this->target->addArmies(this->target->getArmies());
+	this->target->getOwner()->removeTerritory(this->target);
 	this->target->setOwner(nullptr);
 	return true;
 }
@@ -540,7 +548,7 @@ bool OrdersList::move(int oldIndex, int newIndex) {
 
 // Prints all information about orders in the orders list for debugging/demonstration purposes.
 void OrdersList::print() {
-	cout << "List contents are:\n[";
+	cout << "List contents are:\n[\n";
 	for (int i = 0; i < this->orders.size(); i++) {
 		cout << *(this->orders.at(i)) << ", " << endl;
 	}

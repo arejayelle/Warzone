@@ -62,7 +62,6 @@ void GameEngine::startUpPhase() {
 	int numberOfPlayers;
 	bool fileInvalid = true;
 	string mapFileName;
-	bool observersOn= true;
 
 	MapLoader* loader = nullptr;
 	//Map Loading 
@@ -81,14 +80,11 @@ void GameEngine::startUpPhase() {
 	delete loader;
 
 	//Setting up Observers
-	cout << "Would you like to turn observers on or off? y/n" << endl;
+	cout << "Would you like to turn observers on? y/n" << endl;
 	cin >> playerAnswer;
-	if (playerAnswer.compare("y") == 0 || playerAnswer.compare("Y") == 0) {
+	if (playerAnswer.compare("y") == 0 || playerAnswer.compare("Y") == 0 || playerAnswer.compare("yes") ==0 ||playerAnswer.compare("Yes")==0) 
 		attachObservers();
-		observersOn = true;
-	}	
-	else
-		observersOn = false;
+
 
 	//PlayerNumberSetup
 	while (playerInputValid == false) { //Getting number of players
@@ -195,6 +191,10 @@ void GameEngine::reinforcementPhase()
         phaseObservable->notify("----------" + player->getName() + std::string(": Reinforcement phase----------\n"));
         phaseObservable->notify(player->getName() + " has " + std::to_string(player->getReinforcements()) + std::string(" reinforcements\n\n"));
     }
+	
+	for (auto territory : (*map->getTerritories())) {
+		territory->setIncomingArmies(0);
+	}
 }
 
 int GameEngine::issueOrdersPhase()
@@ -253,6 +253,7 @@ int GameEngine::executeOrdersPhase()
 	std::vector<Player*> removeList;
 	for (auto it = playerArray.begin(); it != playerArray.end(); it++)
 	{
+		(*it)->clearInNegotiationWith();
 		if ((*it)->getTerritories()->size() == 0) {
 			removeList.push_back((*it));
 			statsObservable->notify((*it)->getName() + std::string(": has been eliminated.\n"));
@@ -288,6 +289,12 @@ const std::vector<Player*>* GameEngine::getPlayers()
 {
     return &playerArray;
 }
+
+Deck* GameEngine::getDeck()
+{
+	return gameDeck;
+}
+
 
 Map* GameEngine::getMap()
 {

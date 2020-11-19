@@ -24,7 +24,7 @@ public:
 	~Card();
 	Card* operator= (const Card& card);
 
-	virtual Order* play(Player* owner) = 0;
+	virtual Order* play(Player* owner);
 	string getName();
 	friend ostream& operator<< (ostream& out, const Card& card);
 };
