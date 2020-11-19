@@ -8,7 +8,7 @@ int main()
 	// return OrdersDriver::main();
 	// return GameEngineDriver::main();
 	// return GameObserversDriver::main();
-	// return GameLoopDriver::main();
+	return GameLoopDriver::main();
 	GameEngine* engine = new GameEngine();
 	engine->startUpPhase();
 	engine->mainGameLoop();

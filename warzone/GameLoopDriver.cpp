@@ -101,13 +101,13 @@ void GameLoopDriver::issueOrdersPhase(GameEngine* gameEngine)
     gameEngine->issueOrdersPhase();
 
     cout << "Player 1 Orders List: " << endl;
-    gameEngine->getPlayers()->at(0)->getOrdersList()->print();
+    cout << gameEngine->getPlayers()->at(0)->getOrdersList()->print() << endl;
     
     cout << "Player 2 Orders List: " << endl;
-    gameEngine->getPlayers()->at(1)->getOrdersList()->print();
+    cout << gameEngine->getPlayers()->at(1)->getOrdersList()->print() << endl;
 
     cout << "Player 3 Orders List: " << endl;
-    gameEngine->getPlayers()->at(2)->getOrdersList()->print();
+    cout << gameEngine->getPlayers()->at(2)->getOrdersList()->print() << endl;
 
     // This should show that
     // - Player can only issue DeployOrders if they still have armies in their reinforcement pool
