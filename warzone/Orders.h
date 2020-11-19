@@ -9,7 +9,6 @@
 #include <algorithm>
 
 
-
 class Player;
 class Territory;
 class StatsObservable;
