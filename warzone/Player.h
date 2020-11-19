@@ -31,7 +31,7 @@ public:
 	friend ostream& operator<< (ostream& output, const Player& player); //stream overloading
 
 	const vector<Territory*>* toDefend(); //Returns territories to defend. To keep in Player
-	const vector<Territory*>* toAttack(); //Returns territories to attack
+	const vector<Territory*> toAttack(); //Returns territories to attack
 
 	// Contains the decision-making for a player to issue an order.
 	// The order should be issued to the player's ordersList

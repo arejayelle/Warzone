@@ -54,10 +54,10 @@ const vector<Territory*>* Player::toDefend()   //returns territories the player 
 	return this->territories;
 }
 
-const vector<Territory*>* Player::toAttack()   //returns territories the player can attack
+const vector<Territory*> Player::toAttack()   //returns territories the player can attack
 {
 	// TODO make sure this gets destructed at some point... or return by value
-	vector<Territory*>* toAttack = new vector<Territory*>();
+	vector<Territory*> toAttack = vector<Territory*>();
 
 	for (std::vector<Territory*>::iterator it = this->territories->begin(); it != this->territories->end(); it++) {
 		Territory* territory = *it;
@@ -65,13 +65,13 @@ const vector<Territory*>* Player::toAttack()   //returns territories the player 
 		for (std::vector<Territory*>::const_iterator it2 = territory->getBorders()->begin(); it2 != territory->getBorders()->end(); it2++) {
 			Territory* neighbor = *it2;
 
-			if (std::find(toAttack->begin(), toAttack->end(), neighbor) == toAttack->end()) {
-				toAttack->push_back(neighbor);
+			if (std::find(toAttack.begin(), toAttack.end(), neighbor) == toAttack.end()) {
+				toAttack.push_back(neighbor);
 			}
 		}
 	}
 
-	std::sort(toAttack->begin(), toAttack->end(), compareTerritories);
+	std::sort(toAttack.begin(), toAttack.end(), compareTerritories);
 
 	return toAttack;
 }
@@ -106,9 +106,9 @@ void Player::removeTerritory(Territory* territoryToRemove)
 BombOrder* Player::useBomb() {
 	// Execute on the adjacent enemy territory with the most troops
 	auto enemies = toAttack();
-	int maxTroops = enemies->at(0)->getArmies();
-	Territory* territoryWithMaxTroops = enemies->at(0);
-	for (auto it = enemies->begin(); it != enemies->end(); it++) {
+	int maxTroops = enemies.at(0)->getArmies();
+	Territory* territoryWithMaxTroops = enemies.at(0);
+	for (auto it = enemies.begin(); it != enemies.end(); it++) {
 		if ((*it)->getArmies() > maxTroops) {
 			maxTroops = (*it)->getArmies();
 			territoryWithMaxTroops = (*it);
@@ -120,7 +120,7 @@ BombOrder* Player::useBomb() {
 
 NegotiateOrder* Player::useDiplomacy() {
 	// Use on a player adjacent to us
-	return new NegotiateOrder(this, toAttack()->at(0)->getOwner());
+	return new NegotiateOrder(this, toAttack().at(0)->getOwner());
 }
 
 AirliftOrder* Player::useAirlift() {
