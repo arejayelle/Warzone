@@ -246,9 +246,9 @@ const std::vector<Player*>* GameEngine::getPlayers()
     return &playerArray;
 }
 
-const std::vector<Card*>* GameEngine::getDeck()
+Deck* GameEngine::getDeck()
 {
-	return gameDeck->getDeck();
+	return gameDeck;
 }
 
 
