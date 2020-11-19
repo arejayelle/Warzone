@@ -17,6 +17,7 @@ int OrdersDriver::main() {
 	Territory* t2 = new Territory("Gummy Hills", c, 5, 5);
 	Territory* t3 = new Territory("Chocolate Mountain", c, 10, 10);
 	Territory* t4 = new Territory("Licorice Lagoon", c, 15, 15);
+	Territory* t5 = new Territory("Ice Cream Slopes", c, 20, 20);
 
 	vector<Territory*>* p1Territories = new vector<Territory*>();
 	p1Territories->push_back(t1);
@@ -24,6 +25,7 @@ int OrdersDriver::main() {
 	vector<Territory*>* p2Territories = new vector<Territory*>();
 	p2Territories->push_back(t3);
 	p2Territories->push_back(t4);
+	p2Territories->push_back(t5);
 
 	Player* p1 = new Player("Bert", p1Territories, l1, d);
 	p1->addReinforcements(1000);
@@ -57,7 +59,7 @@ int OrdersDriver::main() {
 
 	cout << "\n-----\n" << endl;
 
-	// ADANCE ORDER.
+	// ADVANCE ORDER.
 
 	cout << "Demonstrating invalid AdvanceOrder." << endl;
 	cout << "Territory t2 currently has " << t2->getArmies() << " armies." << endl;
@@ -91,11 +93,11 @@ int OrdersDriver::main() {
 	cout << "Demonstrating valid AdvanceOrder between territories owned by different players." << endl;
 	cout << "Territory t1 currently has " << t1->getArmies() << " armies." << endl;
 	cout << "Territory t1 currently belongs to player " << t1->getOwner()->getName() << endl;
-	cout << "p1 currently has " << p1->getHand()->getNumberOfCardsInHand() << " cards in hand." << endl;
+	cout << "Player " << t1->getOwner()->getName() << " currently has " << p1->getHand()->getNumberOfCardsInHand() << " cards in hand." << endl;
 	cout << "Territory t3 currently has " << t3->getArmies() << " armies." << endl;
 	cout << "Territory t3 currently belongs to player " << t3->getOwner()->getName() << endl;
-	cout << "p2 currently has " << p2->getHand()->getNumberOfCardsInHand() << " cards in hand." << endl;
-	cout << "AdvanceOrder with source and target belonging to different players, advancing 5 armies: " << endl;
+	cout << "Player " << t3->getOwner()->getName() << " currently has " << p2->getHand()->getNumberOfCardsInHand() << " cards in hand." << endl;
+	cout << "AdvanceOrder with source and target belonging to different players, advancing 5 armies:" << endl;
 
 	AdvanceOrder* o5 = new AdvanceOrder(p1, 5, t1, t3);
 	o5->execute();
@@ -107,7 +109,33 @@ int OrdersDriver::main() {
 	cout << "Territory t3 now has " << t3->getArmies() << " armies." << endl;
 	cout << "Territory t3 now belongs to player " << t3->getOwner()->getName() << endl;
 	cout << "p2 now has " << p2->getHand()->getNumberOfCardsInHand() << " cards in hand" << endl;
-	
+
+	cout << "\n-----\n" << endl;
+
+	// Make sure t5 has an army and t1 has more armies.
+	t1->addArmies(100);
+	t5->addArmies(1);
+
+	cout << "Demonstrating that only one card is picked up per turn." << endl;
+	cout << "Territory t1 currently has " << t1->getArmies() << " armies." << endl;
+	cout << "Territory t1 currently belongs to player " << t1->getOwner()->getName() << endl;
+	cout << "Player " << t1->getOwner()->getName() << " currently has " << p1->getHand()->getNumberOfCardsInHand() << " cards in hand." << endl;
+	cout << "Territory t5 currently has " << t5->getArmies() << " armies." << endl;
+	cout << "Territory t5 currently belongs to player " << t5->getOwner()->getName() << endl;
+	cout << "Player " << t5->getOwner()->getName() << " currently has " << p2->getHand()->getNumberOfCardsInHand() << " cards in hand." << endl;
+	cout << "AdvanceOrder with source and target belonging to different players, advancing 100 armies:" << endl;
+
+	AdvanceOrder* o6 = new AdvanceOrder(p1, 100, t1, t5);
+	o6->execute();
+
+	cout << "execute() called." << endl;
+	cout << "Territory t1 now has " << t1->getArmies() << " armies." << endl;
+	cout << "Territory t1 now belongs to player " << t1->getOwner()->getName() << endl;
+	cout << "Player " << t1->getOwner()->getName() << " currently has " << p1->getHand()->getNumberOfCardsInHand() << " cards in hand." << endl;
+	cout << "Territory t5 now has " << t5->getArmies() << " armies." << endl;
+	cout << "Territory t5 now belongs to player " << t5->getOwner()->getName() << endl;
+	cout << "Player " << t5->getOwner()->getName() << " currently has " << p2->getHand()->getNumberOfCardsInHand() << " cards in hand." << endl;
+
 	cout << "\n-----\n" << endl;
 
 	// AIRLIFT ORDER.
@@ -120,8 +148,8 @@ int OrdersDriver::main() {
 	cout << "Territory t4 currently has " << t4->getArmies() << " armies." << endl;
 	cout << "AirliftOrder with another player's territory as source, airlifting 10 armies:" << endl;
 
-	AirliftOrder* o6 = new AirliftOrder(p1, 10, t4, t1);
-	o6->execute();
+	AirliftOrder* o7 = new AirliftOrder(p1, 10, t4, t1);
+	o7->execute();
 	
 	cout << "execute() called." << endl;
 	cout << "Territory t1 now has " << t1->getArmies() << " armies." << endl;
@@ -134,8 +162,8 @@ int OrdersDriver::main() {
 	cout << "Territory t2 currently has " << t2->getArmies() << " armies." << endl;
 	cout << "AirliftOrder with own player's territory as source, airlifting 10 armies:" << endl;
 
-	AirliftOrder* o7 = new AirliftOrder(p1, 10, t1, t2);
-	o7->execute();
+	AirliftOrder* o8 = new AirliftOrder(p1, 10, t1, t2);
+	o8->execute();
 
 	cout << "execute() called." << endl;
 	cout << "Territory t1 now has " << t1->getArmies() << " armies." << endl;
@@ -152,8 +180,8 @@ int OrdersDriver::main() {
 	cout << "Territory t1 currently has " << t1->getArmies() << " armies." << endl;
 	cout << "BombOrder with own player's territory as target:" << endl;
 
-	BombOrder* o8 = new BombOrder(p1, t1);
-	o8->execute();
+	BombOrder* o9 = new BombOrder(p1, t1);
+	o9->execute();
 
 	cout << "execute() called." << endl;
 	cout << "Territory t1 now has " << t1->getArmies() << " armies." << endl;
@@ -167,8 +195,8 @@ int OrdersDriver::main() {
 	cout << "Territory t4 currently has " << t4->getArmies() << " armies." << endl;
 	cout << "BombOrder with other player's territory as target:" << endl;
 
-	BombOrder* o9 = new BombOrder(p1, t4);
-	o9->execute();
+	BombOrder* o10 = new BombOrder(p1, t4);
+	o10->execute();
 
 	cout << "execute() called." << endl;
 	cout << "Territory t4 now has " << t4->getArmies() << " armies." << endl;
@@ -182,8 +210,8 @@ int OrdersDriver::main() {
 	cout << "Territory t4 currently belongs to player " << t4->getOwner()->getName() << endl;
 	cout << "BlockadeOrder with other player's territory as target:" << endl;
 
-	BlockadeOrder* o10 = new BlockadeOrder(p1, t4);
-	o10->execute();
+	BlockadeOrder* o11 = new BlockadeOrder(p1, t4);
+	o11->execute();
 
 	cout << "execute() called." << endl;
 	cout << "Territory t4 now has " << t4->getArmies() << " armies." << endl;
@@ -196,8 +224,8 @@ int OrdersDriver::main() {
 	cout << "Territory t2 currently belongs to player p1 " << t2->getOwner()->getName() << endl;
 	cout << "BlockadeOrder with own player's territory as target:" << endl;
 
-	BlockadeOrder* o11 = new BlockadeOrder(p1, t2);
-	o11->execute();
+	BlockadeOrder* o12 = new BlockadeOrder(p1, t2);
+	o12->execute();
 
 	cout << "execute() called." << endl;
 	cout << "Territory t2 now has " << t2->getArmies() << " armies." << endl;
@@ -210,8 +238,8 @@ int OrdersDriver::main() {
 	cout << "Demonstrating invalid NegotiateOrder." << endl;
 	cout << "NegotiateOrder with own player as target, from p1 to p1:" << endl;
 	
-	NegotiateOrder* o12 = new NegotiateOrder(p1, p1);
-	o12->execute();
+	NegotiateOrder* o13 = new NegotiateOrder(p1, p1);
+	o13->execute();
 
 	cout << "execute() called." << endl;
 	cout << "Player p1 is now in negotiation with Player p1 is " << p1->isInNegotiationWithPlayer(p1) << endl;
@@ -221,8 +249,8 @@ int OrdersDriver::main() {
 	cout << "Demonstrating valid NegotiationOrder." << endl;
 	cout << "NegotiateOrder with other player as target, from p1 to p2:" << endl;
 
-	NegotiateOrder* o13 = new NegotiateOrder(p1, p2);
-	o13->execute();
+	NegotiateOrder* o14 = new NegotiateOrder(p1, p2);
+	o14->execute();
 
 	cout << "execute() called." << endl;
 	cout << "Player p1 is now in negotiation with Player p2 is " << p1->isInNegotiationWithPlayer(p2) << endl;
@@ -232,8 +260,8 @@ int OrdersDriver::main() {
 	cout << "Territory t4 currently belongs to player p2 " << t4->getOwner()->getName() << endl;
 	cout << "AdvanceOrder with source t1 and target t2, advancing 5 armies" << endl;
 
-	AdvanceOrder* o14 = new AdvanceOrder(p1, 5, t1, t4);
-	o14->execute();
+	AdvanceOrder* o15 = new AdvanceOrder(p1, 5, t1, t4);
+	o15->execute();
 
 	cout << "Territory t1 now has " << t1->getArmies() << " armies." << endl;
 	cout << "Territory t1 now belongs to player p1 " << t1->getOwner()->getName() << endl;

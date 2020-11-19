@@ -190,7 +190,10 @@ void AdvanceOrder::battle() {
 		this->player->addTerritory(this->target);
 
 		// Take the card on the top of the deck and add it to the player's hand.
-		this->player->getHand()->drawCardFromDeck();
+		if (!this->player->getConqueredTerritoryThisTurn()) {
+			this->player->getHand()->drawCardFromDeck();
+			this->player->setConqueredTerritoryThisTurn(true);
+		}
 	}
 }
 
