@@ -115,6 +115,7 @@ public:
 	void play(int index);
 
 	const vector<Card*>* getCurrentHand();
+	int getNumberOfCardsInHand();
 
 	friend ostream& operator<< (ostream& out, const Hand& hand);
 };

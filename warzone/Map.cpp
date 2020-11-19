@@ -66,7 +66,6 @@ Player* Territory::getOwner() {
 	return this->owner;
 }
 
-
 int Territory::getArmies() {
 	return this->armies;
 }

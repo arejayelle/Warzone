@@ -10,7 +10,7 @@ Player::Player(string name, vector<Territory*>* territoriesToAdd, OrdersList* pl
 	this->ordersList = playerList;
 	this->hand = new Hand(deckToTakeFrom, this);
 	this->reinforcementPool = 0;
-	this->inNegotiatonWith = vector<Player*>();
+	this->inNegotiationWith = vector<Player*>();
 	this->territoriesWithAdvanceOrder = new std::vector<Territory*>();
 }
 
@@ -37,9 +37,9 @@ Player::Player(const Player& player)  //copy constructor
 	this->reinforcementPool = player.reinforcementPool;
 	
 	// Copy each player in the new player's inNegotiationWith vector.
-	for (Player* p : player.inNegotiatonWith) {
+	for (Player* p : player.inNegotiationWith) {
 		Player* newPlayer = new Player(*p);
-		this->inNegotiatonWith.push_back(newPlayer);
+		this->inNegotiationWith.push_back(newPlayer);
 	}
 	this->territoriesWithAdvanceOrder = player.territoriesWithAdvanceOrder;
 }
@@ -79,25 +79,25 @@ const vector<Territory*> Player::toAttack()   //returns territories the player c
 // Add a player to the vector inNegotiationWith.
 void Player::addPlayerInNegotiationWith(Player* player)
 {
-	this->inNegotiatonWith.push_back(player);
+	this->inNegotiationWith.push_back(player);
 }
 
 // Return true if the player is found in the vector and false if not found.
 bool Player::isInNegotiationWithPlayer(Player* player)
 {
-	return(std::find(this->inNegotiatonWith.begin(), this->inNegotiatonWith.end(), player) != this->inNegotiatonWith.end());
+	return(std::find(this->inNegotiationWith.begin(), this->inNegotiationWith.end(), player) != this->inNegotiationWith.end());
 }
 
 // Removes everything from the vector inNegotiationWith. Should be called at the end of a turn.
 void Player::clearInNegotiationWith()
 {
-	this->inNegotiatonWith.erase(this->inNegotiatonWith.begin(), this->inNegotiatonWith.end());
+	this->inNegotiationWith.erase(this->inNegotiationWith.begin(), this->inNegotiationWith.end());
 }
 
 // Remove a territory from the player's list of territories in the case where they lose it.
 void Player::removeTerritory(Territory* territoryToRemove)
 {
-	vector<Territory*>::iterator index = std::find(this->getTerritories()->begin(), this->getTerritories()->end(), territoryToRemove);
+	vector<Territory*>:: iterator index = std::find(this->getTerritories()->begin(), this->getTerritories()->end(), territoryToRemove);
 	if (index != this->getTerritories()->end()) {
 		this->getTerritories()->erase(index);
 	}
@@ -274,6 +274,10 @@ void Player::addTerritory(Territory* territoryToAdd)
 	this->territories->push_back(territoryToAdd);
 }
 
+bool Player::getConqueredTerritoryThisTurn() {
+	return conqueredTerritoryThisTurn;
+}
+
 void Player::setOrdersList(OrdersList* ordersList) //sets the player's order list
 {
 	this->ordersList = ordersList;
@@ -294,6 +298,11 @@ void Player::grantTerritory(Territory* territory)
 	this->territories->push_back(territory);
 
 }
+
+void Player::setConqueredTerritoryThisTurn(bool value) {
+	conqueredTerritoryThisTurn = value;
+}
+
 ostream& operator<<(ostream& output, const Player &player)  //output stream
 {
 	output << "Player Information:" << endl;

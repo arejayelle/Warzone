@@ -176,8 +176,7 @@ void GameEngine::reinforcementPhase()
             reinforcements = 3;
         }
         player->addReinforcements(reinforcements);
-      
-        
+		player->setConqueredTerritoryThisTurn(false);
     }
 
     for (std::vector<Continent*>::const_iterator it = map->getContinents()->begin(); it != map->getContinents()->end(); it++) {

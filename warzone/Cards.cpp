@@ -442,6 +442,11 @@ const vector<Card*>* Hand::getCurrentHand()
 	return currentHand;
 }
 
+int Hand::getNumberOfCardsInHand()
+{
+	return currentHand->size();
+}
+
 ostream& operator<<(ostream& out, const Hand& hand)
 {
 	out << "Here are the contents of the Hand" << endl;
