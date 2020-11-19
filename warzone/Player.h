@@ -57,6 +57,7 @@ public:
 	OrdersList* getOrdersList(); //Get order list
 	int getReinforcements(); // Get reinforcements
 	string getName();
+	bool getConqueredTerritoryThisTurn();
 
 
 	//Setters
@@ -66,6 +67,7 @@ public:
 	void setHand(Hand* handToAdd); //Set hand 
 	void addReinforcements(int addedReinforcements);
 	void grantTerritory(Territory* territory);
+	void setConqueredTerritoryThisTurn(bool value);
 
 private:
 	Hand* hand; //returns player's hand
@@ -75,4 +77,5 @@ private:
 	vector<Player*> inNegotiationWith;
 	vector<Territory*>* territoriesWithAdvanceOrder;
 	string name;
+	bool conqueredTerritoryThisTurn;
 };

@@ -274,6 +274,10 @@ void Player::addTerritory(Territory* territoryToAdd)
 	this->territories->push_back(territoryToAdd);
 }
 
+bool Player::getConqueredTerritoryThisTurn() {
+	return conqueredTerritoryThisTurn;
+}
+
 void Player::setOrdersList(OrdersList* ordersList) //sets the player's order list
 {
 	this->ordersList = ordersList;
@@ -294,6 +298,11 @@ void Player::grantTerritory(Territory* territory)
 	this->territories->push_back(territory);
 
 }
+
+void Player::setConqueredTerritoryThisTurn(bool value) {
+	conqueredTerritoryThisTurn = value;
+}
+
 ostream& operator<<(ostream& output, const Player &player)  //output stream
 {
 	output << "Player Information:" << endl;
