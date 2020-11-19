@@ -22,7 +22,7 @@ class Hand;
 class Player {
 public:
 
-	Player(vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom);  //constructor
+	Player(std::string name, vector<Territory*>* territoriesToAdd, OrdersList* playerList, Deck* deckToTakeFrom);  //constructor
 	~Player();   //destructor
 
 	Player* operator= (const Player& one);  //assignment operator
@@ -56,6 +56,7 @@ public:
 	Hand* getHand(); //Get hand
 	OrdersList* getOrdersList(); //Get order list
 	int getReinforcements(); // Get reinforcements
+	string getName();
 
 
 	//Setters
@@ -73,4 +74,5 @@ private:
 	int reinforcementPool;
 	vector<Player*> inNegotiatonWith;
 	vector<Territory*>* territoriesWithAdvanceOrder;
+	string name;
 };

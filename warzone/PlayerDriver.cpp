@@ -5,7 +5,7 @@ int PlayerDriver::main() {
 	vector<Territory*>* territories = new vector<Territory*>;
 	OrdersList* ordersList = new OrdersList();
 
-	Player* p1 = new Player(territories, ordersList, nullptr);
+	Player* p1 = new Player("PLayer name goes here", territories, ordersList, nullptr);
 
 	cout << "Player can defend: " << endl;  //returns territories the player can defend
 	cout << p1->toDefend() << endl; //prints memory address of territory

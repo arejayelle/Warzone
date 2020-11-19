@@ -6,7 +6,7 @@ namespace Cards {
 	{
 		Deck* deck = new Deck();
 		OrdersList* ordersList = new OrdersList();
-		Player* player = new Player(nullptr, ordersList, deck);
+		Player* player = new Player("Julius Ceasar", nullptr, ordersList, deck);
 
 		cout << "Creating Deck" << endl;
 		cout << (*deck);
