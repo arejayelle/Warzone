@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="CardDriver.cpp" />
     <ClCompile Include="Cards.cpp" />
+    <ClCompile Include="GameObservers.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameEngineDriver.cpp" />
     <ClCompile Include="GameLoopDriver.cpp" />
@@ -153,10 +154,13 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="MapLoaderDriver.cpp" />
     <ClCompile Include="PlayerDriver.cpp" />
+    <ClCompile Include="GameObserversDriver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CardDriver.h" />
     <ClInclude Include="Cards.h" />
+    <ClInclude Include="GameObservers.h" />
+    <ClInclude Include="GameObserversDriver.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameEngineDriver.h" />
     <ClInclude Include="GameLoopDriver.h" />

@@ -5,6 +5,8 @@
 #include <iostream>
 #include "Player.h" 
 #include "Map.h"
+#include "Player.h"
+#include "GameObservers.h"
 #include "MapLoader.h"
 using namespace std;
 
@@ -23,6 +25,7 @@ public:
 	void reinforcementPhase();
 	int issueOrdersPhase();
 	int executeOrdersPhase();
+	void attachObservers();
 
 	const std::vector<Player*>* getPlayers();
 	Deck* getDeck();
@@ -30,6 +33,8 @@ public:
 
 private:
 	Map* map;
+	PhaseObservable* phaseObservable;
+	StatsObservable* statsObservable;
 	std::vector<Player*> playerArray;
 	Deck* gameDeck;
 

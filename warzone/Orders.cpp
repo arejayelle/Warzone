@@ -116,6 +116,7 @@ DeployOrder& DeployOrder::operator=(const DeployOrder& o) {
 	return *this;
 }
 
+StatsObservable* AdvanceOrder::statsObservable = new StatsObservable();
 
 // Advance order subclass.
 // Constructor which takes a pointer to a Player object.
@@ -179,6 +180,7 @@ void AdvanceOrder::battle() {
 	// When attacker wins, the survivors occupy the territory.
 	if (this->source->getArmies() > this->target->getArmies()) {
 		int numArmies = this->source->getArmies();
+		statsObservable->notify("Territory " + target->getName() + " was taken from " + target->getOwner()->getName() + " by " + source->getOwner()->getName());
 
 		// Place remaining armies on the new territory.
 		this->source->removeArmies(numArmies);
