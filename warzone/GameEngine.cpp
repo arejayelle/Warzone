@@ -83,12 +83,9 @@ void GameEngine::startUpPhase() {
 	//Setting up Observers
 	cout << "Would you like to turn observers on or off? y/n" << endl;
 	cin >> playerAnswer;
-	if (playerAnswer.compare("y") == 0 || playerAnswer.compare("Y") == 0 || playerAnswer.compare("yes") ==0 ||playerAnswer.compare("Yes")==0) {
+	if (playerAnswer.compare("y") == 0 || playerAnswer.compare("Y") == 0 || playerAnswer.compare("yes") ==0 ||playerAnswer.compare("Yes")==0) 
 		attachObservers();
-		observersOn = true;
-	}	
-	else
-		observersOn = false;
+
 
 	//PlayerNumberSetup
 	while (playerInputValid == false) { //Getting number of players
