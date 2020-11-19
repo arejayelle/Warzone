@@ -62,7 +62,6 @@ void GameEngine::startUpPhase() {
 	int numberOfPlayers;
 	bool fileInvalid = true;
 	string mapFileName;
-	bool observersOn= true;
 
 	MapLoader* loader = nullptr;
 	//Map Loading 
