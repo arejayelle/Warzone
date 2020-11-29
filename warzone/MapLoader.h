@@ -23,3 +23,34 @@ private:
 	Territory* createTerritory(std::string country, Map* map);
 	void createBorder(std::string border, Map* map);
 };
+
+class ConquestFileReader {
+public:
+	ConquestFileReader(ConquestFileReader* mapL);
+	ConquestFileReader(std::string fileName);
+	~ConquestFileReader();
+	ConquestFileReader* operator= (const ConquestFileReader& reader);
+	friend std::ostream& operator<< (std::ostream& out, const ConquestFileReader& reader);
+	bool validateMapFormat();
+	Map* convertFileToMap();
+private:
+	std::string* fileName;
+	bool checkContinents(std::string continent);
+	bool checkTerritory(std::string country);
+	bool checkBorders(std::string border);
+	Continent* createContinent(std::string continent);
+	Territory* createTerritory(std::string country, Map* map);
+	void createBorder(std::string border, Map* map);
+};
+
+class ConquestFileReaderAdapter : public MapLoader{
+public:
+	ConquestFileReaderAdapter(ConquestFileReaderAdapter* adapter);
+	ConquestFileReaderAdapter(std::string fileName);
+	~ConquestFileReaderAdapter();
+	void conquestToDomination(std::string fileName);
+
+private:
+	ConquestFileReader* conquestMapLoader;
+
+};
