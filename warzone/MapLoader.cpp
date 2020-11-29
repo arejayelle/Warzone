@@ -307,3 +307,124 @@ void MapLoader::createBorder(std::string border, Map* map)
 	//Add the border to the map
 	map->addBorder(--currentTerritoryId, &neighbors);
 }
+
+ConquestFileReader::ConquestFileReader(std::string fileName){
+	this->fileName = new std::string(fileName);
+}
+
+bool ConquestFileReader::validateMapFormat()
+{
+	std::string myLine;
+	bool valideMap = true;
+
+	int* numberOfValidParts = new int();
+
+	std::cout << "Loading file:  " << *fileName << std::endl;
+
+	// Read from file
+	std::ifstream myReadFile(*fileName);
+
+	if (!myReadFile) {
+		std::cerr << "Could not open file\n";
+		return false;
+	}
+
+	// Use a while loop together with the getline() function to read the file line by line
+	while (getline(myReadFile, myLine)) {
+
+		//Check continents
+		if (myLine == "[Continents]") {
+			getline(myReadFile, myLine);
+
+			//Loop all the lines that are continents
+			while (myLine != "[Territories]" && !myLine.empty()) {
+				//Check if the continent is good, else exit
+				if (checkContinents(myLine)) {
+					getline(myReadFile, myLine);
+				}
+				else {
+					valideMap = false;
+					throw std::string("Continent not valid");
+				}
+			}
+			//Confirm that the continent part is good
+			++* numberOfValidParts;
+		}
+
+		//Check territory/Countries
+		if (myLine == "[Territories]") {
+			getline(myReadFile, myLine);
+
+			//Loop all the lines that are territory
+			while (myLine != "[borders]" && !myLine.empty()) {
+				//Check if the territory is good, else exit
+				if (checkTerritory(myLine)) {
+					getline(myReadFile, myLine);
+				}
+				else {
+					valideMap = false;
+					std::cout << "Territory not valid";
+					return false;
+				}
+			}
+			//Confirm that the territory part is good
+			++* numberOfValidParts;
+		}
+	}
+
+	//Check if all 3 components are valid
+	if (valideMap && *numberOfValidParts == 2) {
+		std::cout << "Map is valid.\n\n";
+		// Close the file
+		myReadFile.close();
+		delete(numberOfValidParts);
+		return true;
+	}
+	else {
+		std::cout << "Map is not valid, missing either the continents, countries or borders. Please verify the syntax is correct\n";
+		// Close the file
+		myReadFile.close();
+		delete(numberOfValidParts);
+		return false;
+	}
+}
+
+Map* ConquestFileReader::convertFileToMap()
+{
+	return nullptr;
+}
+
+bool ConquestFileReader::checkContinents(std::string line)
+{
+	if (line.find('=') != -1 && isdigit(line.back())) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool ConquestFileReader::checkTerritory(std::string line)
+{
+	std::stringstream ss(line);
+	std::vector<std::string> result;
+
+	while (ss.good())
+	{
+		std::string substr;
+		getline(ss, substr, ',');
+		cout << substr << "/";
+		result.push_back(substr);
+	}
+
+	if (!isdigit(result.at(1).back()) || !isdigit(result.at(2).back())) {
+		return false;
+	}
+
+	if (result.size() >= 5 && result.size() <= 14) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}

@@ -3,8 +3,11 @@
 #include "MapLoaderDriver.h"
 
 int MapLoaderDriver::main() {
+
+	ConquestFileReader* conq = new ConquestFileReader("Africa.map");
+	conq->validateMapFormat();
 	//Valide Map
-	MapLoader* mapL = new MapLoader("bigeurope.map");
+	/*MapLoader* mapL = new MapLoader("bigeurope.map");
 	mapL->validateMapFormat();
 	Map* myMap = mapL->convertFileToMap();
 	myMap->validate();
@@ -25,7 +28,7 @@ int MapLoaderDriver::main() {
 	}
 	catch (std::string exception) {
 		std::cout << "Error occurred, as expected, when loading randomText.txt: " << exception << std::endl;
-	}
+	}*/
 
 	return 0;
 }
