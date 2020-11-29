@@ -6,12 +6,13 @@
 
 class MapLoader { // Target; reads Domination map files.
 public:
+	MapLoader();
 	MapLoader(MapLoader* mapL);
 	MapLoader(std::string fileName);
 	~MapLoader();
 	MapLoader* operator= (const MapLoader& mapLoader);
 	friend std::ostream& operator<< (std::ostream& out, const MapLoader& mapLoader);
-	bool validateMapFormat();
+	bool validateMapFormatML();
 	Map* convertFileToMap();
 
 private:
@@ -31,7 +32,7 @@ public:
 	~ConquestFileReader();
 	ConquestFileReader* operator= (const ConquestFileReader& reader);
 	friend std::ostream& operator<< (std::ostream& out, const ConquestFileReader& reader);
-	bool validateMapFormat();
+	bool validateMapFormatCQ();
 	Map* convertFileToMap();
 private:
 	std::string* fileName;
@@ -46,14 +47,13 @@ private:
 class ConquestFileReaderAdapter : public MapLoader { // Adapter; adapts (target) Domination map reading to (adaptee) Conquest map reading.
 public:
 	ConquestFileReaderAdapter(ConquestFileReaderAdapter* adapter);
-	ConquestFileReaderAdapter(std::string fileName);
 	ConquestFileReaderAdapter(ConquestFileReader* cfr);
 	~ConquestFileReaderAdapter();
-	ConquestFileReaderAdapter* operator=(const ConquestFileReaderAdapter& other);
+	ConquestFileReaderAdapter& operator=(const ConquestFileReaderAdapter& other);
 	friend std::ostream& operator<<(std::ostream& out, const ConquestFileReaderAdapter& reader);
-	//void conquestToDomination(std::string fileName);
-	bool validateMapFormat();
+	bool validateMapFormatML();
 	Map* convertFileToMap();
 private:
+	std::string fileName;
 	ConquestFileReader* conquestMapLoader;
 };

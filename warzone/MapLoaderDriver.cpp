@@ -4,8 +4,16 @@
 
 int MapLoaderDriver::main() {
 
-	ConquestFileReader* conq = new ConquestFileReader("Africa.map");
-	conq->validateMapFormat();
+	MapLoader* mapL = new MapLoader("bigeurope.map");
+	mapL->validateMapFormatML();
+
+	//ConquestFileReader* conq = new ConquestFileReader("Africa.map");
+	ConquestFileReader* conq = new ConquestFileReader("bigeurope.map");
+	conq->validateMapFormatCQ();
+
+	ConquestFileReaderAdapter* adpt = new ConquestFileReaderAdapter(conq);
+	adpt->validateMapFormatML();
+
 	//Valide Map
 	/*MapLoader* mapL = new MapLoader("bigeurope.map");
 	mapL->validateMapFormat();

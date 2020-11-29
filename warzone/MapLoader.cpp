@@ -4,6 +4,11 @@
 #include <sstream>
 
 
+// MapLoader default constructor
+MapLoader::MapLoader() {
+	this->fileName = NULL;
+}
+
 //MapLoader Copy Constructor
 MapLoader::MapLoader(MapLoader* mapL)
 {
@@ -37,7 +42,7 @@ std::ostream& operator<<(std::ostream& out, const MapLoader& mapLoader)
 	return out;
 }
 
-bool MapLoader::validateMapFormat() 
+bool MapLoader::validateMapFormatML() 
 {
 	std::string myLine;
 	bool valideMap = true;
@@ -312,7 +317,12 @@ ConquestFileReader::ConquestFileReader(std::string fileName){
 	this->fileName = new std::string(fileName);
 }
 
-bool ConquestFileReader::validateMapFormat()
+ConquestFileReader::~ConquestFileReader()
+{
+	delete fileName;
+}
+
+bool ConquestFileReader::validateMapFormatCQ()
 {
 	std::string myLine;
 	bool valideMap = true;
@@ -469,4 +479,45 @@ bool ConquestFileReader::checkTerritory(std::string line)
 	else {
 		return false;
 	}
+}
+
+// Copy constructor.
+ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReaderAdapter* adapter)
+{
+	this->fileName = std::string(adapter->fileName);
+	this->conquestMapLoader = new ConquestFileReader("");
+}
+
+// Param constructor.
+ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReader* cfr) : MapLoader(fileName), conquestMapLoader(cfr) { }
+
+// Destructor.
+ConquestFileReaderAdapter::~ConquestFileReaderAdapter()
+{
+	delete conquestMapLoader;
+}
+
+// Assignment operator.
+ConquestFileReaderAdapter& ConquestFileReaderAdapter::operator=(const ConquestFileReaderAdapter& other)
+{
+	this->fileName = std::string(other.fileName);
+	this->conquestMapLoader = new ConquestFileReader("");
+	return *this;
+}
+
+// Stream insertion operator.
+std::ostream& operator<<(std::ostream& out, const ConquestFileReaderAdapter& reader)
+{
+	out << "File name is " + reader.fileName;
+	return out;
+}
+
+bool ConquestFileReaderAdapter::validateMapFormatML()
+{
+	return conquestMapLoader->validateMapFormatCQ();
+}
+
+Map* ConquestFileReaderAdapter::convertFileToMap()
+{
+	return conquestMapLoader->convertFileToMap();
 }
