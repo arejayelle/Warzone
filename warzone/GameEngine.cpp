@@ -122,6 +122,25 @@ void GameEngine::startUpPhase() {
 		ostringstream name;
 		name << "Player" << i;
 		Player* player = new Player(name.str(), territories, orders, gameDeck);
+		
+		// Select a strategy for the player
+		cout << "Select a strategy for Player " << (i + 1) << endl;
+		cout << "d = Default strategy" << endl;
+		// Add more strategies here
+		std::string strategy;
+		cin >> strategy;
+		cout << endl;
+		
+		// Cannot use switch statements with strings in C++ without using a hackish solution.
+		// so use an if-else chain instead.
+		if (strategy.compare("d") == 0) {
+			player->setStrategy(new DefaultStrategy());
+		}
+		else {
+			cout << "Unknown strategy. Using Default strategy instead." << endl;
+			player->setStrategy(new DefaultStrategy());
+		}
+
 		if (numberOfPlayers == 2)
 			player->addReinforcements(40);
 		else if (numberOfPlayers == 3)

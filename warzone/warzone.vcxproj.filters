@@ -61,6 +61,12 @@
     <Filter Include="Source Files\GameLoop">
       <UniqueIdentifier>{f77ad711-d7f9-47bc-b2d3-8bc038b3a1d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Strategy">
+      <UniqueIdentifier>{f024b605-142d-4759-9c87-56c814980755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Strategy">
+      <UniqueIdentifier>{a8aeb2d9-d17a-4b55-8ad0-b09431d16d23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
@@ -93,9 +99,6 @@
     <ClInclude Include="Cards.h">
       <Filter>Header Files\Card</Filter>
     </ClInclude>
-    <ClInclude Include="GameObservers.h">
-      <Filter>Header Files\GameOberservers</Filter>
-    </ClInclude>
     <ClInclude Include="GameObserversDriver.h">
       <Filter>Header Files\GameObservers</Filter>
     </ClInclude>
@@ -110,6 +113,12 @@
     </ClInclude>
     <ClInclude Include="GameEngine.h">
       <Filter>Header Files\GameLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObservers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Strategy.h">
+      <Filter>Header Files\Strategy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="GameEngine.cpp">
       <Filter>Source Files\GameLoop</Filter>
+    </ClCompile>
+    <ClCompile Include="Strategy.cpp">
+      <Filter>Source Files\Strategy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
