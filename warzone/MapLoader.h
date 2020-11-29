@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 
-class MapLoader {
+class MapLoader { // Target; reads Domination map files.
 public:
 	MapLoader(MapLoader* mapL);
 	MapLoader(std::string fileName);
@@ -24,7 +24,7 @@ private:
 	void createBorder(std::string border, Map* map);
 };
 
-class ConquestFileReader {
+class ConquestFileReader { // Adaptee; reads Conquest map files.
 public:
 	ConquestFileReader(ConquestFileReader* mapL);
 	ConquestFileReader(std::string fileName);
@@ -43,14 +43,17 @@ private:
 	void createBorder(std::string border, Map* map);
 };
 
-class ConquestFileReaderAdapter : public MapLoader{
+class ConquestFileReaderAdapter : public MapLoader { // Adapter; adapts Conquest map reading to Domination map reading.
 public:
 	ConquestFileReaderAdapter(ConquestFileReaderAdapter* adapter);
 	ConquestFileReaderAdapter(std::string fileName);
+	ConquestFileReaderAdapter(ConquestFileReader* cfr);
 	~ConquestFileReaderAdapter();
-	void conquestToDomination(std::string fileName);
-
+	ConquestFileReaderAdapter* operator=(const ConquestFileReaderAdapter& other);
+	friend std::ostream& operator<<(std::ostream& out, const ConquestFileReaderAdapter& reader);
+	//void conquestToDomination(std::string fileName);
+	bool validateMapFormat();
+	Map* convertFileToMap();
 private:
 	ConquestFileReader* conquestMapLoader;
-
 };
