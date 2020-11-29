@@ -391,6 +391,48 @@ bool ConquestFileReader::validateMapFormat()
 
 Map* ConquestFileReader::convertFileToMap()
 {
+	/*Map* map = new Map();
+	std::string myLine;
+	std::cout << "Loading file:  " << *fileName << std::endl;
+
+
+	// Read from file
+	std::ifstream myReadFile(*fileName);
+
+	if (!myReadFile) {
+		std::cerr << "Could not open file\n";
+		return nullptr;
+	}
+
+	// Use a while loop together with the getline() function to read the file line by line
+	while (getline(myReadFile, myLine)) {
+
+		//Create the continents
+		if (myLine == "[Continents]") {
+			getline(myReadFile, myLine);
+
+			//Loop all the lines that are continents
+			while (myLine != "[Territories]" && !myLine.empty()) {
+				//Call the createContinent method which returns a Continent* and then adds it to the map
+				map->addContinent(createContinent(myLine));
+				getline(myReadFile, myLine);
+			}
+		}
+
+		//Create the territories
+		if (myLine == "[Territories]") {
+			getline(myReadFile, myLine);
+
+			//Loop all the lines that are territory
+			while (!myLine.empty()) {
+				//Call the createTerritory method which returns a Territory* and then adds it to the map
+				map->addTerritory(createTerritory(myLine, map));
+				getline(myReadFile, myLine);
+			}
+		}
+	}
+
+	return map;*/
 	return nullptr;
 }
 
