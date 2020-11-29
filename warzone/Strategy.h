@@ -14,6 +14,11 @@ class DeployOrder;
 class PlayerStrategy
 {
 public:
+	PlayerStrategy();
+	PlayerStrategy(const PlayerStrategy& other);
+	PlayerStrategy& operator= (const PlayerStrategy& other);
+	friend ostream& operator<< (ostream& output, const PlayerStrategy& player);
+
 	virtual const vector<Territory*>* toDefend(Player* player) = 0; //Returns territories to defend. To keep in Player
 	virtual const vector<Territory*> toAttack(Player* player) = 0; //Returns territories to attack
 	virtual bool issueOrder(Player* player) = 0; // Issues an order to the player's orderList. Returns true if an order was issued
@@ -33,6 +38,11 @@ public:
 class DefaultStrategy : public PlayerStrategy
 {
 public:
+	DefaultStrategy();
+	DefaultStrategy(const DefaultStrategy& other);
+	DefaultStrategy& operator= (const DefaultStrategy& other);
+	friend ostream& operator<< (ostream& output, const DefaultStrategy& other);
+
 	const vector<Territory*>* toDefend(Player* player);
 	const vector<Territory*> toAttack(Player* player);
 	bool issueOrder(Player* player);
