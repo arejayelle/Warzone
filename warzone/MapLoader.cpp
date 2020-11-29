@@ -317,6 +317,11 @@ ConquestFileReader::ConquestFileReader(std::string fileName){
 	this->fileName = new std::string(fileName);
 }
 
+ConquestFileReader::~ConquestFileReader()
+{
+	delete fileName;
+}
+
 bool ConquestFileReader::validateMapFormat()
 {
 	std::string myLine;
