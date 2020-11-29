@@ -311,6 +311,11 @@ void MapLoader::createBorder(std::string border, Map* map)
 	map->addBorder(--currentTerritoryId, &neighbors);
 }
 
+ConquestFileReader::ConquestFileReader(ConquestFileReader* mapL)
+{
+	this->fileName = mapL->fileName;
+}
+
 ConquestFileReader::ConquestFileReader(std::string fileName){
 	this->fileName = new std::string(fileName);
 }
@@ -318,6 +323,12 @@ ConquestFileReader::ConquestFileReader(std::string fileName){
 ConquestFileReader::~ConquestFileReader()
 {
 	delete fileName;
+}
+
+ConquestFileReader& ConquestFileReader::operator=(const ConquestFileReader& reader)
+{
+	this->fileName = reader.fileName;
+	return *this;
 }
 
 bool ConquestFileReader::validateMapFormatCQ()
@@ -469,8 +480,6 @@ Map* ConquestFileReader::convertFileToMap()
 	return map;
 }
 
-
-
 bool ConquestFileReader::checkContinents(std::string line)
 {
 	//Check if theres an = sign and the last char is a digit
@@ -610,10 +619,16 @@ ConquestFileReaderAdapter& ConquestFileReaderAdapter::operator=(const ConquestFi
 	return *this;
 }
 
+std::ostream& operator<<(std::ostream& out, const ConquestFileReader& reader)
+{
+	out << "File name is " << reader.fileName;
+	return out;
+}
+
 // Stream insertion operator.
 std::ostream& operator<<(std::ostream& out, const ConquestFileReaderAdapter& reader)
 {
-	out << "File name is " + reader.fileName;
+	out << "File name is " << reader.fileName;
 	return out;
 }
 

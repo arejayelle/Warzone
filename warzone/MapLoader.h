@@ -30,7 +30,7 @@ public:
 	ConquestFileReader(ConquestFileReader* mapL);
 	ConquestFileReader(std::string fileName);
 	~ConquestFileReader();
-	ConquestFileReader* operator= (const ConquestFileReader& reader);
+	ConquestFileReader& operator= (const ConquestFileReader& reader);
 	friend std::ostream& operator<< (std::ostream& out, const ConquestFileReader& reader);
 	bool validateMapFormatCQ();
 	Map* convertFileToMap();
