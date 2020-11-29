@@ -141,8 +141,6 @@ Map* MapLoader::convertFileToMap()
 {
 	Map* map = new Map();
 	std::string myLine;
-	std::cout << "Loading file:  " << *fileName << std::endl;
-
 
 	// Read from file
 	std::ifstream myReadFile(*fileName);
@@ -403,8 +401,6 @@ Map* ConquestFileReader::convertFileToMap()
 {
 	Map* map = new Map();
 	std::string myLine;
-	std::cout << "Loading file:  " << *fileName << std::endl;
-
 
 	// Read from file
 	std::ifstream myReadFile(*fileName);
