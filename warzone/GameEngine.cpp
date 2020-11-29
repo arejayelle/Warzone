@@ -69,7 +69,7 @@ void GameEngine::startUpPhase() {
 		cout << "What map file would you like?";
 		cin >> mapFileName;
 		loader = new MapLoader(mapFileName);
-		if (loader->validateMapFormat() == true)
+		if (loader->validateMapFormatML() == true)
 			fileInvalid = false;
 		else {
 			fileInvalid = true;

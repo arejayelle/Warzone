@@ -42,7 +42,7 @@ std::ostream& operator<<(std::ostream& out, const MapLoader& mapLoader)
 	return out;
 }
 
-bool MapLoader::validateMapFormat() 
+bool MapLoader::validateMapFormatML() 
 {
 	std::string myLine;
 	bool valideMap = true;
@@ -322,7 +322,7 @@ ConquestFileReader::~ConquestFileReader()
 	delete fileName;
 }
 
-bool ConquestFileReader::validateMapFormat()
+bool ConquestFileReader::validateMapFormatCQ()
 {
 	std::string myLine;
 	bool valideMap = true;
@@ -447,7 +447,7 @@ ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReaderAdapter* 
 }
 
 // Param constructor.
-ConquestFileReaderAdapter::ConquestFileReaderAdapter(std::string fileName, ConquestFileReader* cfr) : MapLoader(fileName), conquestMapLoader(cfr) { }
+ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReader* cfr) : MapLoader(fileName), conquestMapLoader(cfr) { }
 
 // Destructor.
 ConquestFileReaderAdapter::~ConquestFileReaderAdapter()
@@ -470,9 +470,9 @@ std::ostream& operator<<(std::ostream& out, const ConquestFileReaderAdapter& rea
 	return out;
 }
 
-bool ConquestFileReaderAdapter::validateMapFormat()
+bool ConquestFileReaderAdapter::validateMapFormatML()
 {
-	return conquestMapLoader->validateMapFormat();
+	return conquestMapLoader->validateMapFormatCQ();
 }
 
 Map* ConquestFileReaderAdapter::convertFileToMap()
