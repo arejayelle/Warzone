@@ -4,6 +4,11 @@
 #include <sstream>
 
 
+// MapLoader default constructor
+MapLoader::MapLoader() {
+	this->fileName = NULL;
+}
+
 //MapLoader Copy Constructor
 MapLoader::MapLoader(MapLoader* mapL)
 {
@@ -306,4 +311,45 @@ void MapLoader::createBorder(std::string border, Map* map)
 
 	//Add the border to the map
 	map->addBorder(--currentTerritoryId, &neighbors);
+}
+
+// Copy constructor.
+ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReaderAdapter* adapter)
+{
+	this->fileName = std::string(adapter->fileName);
+	this->conquestMapLoader = new ConquestFileReader("");
+}
+
+// Param constructor.
+ConquestFileReaderAdapter::ConquestFileReaderAdapter(std::string fileName, ConquestFileReader* cfr) : MapLoader(fileName), conquestMapLoader(cfr) { }
+
+// Destructor.
+ConquestFileReaderAdapter::~ConquestFileReaderAdapter()
+{
+	delete conquestMapLoader;
+}
+
+// Assignment operator.
+ConquestFileReaderAdapter& ConquestFileReaderAdapter::operator=(const ConquestFileReaderAdapter& other)
+{
+	this->fileName = std::string(other.fileName);
+	this->conquestMapLoader = new ConquestFileReader("");
+	return *this;
+}
+
+// Stream insertion operator.
+std::ostream& operator<<(std::ostream& out, const ConquestFileReaderAdapter& reader)
+{
+	out << "File name is " + reader.fileName;
+	return out;
+}
+
+bool ConquestFileReaderAdapter::validateMapFormat()
+{
+	return conquestMapLoader->validateMapFormat();
+}
+
+Map* ConquestFileReaderAdapter::convertFileToMap()
+{
+	return conquestMapLoader->convertFileToMap();
 }
