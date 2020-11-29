@@ -4,15 +4,18 @@
 
 int MapLoaderDriver::main() {
 
-	MapLoader* mapL = new MapLoader("bigeurope.map");
-	mapL->validateMapFormatML();
+	/*MapLoader* mapL = new MapLoader("bigeurope.map");
+	mapL->validateMapFormatML();*/
 
-	//ConquestFileReader* conq = new ConquestFileReader("Africa.map");
-	ConquestFileReader* conq = new ConquestFileReader("bigeurope.map");
+	ConquestFileReader* conq = new ConquestFileReader("Africa.map");
+	//ConquestFileReader* conq = new ConquestFileReader("bigeurope.map");
 	conq->validateMapFormatCQ();
+	Map* myMap = conq->convertFileToMap();
+	myMap->validate();
+	cout << "MAP is valid";
 
-	ConquestFileReaderAdapter* adpt = new ConquestFileReaderAdapter(conq);
-	adpt->validateMapFormatML();
+	/*ConquestFileReaderAdapter* adpt = new ConquestFileReaderAdapter(conq);
+	adpt->validateMapFormatML();*/
 
 	//Valide Map
 	/*MapLoader* mapL = new MapLoader("bigeurope.map");

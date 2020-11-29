@@ -401,7 +401,7 @@ bool ConquestFileReader::validateMapFormatCQ()
 
 Map* ConquestFileReader::convertFileToMap()
 {
-	/*Map* map = new Map();
+	Map* map = new Map();
 	std::string myLine;
 	std::cout << "Loading file:  " << *fileName << std::endl;
 
@@ -434,21 +434,52 @@ Map* ConquestFileReader::convertFileToMap()
 			getline(myReadFile, myLine);
 
 			//Loop all the lines that are territory
-			while (!myLine.empty()) {
-				//Call the createTerritory method which returns a Territory* and then adds it to the map
-				map->addTerritory(createTerritory(myLine, map));
+			while (!myReadFile.eof()) {
+				if (!myLine.empty()) {
+					//Call the createTerritory method which returns a Territory* and then adds it to the map
+					map->addTerritory(createTerritory(myLine, map));
+					
+				}
 				getline(myReadFile, myLine);
 			}
+
 		}
 	}
+	
+	myReadFile.clear();
+	myReadFile.seekg(0, myReadFile.beg);
 
-	return map;*/
-	return nullptr;
+	//Call method to rereead the file
+	std::ifstream myReadFile2(*fileName);
+
+	// Use a while loop together with the getline() function to read the file line by line
+	while (getline(myReadFile, myLine)) {
+		//Create the territories
+		if (myLine == "[Territories]") {
+			getline(myReadFile, myLine);
+
+			//Loop all the lines that are territory
+			while (!myReadFile.eof()) {
+				if (!myLine.empty()) {
+					//Call the createTerritory method which returns a Territory* and then adds it to the map
+					createBorder(myLine, map);
+				}
+				getline(myReadFile, myLine);
+			}
+
+		}
+	}
+	myReadFile.close();
+	return map;
 }
+
+
 
 bool ConquestFileReader::checkContinents(std::string line)
 {
-	if (line.find('=') != -1 && isdigit(line.back())) {
+	//Check if theres an = sign and the last char is a digit
+	if (line.find('=') != -1 && isdigit(line.back())) 
+	{
 		return true;
 	}
 	else {
@@ -456,6 +487,7 @@ bool ConquestFileReader::checkContinents(std::string line)
 	}
 }
 
+//Check if the format of the territory is fine
 bool ConquestFileReader::checkTerritory(std::string line)
 {
 	std::stringstream ss(line);
@@ -465,11 +497,12 @@ bool ConquestFileReader::checkTerritory(std::string line)
 	{
 		std::string substr;
 		getline(ss, substr, ',');
-		cout << substr << "/";
 		result.push_back(substr);
 	}
+	ss.clear();
 
 	if (!isdigit(result.at(1).back()) || !isdigit(result.at(2).back())) {
+
 		return false;
 	}
 
@@ -479,6 +512,82 @@ bool ConquestFileReader::checkTerritory(std::string line)
 	else {
 		return false;
 	}
+}
+
+Continent* ConquestFileReader::createContinent(std::string continent)
+{
+	//Declare variables that will be used to store the calues from ss
+	std::string name;
+	std::string colour = "White";
+	unsigned int value = 0;
+
+	
+	name = continent.substr(0, continent.find('='));
+	value = continent.back() - '0'; //NOICE
+	Continent* myContinent = new Continent(name, colour, value);
+	return myContinent;
+}
+
+Territory* ConquestFileReader::createTerritory(std::string territory, Map* map)
+{
+	// Declare variables that will be used to store the calues from ss
+	std::string name;
+	Continent* continent;
+	unsigned int x;
+	unsigned int y;
+
+	std::stringstream ss(territory);
+	std::vector<std::string> result;
+
+	while (ss.good())
+	{
+		std::string substr;
+		getline(ss, substr, ',');
+		result.push_back(substr);
+	}
+	ss.clear();
+
+	//Put each input into the right variable. The syntax is always the same, thus we can do that
+	name = result.at(0);
+	x = std::stoul(result.at(1));
+	y = std::stoul(result.at(2));
+	continent = map->getContinent(result.at(3));
+
+	Territory* myTerritory = new Territory(name, continent, x, y);
+
+	return myTerritory;
+}
+
+void ConquestFileReader::createBorder(std::string border, Map* map){
+	// Declare variables that will be used to store the calues from ss
+	std::string name;
+	std::vector<Territory*> neighbors;
+	Territory* territory;
+
+	std::stringstream ss(border);
+	std::vector<std::string> result;
+
+	while (ss.good())
+	{
+		std::string substr;
+		getline(ss, substr, ',');
+		result.push_back(substr);
+	}
+	ss.clear();
+
+	name = result.at(0);
+
+	//Find the pointer to territory
+	territory = map->getTerritory(name);
+
+	for (int i = 4; i < result.size(); i++) {
+		neighbors.push_back(map->getTerritory(result.at(i)));
+	}
+
+	int index = map->getTerritoryID(name);
+
+	//Add the border to the map
+	map->addBorder(index, &neighbors);
 }
 
 // Copy constructor.
