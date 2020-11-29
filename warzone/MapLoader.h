@@ -43,7 +43,7 @@ private:
 	void createBorder(std::string border, Map* map);
 };
 
-class ConquestFileReaderAdapter : public MapLoader { // Adapter; adapts Conquest map reading to Domination map reading.
+class ConquestFileReaderAdapter : public MapLoader { // Adapter; adapts (target) Domination map reading to (adaptee) Conquest map reading.
 public:
 	ConquestFileReaderAdapter(ConquestFileReaderAdapter* adapter);
 	ConquestFileReaderAdapter(std::string fileName);
