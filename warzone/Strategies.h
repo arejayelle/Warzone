@@ -53,3 +53,22 @@ public:
 	BlockadeOrder* useBlockade(Player* player);
 	DeployOrder* useReinforcement(Player* player);
 };
+
+class NeutralPlayerStrategy : public PlayerStrategy
+{
+public:
+	NeutralPlayerStrategy();
+	NeutralPlayerStrategy(const NeutralPlayerStrategy& other);
+	NeutralPlayerStrategy& operator= (const NeutralPlayerStrategy& other);
+	friend ostream& operator<< (ostream& output, const NeutralPlayerStrategy& other);
+
+	const vector<Territory*>* toDefend(Player* player);
+	const vector<Territory*> toAttack(Player* player);
+	bool issueOrder(Player* player);
+
+	BombOrder* useBomb(Player* player);
+	NegotiateOrder* useDiplomacy(Player* player);
+	AirliftOrder* useAirlift(Player* player);
+	BlockadeOrder* useBlockade(Player* player);
+	DeployOrder* useReinforcement(Player* player);
+};
