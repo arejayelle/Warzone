@@ -56,6 +56,11 @@ public:
 
 class NeutralPlayerStrategy : public PlayerStrategy
 {
+private:
+	bool hasCardsInHand;
+	bool issueAdvanceOrders(Player* player);
+	bool issueCardOrders(Player* player);
+	bool issueDeployOrders(Player* player);
 public:
 	NeutralPlayerStrategy();
 	NeutralPlayerStrategy(const NeutralPlayerStrategy& other);
