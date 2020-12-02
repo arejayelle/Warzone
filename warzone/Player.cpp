@@ -12,6 +12,7 @@ Player::Player(string name, vector<Territory*>* territoriesToAdd, OrdersList* pl
 	this->reinforcementPool = 0;
 	this->inNegotiationWith = vector<Player*>();
 	this->territoriesWithAdvanceOrder = new std::vector<Territory*>();
+	this->passedTurn = false;
 }
 
 Player::~Player() {  //destructor 
@@ -36,6 +37,7 @@ Player::Player(const Player& player)  //copy constructor
 	this->ordersList = new OrdersList(*player.ordersList);
 	this->hand = new Hand(*player.hand);
 	this->reinforcementPool = player.reinforcementPool;
+	this->passedTurn = false;
 	
 	// Copy each player in the new player's inNegotiationWith vector.
 	for (Player* p : player.inNegotiationWith) {
@@ -145,6 +147,11 @@ bool Player::getConqueredTerritoryThisTurn() {
 	return conqueredTerritoryThisTurn;
 }
 
+bool Player::hasPassed()
+{
+	return this->passedTurn;
+}
+
 void Player::setOrdersList(OrdersList* ordersList) //sets the player's order list
 {
 	this->ordersList = ordersList;
@@ -182,6 +189,16 @@ vector<Territory*>* Player::getTerritoriesWithAdvanceOrder() {
 
 void Player::setStrategy(PlayerStrategy* playerStrategy) {
 	this->playerStrategy = playerStrategy;
+}
+
+void Player::resetPassed()
+{
+	this->passedTurn = false;
+}
+
+void Player::pass()
+{
+	this->passedTurn = true;
 }
 
 ostream& operator<<(ostream& output, const Player &player)  //output stream

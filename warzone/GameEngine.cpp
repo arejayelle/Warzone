@@ -220,24 +220,30 @@ void GameEngine::reinforcementPhase()
 
 int GameEngine::issueOrdersPhase()
 {
+	for (Player* player : playerArray) {
+		player->resetPassed();
+	}
+
 	phaseObservable->notify("\n\n\n\n\n\n\n\n\n==================== Issue Orders Phase ====================\n\n");
-    bool allPlayersPassed;
-    do {
-        allPlayersPassed = true;
-        for (Player* player : playerArray) {
-            bool issuedOrder = player->issueOrder();
-            if (issuedOrder) {
-                allPlayersPassed = false;
-            }
-        }
-    } while (!allPlayersPassed);
+	bool allPlayersPassed;
+	do {
+		allPlayersPassed = true;
+		for (Player* player : playerArray) {
+			if (!player->hasPassed()) {
+				if (player->issueOrder()) {
+					allPlayersPassed = false;
+				}
+			}
 
-    for (Player* player : playerArray) {
-        phaseObservable->notify("----------" + player->getName()  + std::string(": Issue Order phase----------\n"));
+		}
+	} while (!allPlayersPassed);
+
+	for (Player* player : playerArray) {
+		phaseObservable->notify("----------" + player->getName() + std::string(": Issue Order phase----------\n"));
 		phaseObservable->notify(player->getOrdersList()->print());
-    }
+	}
 
-    return 0;
+	return 0;
 }
 
 int GameEngine::executeOrdersPhase()
