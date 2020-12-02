@@ -389,14 +389,15 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 	int territorySize = player->getTerritories()->size();
 	vector<Territory*> weakestTerritories;
 
-
 	//find territory with smallest number of armies 
 	int minimum = playerTerritories->at(0)->getArmies() + playerTerritories->at(0)->getIncomingArmies();
 	Territory* territoryWithLeast = playerTerritories->at(0);
 	for (int i = 0; i < territorySize; i++) {
 		if (playerTerritories->at(i)->getArmies() + playerTerritories->at(i)->getIncomingArmies() < minimum)
+		{
 			territoryWithLeast = playerTerritories->at(i);
-		minimum = territoryWithLeast->getArmies();
+			minimum = territoryWithLeast->getArmies();
+		}
 	}
 	//add all of the weakest territories 
 	for (int i = 0; i < territorySize; i++) {
@@ -430,8 +431,10 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 	territoryWithLeast = playerTerritories->at(0);
 	for (int i = 0; i < territorySize; i++) {
 		if (playerTerritories->at(i)->getArmies() + playerTerritories->at(i)->getIncomingArmies() < minimum)
+		{
 			territoryWithLeast = playerTerritories->at(i);
-		minimum = territoryWithLeast->getArmies();
+			minimum = territoryWithLeast->getArmies();
+		}
 	}
 	for (int i = 0; i < territorySize; i++) {
 		if (playerTerritories->at(i)->getArmies() == minimum)
