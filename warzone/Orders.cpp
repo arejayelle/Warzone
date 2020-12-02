@@ -88,7 +88,6 @@ bool DeployOrder::execute() {
 
 // Used to print information about the order.
 string DeployOrder::toString() const {
-	// TODO make nicer (all classes)
 	ostringstream strm;
 	strm << "Deploy order made by player " << this->player << " deploying " << this->numArmies << " troops to " << this->target->getName();
 	return strm.str();

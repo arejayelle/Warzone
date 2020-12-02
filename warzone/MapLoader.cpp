@@ -598,9 +598,9 @@ ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReader* cfr) : 
 // Destructor.
 ConquestFileReaderAdapter::~ConquestFileReaderAdapter()
 {
-	/*if (conquestMapLoader != nullptr) {
+	if (!conquestMapLoader) {
 		delete conquestMapLoader;
-	}*/
+	}
 }
 
 // Assignment operator.
