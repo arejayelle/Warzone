@@ -64,20 +64,42 @@ void GameEngine::startUpPhase() {
 	string mapFileName;
 
 	MapLoader* loader = nullptr;
+	ConquestFileReader* conqLoader = nullptr;
+	ConquestFileReaderAdapter* adapter = nullptr;
+
 	//Map Loading 
 	while (fileInvalid == true) {
 		cout << "What map file would you like?";
 		cin >> mapFileName;
 		loader = new MapLoader(mapFileName);
-		if (loader->validateMapFormatML() == true)
+		conqLoader = new ConquestFileReader(mapFileName);
+		adapter = new ConquestFileReaderAdapter(conqLoader);
+
+		if (loader->validateMapFormatML()) {
 			fileInvalid = false;
-		else {
-			fileInvalid = true;
+			map = loader->convertFileToMap();
+
 			delete loader;
+			delete conqLoader;
+			delete adapter;
+		}
+		else if(adapter->validateMapFormatML()) {
+			fileInvalid = false;
+			map = adapter->convertFileToMap();
+
+			delete loader;
+			delete conqLoader;
+			delete adapter;
+		}
+		else {
+			cout << "\n File could not be converted as Domination or Conquest, please try another file." << endl;
+			fileInvalid = true;
+
+			delete loader;
+			delete conqLoader;
+			delete adapter;
 		}
 	}
-	map = loader->convertFileToMap();
-	delete loader;
 
 	//Setting up Observers
 	cout << "Would you like to turn observers on? y/n" << endl;
