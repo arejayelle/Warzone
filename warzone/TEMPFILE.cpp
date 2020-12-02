@@ -2,19 +2,14 @@
 
 HumanPlayerStrategy::HumanPlayerStrategy()
 {
-	this->hasCardsInHand = false;
 }
 
 HumanPlayerStrategy::HumanPlayerStrategy(const HumanPlayerStrategy& other)
 {
-	this->hasCardsInHand = other.hasCardsInHand;
 }
 
 HumanPlayerStrategy& HumanPlayerStrategy::operator=(const HumanPlayerStrategy& other)
 {
-	if (this != &other) {
-		this->hasCardsInHand = other.hasCardsInHand;
-	}
 	return *this;
 }
 
@@ -51,7 +46,7 @@ bool HumanPlayerStrategy::issueOrder(Player* player)
 	}
 
 	if (playCards == 'y') {
-		if (this->hasCardsInHand)
+		if (player->getHand()->getNumberOfCardsInHand()>0)
 		{
 			return issueCardOrders(player);
 		}
@@ -121,7 +116,6 @@ bool HumanPlayerStrategy::issueCardOrders(Player* player) {
 		hand->play(cardIndex);
 		return true;
 	}
-	this->hasCardsInHand = false;
 }
 
 bool HumanPlayerStrategy::issueAdvanceOrders(Player* player)
