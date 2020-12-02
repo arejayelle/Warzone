@@ -361,19 +361,36 @@ const vector<Territory*>* BenevolentComputerStrategy::toDefend(Player* player)
 	return player->getTerritories();
 }
 
+//Return list of enemy neighboring territories 
 const vector<Territory*> BenevolentComputerStrategy::toAttack(Player* player)
 {
-	vector<Territory*> emptyTerritories;
-	return emptyTerritories;
+	vector<Territory*> toAttack = vector<Territory*>();
+
+	for (std::vector<Territory*>::iterator it = player->getTerritories()->begin(); it != player->getTerritories()->end(); it++) {
+		Territory* territory = *it;
+
+		for (std::vector<Territory*>::const_iterator it2 = territory->getBorders()->begin(); it2 != territory->getBorders()->end(); it2++) {
+			Territory* neighbor = *it2;
+
+			if (std::find(toAttack.begin(), toAttack.end(), neighbor) == toAttack.end()) {
+				toAttack.push_back(neighbor);
+			}
+		}
+	}
+	return toAttack;
 }
 
 bool BenevolentComputerStrategy::issueOrder(Player* player)
 {
 	//Reinforcing weakest territories 
+
+	//Declaring variables
 	const std::vector<Territory*>* playerTerritories = player->getTerritories();
 	int territorySize = player->getTerritories()->size();
 	vector<Territory*> weakestTerritories;
 
+
+	//find territory with smallest number of armies 
 	int minimum = playerTerritories->at(0)->getArmies() + playerTerritories->at(0)->getIncomingArmies();
 	Territory* territoryWithLeast = playerTerritories->at(0);
 	for (int i = 0; i < territorySize; i++) {
@@ -381,11 +398,12 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 			territoryWithLeast = playerTerritories->at(i);
 		minimum = territoryWithLeast->getArmies();
 	}
-
+	//add all of the weakest territories 
 	for (int i = 0; i < territorySize; i++) {
 		if (playerTerritories->at(i)->getArmies() == minimum)
 			weakestTerritories.push_back(playerTerritories->at(i));
 	}
+	//give each weak territory an army till the pool is zero
 	while (player->getReinforcements() != 0) {
 		for (int i = 0; i < weakestTerritories.size(); i++) {
 			player->getOrdersList()->add(new DeployOrder(player, 1, weakestTerritories.at(i)));
@@ -408,7 +426,6 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 	//Since the deployment phase could've changed which territory has the least armies, we need
 	// to find the new min. WILL EXTRACT INTO A HELPER FUNCTION IF THIS IS THE CORRECT LOGIC TO FOLLLOW
 	weakestTerritories.empty();
-
 	minimum = playerTerritories->at(0)->getArmies() + playerTerritories->at(0)->getIncomingArmies();
 	territoryWithLeast = playerTerritories->at(0);
 	for (int i = 0; i < territorySize; i++) {
@@ -445,12 +462,12 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 
 BombOrder* BenevolentComputerStrategy::useBomb(Player* player)
 {
-	return nullptr;
+	return nullptr; //Null since this is the benevolent player
 }
 
 NegotiateOrder* BenevolentComputerStrategy::useDiplomacy(Player* player)
 {
-	//TODO
+	return new NegotiateOrder(player, player->toAttack().at(0)->getOwner()); //negotiates with the first hostile territory in the toAttack vector
 }
 
 AirliftOrder* BenevolentComputerStrategy::useAirlift(Player* player)
@@ -468,6 +485,15 @@ BlockadeOrder* BenevolentComputerStrategy::useBlockade(Player* player)
 
 DeployOrder* BenevolentComputerStrategy::useReinforcement(Player* player)
 {
-	//todo
-
+	auto defendedTerritories = player->toDefend();
+	int minimum = defendedTerritories->at(0)->getArmies() + defendedTerritories->at(0)->getIncomingArmies();
+	Territory* territoryWithLeast = defendedTerritories->at(0);
+	for (int i = 0; i < defendedTerritories->size(); i++) {
+		if (defendedTerritories->at(i)->getArmies() + defendedTerritories->at(i)->getIncomingArmies() < minimum)
+		{
+			territoryWithLeast = defendedTerritories->at(i);
+			minimum = territoryWithLeast->getArmies();
+		}
+	}
+	return new DeployOrder(player, 7, territoryWithLeast);
 }
