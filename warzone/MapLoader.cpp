@@ -589,7 +589,7 @@ void ConquestFileReader::createBorder(std::string border, Map* map){
 ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReaderAdapter* adapter)
 {
 	this->fileName = std::string(adapter->fileName);
-	this->conquestMapLoader = new ConquestFileReader("");
+	this->conquestMapLoader = new ConquestFileReader(adapter->conquestMapLoader);
 }
 
 // Param constructor.
@@ -598,9 +598,7 @@ ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReader* cfr) : 
 // Destructor.
 ConquestFileReaderAdapter::~ConquestFileReaderAdapter()
 {
-	if (!conquestMapLoader) {
-		delete conquestMapLoader;
-	}
+	delete conquestMapLoader;
 }
 
 // Assignment operator.

@@ -89,7 +89,6 @@ void GameEngine::startUpPhase() {
 		}
 
 		delete loader;
-		delete conqLoader;
 		delete adapter;
 	}
 
