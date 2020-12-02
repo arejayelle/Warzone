@@ -305,14 +305,15 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 {
 	//Reinforcing 
 	const std::vector<Territory*>* playerTerritories = player->getTerritories();
-	int playerSize = player->getTerritories()->size();
+	int territorySize = player->getTerritories()->size();
 	int maximum = playerTerritories->at(0)->getArmies() + playerTerritories->at(0)->getIncomingArmies();
 	Territory* territoryWithMost = playerTerritories->at(0);
-	for (int i = 0; i < playerSize; i++) {
+	for (int i = 0; i < territorySize; i++) {
 		if (playerTerritories->at(i)->getArmies() + playerTerritories->at(i)->getIncomingArmies() > maximum)
 			territoryWithMost = playerTerritories->at(i);
 	}
 	player->getOrdersList()->add(new DeployOrder(player, player->getReinforcements(), territoryWithMost));
+	player->removeReinforcements(player->getReinforcements());
 	territoryWithMost->setIncomingArmies(territoryWithMost->getIncomingArmies() + player->getReinforcements());
 
 	// Play cards from hand
