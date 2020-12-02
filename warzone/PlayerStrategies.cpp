@@ -309,8 +309,10 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 	int maximum = playerTerritories->at(0)->getArmies() + playerTerritories->at(0)->getIncomingArmies();
 	Territory* territoryWithMost = playerTerritories->at(0);
 	for (int i = 0; i < territorySize; i++) {
-		if (playerTerritories->at(i)->getArmies() + playerTerritories->at(i)->getIncomingArmies() > maximum)
+		if (playerTerritories->at(i)->getArmies() + playerTerritories->at(i)->getIncomingArmies() > maximum) {
 			territoryWithMost = playerTerritories->at(i);
+			maximum = territoryWithMost->getArmies();
+		}
 	}
 	player->getOrdersList()->add(new DeployOrder(player, player->getReinforcements(), territoryWithMost));
 	player->removeReinforcements(player->getReinforcements());
