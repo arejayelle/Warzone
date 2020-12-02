@@ -4,6 +4,7 @@ using namespace std;
 #include "Cards.h"
 #include "Orders.h"
 #include "Map.h"
+#include "PlayerStrategies.h"
 #include <algorithm>
 #include <cstdlib>
 
@@ -18,6 +19,7 @@ class DeployOrder;
 class OrdersList;
 class Deck;
 class Hand;
+class PlayerStrategy;
 
 class Player {
 public:
@@ -66,8 +68,11 @@ public:
 	void addTerritory(Territory* territoryToAdd);  // Add one territory to player's list of territories.
 	void setHand(Hand* handToAdd); //Set hand 
 	void addReinforcements(int addedReinforcements);
+	void removeReinforcements(int removedReinforcements);
 	void grantTerritory(Territory* territory);
 	void setConqueredTerritoryThisTurn(bool value);
+	vector<Territory*>* getTerritoriesWithAdvanceOrder();
+	void setStrategy(PlayerStrategy* strategy);
 
 private:
 	Hand* hand; //returns player's hand
@@ -78,4 +83,5 @@ private:
 	vector<Territory*>* territoriesWithAdvanceOrder;
 	string name;
 	bool conqueredTerritoryThisTurn;
+	PlayerStrategy* playerStrategy;
 };
