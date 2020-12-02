@@ -298,7 +298,7 @@ AggressiveComputerStrategy& AggressiveComputerStrategy::operator=(const Aggressi
 }
 ostream& operator<<(ostream& output, const AggressiveComputerStrategy& other)
 {
-	// TODO: insert return statement here
+	return output << "AggressiveStrategy";
 }
 
 bool AggressiveComputerStrategy::issueOrder(Player* player)
@@ -404,7 +404,15 @@ BlockadeOrder* AggressiveComputerStrategy::useBlockade(Player* player)
 
 DeployOrder* AggressiveComputerStrategy::useReinforcement(Player* player)
 {
-	//TODO
+	const std::vector<Territory*>* playerTerritories = player->getTerritories();
+	int playerSize = player->getTerritories()->size();
+	int maximum = playerTerritories->at(0)->getArmies() + playerTerritories->at(0)->getIncomingArmies();
+	Territory* territoryWithMost = playerTerritories->at(0);
+	for (int i = 0; i < playerSize; i++) {
+		if (playerTerritories->at(i)->getArmies() + playerTerritories->at(i)->getIncomingArmies() > maximum)
+			territoryWithMost = playerTerritories->at(i);
+	}
+	return new DeployOrder(player, 7, territoryWithMost);
 }
 
 
