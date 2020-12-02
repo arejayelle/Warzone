@@ -1,6 +1,6 @@
 #include "GameEngine.h"
 #include "Orders.h"
-   
+
 GameEngine::GameEngine() {
 	map = nullptr;
 	playerArray = std::vector<Player*>();
@@ -9,7 +9,7 @@ GameEngine::GameEngine() {
 	this->statsObservable = new StatsObservable();
 }
 
-GameEngine::~GameEngine() {    
+GameEngine::~GameEngine() {
 	delete map;
 	for (Player* player : playerArray)
 		delete player;
@@ -22,7 +22,7 @@ GameEngine::GameEngine(Map* map, std::vector<Player*> players)
 	this->map = map;
 	this->playerArray = players;
 	this->phaseObservable = new PhaseObservable();
-    this->statsObservable = new StatsObservable();
+	this->statsObservable = new StatsObservable();
 }
 GameEngine* GameEngine::operator=(const GameEngine& engine) //assignment operator
 {
@@ -36,7 +36,7 @@ GameEngine::GameEngine(const GameEngine& Engine) //Copy constructor
 	for (Player* p : Engine.playerArray)
 	{
 		Player* player = new Player(*p);
-		this->playerArray.push_back(player); 
+		this->playerArray.push_back(player);
 	}
 }
 
@@ -49,7 +49,7 @@ ostream& operator<<(ostream& output, const GameEngine& engine)  //stream overloa
 		output << "Player: " << engine.playerArray.at(i)->getTerritories();
 		output << "Player: " << engine.playerArray.at(i)->getHand();
 		output << "Player: " << engine.playerArray.at(i)->getOrdersList();
-}
+	}
 	return output;
 
 }
@@ -82,7 +82,7 @@ void GameEngine::startUpPhase() {
 	//Setting up Observers
 	cout << "Would you like to turn observers on? y/n" << endl;
 	cin >> playerAnswer;
-	if (playerAnswer.compare("y") == 0 || playerAnswer.compare("Y") == 0 || playerAnswer.compare("yes") ==0 ||playerAnswer.compare("Yes")==0) 
+	if (playerAnswer.compare("y") == 0 || playerAnswer.compare("Y") == 0 || playerAnswer.compare("yes") == 0 || playerAnswer.compare("Yes") == 0)
 		attachObservers();
 
 
@@ -117,24 +117,32 @@ void GameEngine::startUpPhase() {
 	//Create players with reinforcements
 	for (int i = 0; i < numberOfPlayers; i++)
 	{
-		vector<Territory*>* territories = new vector<Territory*>(); 
+		vector<Territory*>* territories = new vector<Territory*>();
 		OrdersList* orders = new OrdersList();
 		ostringstream name;
 		name << "Player" << i;
 		Player* player = new Player(name.str(), territories, orders, gameDeck);
-		
+
 		// Select a strategy for the player
 		cout << "Select a strategy for Player " << (i + 1) << endl;
 		cout << "d = Default strategy" << endl;
+		cout << "n = Neutral strategy" << endl;
+		cout << "h = Human Player strategy" << endl;
 		// Add more strategies here
 		std::string strategy;
 		cin >> strategy;
 		cout << endl;
-		
+
 		// Cannot use switch statements with strings in C++ without using a hackish solution.
 		// so use an if-else chain instead.
 		if (strategy.compare("d") == 0) {
 			player->setStrategy(new DefaultStrategy());
+		}
+		else if (strategy.compare("h") == 0) {
+			player->setStrategy(new HumanPlayerStrategy());
+		}
+		else if (strategy.compare("n") == 0) {
+			player->setStrategy(new NeutralPlayerStrategy());
 		}
 		else {
 			cout << "Unknown strategy. Using Default strategy instead." << endl;
@@ -188,31 +196,31 @@ int GameEngine::mainGameLoop()
  */
 void GameEngine::reinforcementPhase()
 {
-    
+
 	phaseObservable->notify("\n\n\n\n\n\n\n\n\n==================== Reinforcement Phase ====================\n\n");
-    
-    for (Player* player : playerArray)
-    {
-        int reinforcements = player->getTerritories()->size() / 3;
-        if (reinforcements < 3) {
-            reinforcements = 3;
-        }
-        player->addReinforcements(reinforcements);
+
+	for (Player* player : playerArray)
+	{
+		int reinforcements = player->getTerritories()->size() / 3;
+		if (reinforcements < 3) {
+			reinforcements = 3;
+		}
+		player->addReinforcements(reinforcements);
 		player->setConqueredTerritoryThisTurn(false);
-    }
+	}
 
-    for (std::vector<Continent*>::const_iterator it = map->getContinents()->begin(); it != map->getContinents()->end(); it++) {
-        Player* owner = (**it).getContinentOwner();
-        if (owner != nullptr) {
-            owner->addReinforcements((**it).getValue());
-        }
-    }
+	for (std::vector<Continent*>::const_iterator it = map->getContinents()->begin(); it != map->getContinents()->end(); it++) {
+		Player* owner = (**it).getContinentOwner();
+		if (owner != nullptr) {
+			owner->addReinforcements((**it).getValue());
+		}
+	}
 
-    for (Player* player : playerArray){
-        phaseObservable->notify("----------" + player->getName() + std::string(": Reinforcement phase----------\n"));
-        phaseObservable->notify(player->getName() + " has " + std::to_string(player->getReinforcements()) + std::string(" reinforcements\n\n"));
-    }
-	
+	for (Player* player : playerArray) {
+		phaseObservable->notify("----------" + player->getName() + std::string(": Reinforcement phase----------\n"));
+		phaseObservable->notify(player->getName() + " has " + std::to_string(player->getReinforcements()) + std::string(" reinforcements\n\n"));
+	}
+
 	for (auto territory : (*map->getTerritories())) {
 		territory->setIncomingArmies(0);
 	}
@@ -286,7 +294,7 @@ int GameEngine::executeOrdersPhase()
 			statsObservable->notify((*it)->getName() + std::string(": has been eliminated.\n"));
 		}
 		else {
-			float percentageOwned = ((*it)->getTerritories()->size() * 100.0f) / (map->getTerritories()->size() );
+			float percentageOwned = ((*it)->getTerritories()->size() * 100.0f) / (map->getTerritories()->size());
 			statsObservable->notify((*it)->getName() + std::string(": has ") + std::to_string(percentageOwned) + "% of all territories\n");
 		}
 	}
@@ -314,7 +322,7 @@ void GameEngine::attachObservers()
 
 const std::vector<Player*>* GameEngine::getPlayers()
 {
-    return &playerArray;
+	return &playerArray;
 }
 
 Deck* GameEngine::getDeck()
@@ -325,5 +333,5 @@ Deck* GameEngine::getDeck()
 
 Map* GameEngine::getMap()
 {
-    return map;
+	return map;
 }
