@@ -393,7 +393,7 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 			territoryWithLeast = playerTerritories->at(i);
 			minimum = territoryWithLeast->getArmies();
 		}
-		return true;
+		//return true;
 	}
 	//add all of the weakest territories 
 	for (int i = 0; i < territorySize; i++) {
@@ -442,21 +442,21 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 		const vector<Territory*>* neighborTerritories = weakestTerritories.at(i)->getBorders();
 		for (int j = 0; j < neighborTerritories->size(); j++) {
 			if (neighborTerritories->at(j)->getOwner() == player) {
-				friendlyTerritories.push_back(neighborTerritories->at(i));  //find all of a territorie's neighbors
+				friendlyTerritories.push_back(neighborTerritories->at(j));  //find all of a territorie's neighbors
 			}
 		}
 		int maximum = friendlyTerritories.at(0)->getArmies() + friendlyTerritories.at(0)->getIncomingArmies();
 		Territory* friendlyTerritoryWithMost = friendlyTerritories.at(0);
-		for (int k = 0; k < friendlyTerritories.size(); i++) {
-			if (friendlyTerritories.at(i)->getArmies() + friendlyTerritories.at(i)->getIncomingArmies() > maximum)
+		for (int k = 0; k < friendlyTerritories.size(); k++) {
+			if (friendlyTerritories.at(k)->getArmies() + friendlyTerritories.at(k)->getIncomingArmies() > maximum)
 			{
-				friendlyTerritoryWithMost = friendlyTerritories.at(i);
+				friendlyTerritoryWithMost = friendlyTerritories.at(k);
 				maximum = friendlyTerritoryWithMost->getArmies();  //Find the strongest of the neighboring territories
 			}
 		}
 		//give one army from strongest neighboring territory to the weakest 
 		player->getOrdersList()->add(new AdvanceOrder(player,1,friendlyTerritoryWithMost,weakestTerritories.at(i)));
-		delete friendlyTerritoryWithMost;
+		//delete friendlyTerritoryWithMost;
 	}
 	delete playerTerritories;
 	return false;
