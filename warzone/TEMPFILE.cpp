@@ -15,7 +15,7 @@ HumanPlayerStrategy& HumanPlayerStrategy::operator=(const HumanPlayerStrategy& o
 
 ostream& operator<<(ostream& output, const HumanPlayerStrategy& other)
 {
-	// TODO: insert return statement here
+	return output << "Human Player \"Strategy\"";
 }
 
 const vector<Territory*>* HumanPlayerStrategy::toDefend(Player* player)
@@ -41,6 +41,26 @@ const vector<Territory*> HumanPlayerStrategy::toAttack(Player* player)
 	return toAttack;
 }
 
+int HumanPlayerStrategy::inputIndexLoop(int max) {
+	int index;
+	while (!(std::cin >> index) || index < 0 || index >= max) {
+		cout << "Error: enter a valid index";
+		std::cin.clear();
+		std::cin.ignore(123, '\n');
+	}
+	return index;
+}
+
+char HumanPlayerStrategy::inputYNLoop() {
+	char result;
+	while (!(std::cin >> result) || result != 'y' || result != 'n') {
+		cout << "Error: enter a valid value";
+		std::cin.clear();
+		std::cin.ignore(123, '\n');
+	}
+	return result;
+}
+
 bool HumanPlayerStrategy::issueOrder(Player* player)
 {
 	int reinforcementPool = player->getReinforcements();
@@ -52,11 +72,7 @@ bool HumanPlayerStrategy::issueOrder(Player* player)
 	// play cards from hand
 	char playCards;
 	cout << "Would you like to play a card? (y/n)";
-	while (!(std::cin >> playCards) || playCards != 'y' || playCards != 'n') {
-		cout << "Error: enter a valid value";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	playCards = inputYNLoop();
 
 	if (playCards == 'y') {
 		if (player->getHand()->getNumberOfCardsInHand()>0)
@@ -70,11 +86,7 @@ bool HumanPlayerStrategy::issueOrder(Player* player)
 		
 	char advanceArmies;
 	cout << "Would you like to advance your armies? (y/n)";
-	while (!(std::cin >> advanceArmies) || advanceArmies != 'y' || advanceArmies != 'n') {
-		cout << "Error: enter a valid value";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	advanceArmies = inputYNLoop();
 	if (advanceArmies == 'y') return issueAdvanceOrders(player);
 
 	cout << "No longer issuing orders";
@@ -94,20 +106,11 @@ bool HumanPlayerStrategy::issueDeployOrders(Player* player) {
 	}
 	cout << "Which territory would you like to add armies to? (0 -" << (index - 1) << ")";
 
-	int territoryIndex;
-	while (!(std::cin >> territoryIndex) || territoryIndex < 0 || territoryIndex >= index) {
-		cout << "Error: enter a valid number";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	int territoryIndex = inputIndexLoop(defendableTerritories->size());
 
 	Territory* deployTarget = (*defendableTerritories)[territoryIndex];
-	int numArmies;
-	while (!(std::cin >> numArmies) || numArmies < 0 || numArmies >= reinforcementPool) {
-		cout << "Error: enter a valid number";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	int numArmies = inputIndexLoop(reinforcementPool);
+
 	player->getOrdersList()->add(new DeployOrder(player, numArmies, deployTarget));
 	deployTarget->setIncomingArmies(deployTarget->getIncomingArmies() + numArmies);
 
@@ -119,13 +122,9 @@ bool HumanPlayerStrategy::issueCardOrders(Player* player) {
 	int size = hand->getNumberOfCardsInHand();
 	if (size > 0) {
 		cout << hand << endl;
-		int cardIndex;
 		cout << "Enter the index of the card you want to play";
-		while (!(std::cin >> cardIndex) || cardIndex < 0 || cardIndex >= size) {
-			cout << "Error: enter a valid number";
-			std::cin.clear();
-			std::cin.ignore(123, '\n');
-		}
+		int cardIndex = inputIndexLoop(hand->getNumberOfCardsInHand());
+		
 		hand->play(cardIndex);
 		return true;
 	}
@@ -140,22 +139,13 @@ bool HumanPlayerStrategy::issueAdvanceOrders(Player* player)
 	}
 	cout << "Which territory would you like to move armies from? (0 -" << (index - 1) << ")";
 
-	int fromIndex;
-	while (!(std::cin >> fromIndex) || fromIndex < 0 || fromIndex >= index) {
-		cout << "Error: enter a valid number";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	int fromIndex = inputIndexLoop(defendableTerritories->size());
 
 	Territory* source = (*defendableTerritories)[fromIndex];
 	int totalArmies = source->getArmies() + source->getIncomingArmies();
-	int numArmies;
 	cout << "How many armies? " << source->getName() << " has " << totalArmies << " armies" << endl;
-	while (!(std::cin >> numArmies) || numArmies < 0 || numArmies >= totalArmies) {
-		cout << "Error: enter a valid number";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+
+	int numArmies = inputIndexLoop(totalArmies);
 
 	cout << "Adjacent Territories to " << source->getName();
 
@@ -165,12 +155,7 @@ bool HumanPlayerStrategy::issueAdvanceOrders(Player* player)
 	}
 	cout << "Which territory would you like to move armies to? (0 -" << (borders->size() - 1) << ")";
 
-	int toIndex;
-	while (!(std::cin >> toIndex) || toIndex < 0 || toIndex >= borders->size()) {
-		cout << "Error: enter a valid number";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	int toIndex = inputIndexLoop(borders->size());
 
 	Territory* target = (*borders)[toIndex];
 	player->getOrdersList()->add(new AdvanceOrder(player, numArmies, source, target));
@@ -187,12 +172,8 @@ BombOrder* HumanPlayerStrategy::useBomb(Player* player)
 		cout << index++ << "\t" << (*it) << endl;
 	}
 	cout << "Which territory would you like to target? (0 -" << (index - 1) << ")";
-	int territoryIndex;
-	while (!(std::cin >> territoryIndex) || territoryIndex < 0 || territoryIndex >= index) {
-		cout << "Error: enter a valid number";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	int territoryIndex = inputIndexLoop(enemies.size());
+
 	return new BombOrder(player, enemies[territoryIndex]);
 }
 
@@ -205,12 +186,7 @@ NegotiateOrder* HumanPlayerStrategy::useDiplomacy(Player* player)
 	}
 	cout << "Which territory would you like to negotiate with? (0 -" << (index - 1) << ")";
 
-	int territoryIndex;
-	while (!(std::cin >> territoryIndex) || territoryIndex < 0 || territoryIndex >= index) {
-		cout << "Error: enter a valid number";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	int territoryIndex = inputIndexLoop(enemies.size());
 	return new NegotiateOrder(player, enemies[territoryIndex]->getOwner());
 }
 
@@ -223,30 +199,14 @@ AirliftOrder* HumanPlayerStrategy::useAirlift(Player* player)
 	}
 	cout << "Which territory would you like to move armies from? (0 -" << (index - 1) << ")";
 
-	int fromIndex;
-	while (!(std::cin >> fromIndex) || fromIndex < 0 || fromIndex >= index) {
-		cout << "Error: enter a valid number";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	int fromIndex = inputIndexLoop(defendableTerritories->size());
 
 	Territory* source = (*defendableTerritories)[fromIndex];
-	int numArmies;
-
-	while (!(std::cin >> numArmies) || numArmies < 0 || numArmies >= source->getArmies()) {
-		cout << "Error: enter a valid number";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	int numArmies = inputIndexLoop(source->getArmies());
 
 	cout << "Which territory would you like to move armies to? (0 -" << (index - 1) << ")";
 
-	int toIndex;
-	while (!(std::cin >> toIndex) || toIndex < 0 || toIndex >= index) {
-		cout << "Error: enter a valid number";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	int toIndex = inputIndexLoop(defendableTerritories->size());
 	Territory* target = (*defendableTerritories)[toIndex];
 
 	return new AirliftOrder(player, numArmies, source, target);
@@ -261,12 +221,7 @@ BlockadeOrder* HumanPlayerStrategy::useBlockade(Player* player)
 	}
 	cout << "Which territory would you like to blockade? (0 -" << (index - 1) << ")";
 
-	int territoryIndex;
-	while (!(std::cin >> territoryIndex) || territoryIndex < 0 || territoryIndex >= index) {
-		cout << "Error: enter a valid number";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	int territoryIndex = inputIndexLoop(defendable.size());
 	return new BlockadeOrder(player, defendable[territoryIndex]);
 }
 
@@ -280,21 +235,10 @@ DeployOrder* HumanPlayerStrategy::useReinforcement(Player* player)
 
 	cout << "Which territory would you like to deploy to? (0 -" << (index - 1) << ")";
 
-	int territoryIndex;
-	while (!(std::cin >> territoryIndex) || territoryIndex < 0 || territoryIndex >= index) {
-		cout << "Error: enter a valid number";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	int territoryIndex = inputIndexLoop(defendable.size());
 
-	int numArmies;
 	cout << "Which territory would you like to deploy to? (0-10)";
-
-	while (!(std::cin >> numArmies) || numArmies < 0 || numArmies > 11) {
-		cout << "Error: enter a valid number";
-		std::cin.clear();
-		std::cin.ignore(123, '\n');
-	}
+	int numArmies = inputIndexLoop(11);
 
 	return new DeployOrder(player, numArmies, defendable[territoryIndex]);
 }

@@ -60,6 +60,8 @@ private:
 	bool issueAdvanceOrders(Player* player);
 	bool issueCardOrders(Player* player);
 	bool issueDeployOrders(Player* player);
+	char inputYNLoop();
+	int inputIndexLoop(int max);
 public:
 	NeutralPlayerStrategy();
 	NeutralPlayerStrategy(const NeutralPlayerStrategy& other);
