@@ -316,6 +316,7 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 			territoryWithMost = playerTerritories->at(i);
 			maximum = territoryWithMost->getArmies();
 		}
+		return true;
 	}
 	//Assign the player's reinforcement pool to territory
 	player->getOrdersList()->add(new DeployOrder(player, player->getReinforcements(), territoryWithMost));
@@ -351,7 +352,18 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 		if(friendlyTerritories.at(territoryIterator)->getArmies()!=0)
 			player->getOrdersList()->add(new AdvanceOrder(player, 1, territoryWithMost, friendlyTerritories.at(territoryIterator)));
 	}
-
+	delete territoryWithMost;
+	delete playerTerritories;
+	for (int i = 0; i < enemyTerritories.size(); i++)
+	{
+		delete enemyTerritories[i];
+	}
+	for (int i = 0; i < friendlyTerritories.size(); i++)
+	{
+		delete friendlyTerritories[i];
+	}
+	delete adjacentTerritories;
+	return false;
 }
 
 const vector<Territory*>* AggressiveComputerStrategy::toDefend(Player* player)
