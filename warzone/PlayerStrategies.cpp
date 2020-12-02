@@ -568,8 +568,5 @@ DeployOrder* HumanPlayerStrategy::useReinforcement(Player* player)
 
 	int territoryIndex = inputIndexLoop(defendable.size());
 
-	cout << "Which territory would you like to deploy to? (0-10)";
-	int numArmies = inputIndexLoop(11);
-
-	return new DeployOrder(player, numArmies, defendable[territoryIndex]);
+	return new DeployOrder(player, 7, defendable[territoryIndex]);
 }
