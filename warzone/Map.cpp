@@ -134,6 +134,11 @@ int Continent::getValue() {
 	return value;
 }
 
+std::string Continent::getName()
+{
+	return this->name;
+}
+
 /**
  * Check if someone owns all territories in a continent. If so, returns the owner of the continent.
  * 
@@ -221,10 +226,46 @@ Territory* Map::getTerritory(int territoryId)
 	return territories.at(territoryId);
 }
 
+Territory* Map::getTerritory(std::string territoryName)
+{
+	const std::vector<Territory*>* listOfTerritories = getTerritories();
+	for (int i = 0; i < listOfTerritories->size(); i++) {
+		if (listOfTerritories->at(i)->getName() == territoryName) {
+			return listOfTerritories->at(i);
+		}
+	}
+
+	return nullptr;
+}
+
+int Map::getTerritoryID(std::string territoryName)
+{
+	const std::vector<Territory*>* listOfTerritories = getTerritories();
+	for (int i = 0; i < listOfTerritories->size(); i++) {
+		if (listOfTerritories->at(i)->getName() == territoryName) {
+			return i;
+		}
+	}
+
+	return 0;
+}
+
 // Get a read-only vector of the continents in the map
 const std::vector<Continent*>* Map::getContinents()
 {
 	return &continents;
+}
+
+Continent* Map::getContinent(std::string continentName)
+{
+	const std::vector<Continent*>* listOfContinents = getContinents();
+	for (int i = 0; i < listOfContinents->size(); i++) {
+		if (listOfContinents->at(i)->getName() == continentName) {
+			return listOfContinents->at(i);
+		}
+	}
+
+	return nullptr;
 }
 
 // Get a read-only vector of the territories in the map
