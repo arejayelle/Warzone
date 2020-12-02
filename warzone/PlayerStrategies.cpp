@@ -45,7 +45,7 @@ DefaultStrategy::DefaultStrategy()
 /// </summary>
 DefaultStrategy::DefaultStrategy(const DefaultStrategy& other)
 {
-	
+
 }
 
 /// <summary>
@@ -402,7 +402,7 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 	}
 	//give each weak territory an army till the pool is zero
 	while (player->getReinforcements() > 0) {
-		for (int i = 0; (i < weakestTerritories.size()&& player->getReinforcements() > 0); i++) {
+		for (int i = 0; i < weakestTerritories.size() && player->getReinforcements() > 0; i++) {
 
 			player->getOrdersList()->add(new DeployOrder(player, 1, weakestTerritories.at(i)));
 			player->removeReinforcements(1);
@@ -438,7 +438,7 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 			weakestTerritories.push_back(playerTerritories->at(i));
 	}
 	// Find the strongest neighbor for a given territory and force it to give the weakest some armies
-	vector<Territory*> friendlyTerritories; 
+	vector<Territory*> friendlyTerritories;
 	for (int i = 0; i < weakestTerritories.size(); i++) {
 
 		const vector<Territory*>* neighborTerritories = weakestTerritories.at(i)->getBorders();
@@ -449,23 +449,25 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 			}
 		}
 
-		// find biggest neighbour territory
-		Territory* biggest = friendlyTerritories.at(0);
-		int armiesAtBiggest = biggest->getArmies() + biggest->getIncomingArmies();
-		
-		for (int k = 0; k < friendlyTerritories.size(); k++) {
-			int totalArmiesatK = friendlyTerritories.at(k)->getArmies() + friendlyTerritories.at(k)->getIncomingArmies();
-			
-			if (totalArmiesatK > armiesAtBiggest)
-			{
-				biggest = friendlyTerritories.at(k);
-				armiesAtBiggest = totalArmiesatK;  //Find the strongest of the neighboring territories
-			}
-		}
+		if (friendlyTerritories.size() > 0) {
 
-		//give one army from strongest neighboring territory to the weakest 
-		player->getOrdersList()->add(new AdvanceOrder(player,1,biggest,weakestTerritories.at(i)));
-		//delete friendlyTerritoryWithMost;
+			// find biggest neighbour territory
+			Territory* biggest = friendlyTerritories.at(0);
+			int armiesAtBiggest = biggest->getArmies() + biggest->getIncomingArmies();
+
+			for (int k = 0; k < friendlyTerritories.size(); k++) {
+				int totalArmiesatK = friendlyTerritories.at(k)->getArmies() + friendlyTerritories.at(k)->getIncomingArmies();
+
+				if (totalArmiesatK > armiesAtBiggest)
+				{
+					biggest = friendlyTerritories.at(k);
+					armiesAtBiggest = totalArmiesatK;  //Find the strongest of the neighboring territories
+				}
+			}
+
+			//give one army from strongest neighboring territory to the weakest 
+			player->getOrdersList()->add(new AdvanceOrder(player, 1, biggest, weakestTerritories.at(i)));
+		}
 	}
 
 	return false;
