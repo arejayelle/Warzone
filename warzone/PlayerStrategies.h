@@ -56,6 +56,25 @@ public:
 
 class NeutralPlayerStrategy : public PlayerStrategy
 {
+public:
+	NeutralPlayerStrategy();
+	NeutralPlayerStrategy(const NeutralPlayerStrategy& other);
+	NeutralPlayerStrategy& operator= (const NeutralPlayerStrategy& other);
+	friend ostream& operator<< (ostream& output, const NeutralPlayerStrategy& other);
+
+	const vector<Territory*>* toDefend(Player* player);
+	const vector<Territory*> toAttack(Player* player);
+	bool issueOrder(Player* player);
+
+	BombOrder* useBomb(Player* player);
+	NegotiateOrder* useDiplomacy(Player* player);
+	AirliftOrder* useAirlift(Player* player);
+	BlockadeOrder* useBlockade(Player* player);
+	DeployOrder* useReinforcement(Player* player);
+};
+
+class HumanPlayerStrategy : public PlayerStrategy
+{
 private:
 	bool issueAdvanceOrders(Player* player);
 	bool issueCardOrders(Player* player);
@@ -63,10 +82,10 @@ private:
 	char inputYNLoop();
 	int inputIndexLoop(int max);
 public:
-	NeutralPlayerStrategy();
-	NeutralPlayerStrategy(const NeutralPlayerStrategy& other);
-	NeutralPlayerStrategy& operator= (const NeutralPlayerStrategy& other);
-	friend ostream& operator<< (ostream& output, const NeutralPlayerStrategy& other);
+	HumanPlayerStrategy();
+	HumanPlayerStrategy(const HumanPlayerStrategy& other);
+	HumanPlayerStrategy& operator= (const HumanPlayerStrategy& other);
+	friend ostream& operator<< (ostream& output, const HumanPlayerStrategy& other);
 
 	const vector<Territory*>* toDefend(Player* player);
 	const vector<Territory*> toAttack(Player* player);
