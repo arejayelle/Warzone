@@ -78,27 +78,19 @@ void GameEngine::startUpPhase() {
 		if (loader->validateMapFormatML()) {
 			fileInvalid = false;
 			map = loader->convertFileToMap();
-
-			delete loader;
-			delete conqLoader;
-			delete adapter;
 		}
 		else if(adapter->validateMapFormatML()) {
 			fileInvalid = false;
 			map = adapter->convertFileToMap();
-
-			delete loader;
-			delete conqLoader;
-			delete adapter;
 		}
 		else {
 			cout << "\n File could not be converted as Domination or Conquest, please try another file." << endl;
 			fileInvalid = true;
-
-			delete loader;
-			delete conqLoader;
-			delete adapter;
 		}
+
+		delete loader;
+		delete conqLoader;
+		delete adapter;
 	}
 
 	//Setting up Observers
