@@ -4,7 +4,7 @@ using namespace std;
 #include "Cards.h"
 #include "Orders.h"
 #include "Map.h"
-#include "Strategies.h"
+#include "PlayerStrategies.h"
 #include <algorithm>
 #include <cstdlib>
 
