@@ -373,50 +373,32 @@ const vector<Territory*> HumanPlayerStrategy::toAttack(Player* player)
 }
 
 int HumanPlayerStrategy::inputIndexLoop(int max) {
-	bool isValid = false;
 	int index;
-	while (!isValid) {
-		std::cin >> index;
-		if (index < 0 || index >= max) {
-			std::cout << "Error: enter a valid index" << endl;
-		}
-		else {
-
-			isValid = true;
-		}
+	while (!(std::cin >> index) || index < 0 || index >= max) {
+		cout << "Error: enter a valid index ";
+		std::cin.clear();
+		std::cin.ignore(123, '\n');
 	}
-
 	return index;
 }
 int HumanPlayerStrategy::inputValueLoop(int max) {
 	bool isValid = false;
 	int value;
-	while (!isValid) {
-		std::cin >> value;
-		if (value < 0 || value > max) {
-			std::cout << "Error: enter a valid value (0 -" << max << ")" << endl;
-		}
-		else {
-
-			isValid = true;
-		}
+	while (!(std::cin >> value) || value < 0 || value > max) {
+		std::cout << "Error: enter a valid value (0 -" << max << ") " << endl;
+		std::cin.clear();
+		std::cin.ignore(123, '\n');
 	}
-
 	return value;
 }
 char HumanPlayerStrategy::inputYNLoop() {
-	bool isValid = false;
 	char result;
-	while (!isValid) {
-		std::cin >> result;
-		if (result == 'y' || result == 'n') {
-			return result;
-		}
-		else {
-			std::cout << "Error: enter a valid value";
-		}
+	while (!(std::cin >> result) || result != 'y' || result != 'n') {
+		cout << "Error: enter a valid value ";
+		std::cin.clear();
+		std::cin.ignore(123, '\n');
 	}
-
+	return result;
 }
 
 bool HumanPlayerStrategy::issueOrder(Player* player)
