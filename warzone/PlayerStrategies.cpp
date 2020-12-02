@@ -64,11 +64,6 @@ ostream& operator<<(ostream& output, const DefaultStrategy& other)
 	return output << "DefaultStrategy";
 }
 
-ostream& operator<<(ostream& output, const AggressiveComputerStrategy& other)
-{
-	// TODO: insert return statement here
-}
-
 /// <summary>
 /// Compares two territories, i and j, based on lexicographical/alphabetical order.
 /// Returns True if the first territory is smaller than the second.
@@ -284,7 +279,10 @@ DeployOrder* DefaultStrategy::useReinforcement(Player* player)
 	return new DeployOrder(player, 7, territoryWithLeast);
 }
 
+
+
 //AggressiveComputerStrategy 
+
 
 AggressiveComputerStrategy::AggressiveComputerStrategy()
 {
@@ -297,6 +295,10 @@ AggressiveComputerStrategy::AggressiveComputerStrategy(const AggressiveComputerS
 AggressiveComputerStrategy& AggressiveComputerStrategy::operator=(const AggressiveComputerStrategy& other)
 {
 	return *this;
+}
+ostream& operator<<(ostream& output, const AggressiveComputerStrategy& other)
+{
+	// TODO: insert return statement here
 }
 
 bool AggressiveComputerStrategy::issueOrder(Player* player)
@@ -403,4 +405,56 @@ BlockadeOrder* AggressiveComputerStrategy::useBlockade(Player* player)
 DeployOrder* AggressiveComputerStrategy::useReinforcement(Player* player)
 {
 	//TODO
+}
+
+
+
+
+// NEUTRAL PLAYER
+NeutralPlayerStrategy::NeutralPlayerStrategy() : PlayerStrategy()
+{
+}
+
+NeutralPlayerStrategy::NeutralPlayerStrategy(const NeutralPlayerStrategy& other) : PlayerStrategy(other)
+{
+}
+NeutralPlayerStrategy& NeutralPlayerStrategy::operator=(const NeutralPlayerStrategy& other)
+{
+	return *this;
+}
+const vector<Territory*>* NeutralPlayerStrategy::toDefend(Player* player)
+{
+	return player->getTerritories();
+}
+const vector<Territory*> NeutralPlayerStrategy::toAttack(Player* player)
+{
+	return *player->getTerritories();
+}
+bool NeutralPlayerStrategy::issueOrder(Player* player)
+{
+	return false;
+}
+BombOrder* NeutralPlayerStrategy::useBomb(Player* player)
+{
+	return nullptr;
+}
+NegotiateOrder* NeutralPlayerStrategy::useDiplomacy(Player* player)
+{
+	return nullptr;
+}
+AirliftOrder* NeutralPlayerStrategy::useAirlift(Player* player)
+{
+	return nullptr;
+}
+BlockadeOrder* NeutralPlayerStrategy::useBlockade(Player* player)
+{
+	return nullptr;
+}
+DeployOrder* NeutralPlayerStrategy::useReinforcement(Player* player)
+{
+	return nullptr;
+}
+ostream& operator<<(ostream& output, const NeutralPlayerStrategy& other)
+{
+	return output << "Neutral Strategy";
 }

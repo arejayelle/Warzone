@@ -428,6 +428,10 @@ void Hand::play(int index)
 		Card* cardToPlay = this->currentHand->at(index);
 		Order* newOrder = cardToPlay->play(owner);
 
+		if (newOrder == nullptr) {
+			return;
+		}
+		
 		OrdersList* list = owner->getOrdersList();
 		list->add(newOrder);
 
