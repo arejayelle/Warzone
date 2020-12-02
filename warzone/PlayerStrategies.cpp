@@ -1,4 +1,4 @@
-#include "Strategy.h";
+#include "PlayerStrategies.h";
 
 /// <summary>
 /// Default constructor for PlayerStrategy
@@ -62,6 +62,11 @@ DefaultStrategy& DefaultStrategy::operator=(const DefaultStrategy& other)
 ostream& operator<<(ostream& output, const DefaultStrategy& other)
 {
 	return output << "DefaultStrategy";
+}
+
+ostream& operator<<(ostream& output, const AggressiveComputerStrategy& other)
+{
+	// TODO: insert return statement here
 }
 
 /// <summary>
@@ -240,7 +245,6 @@ AirliftOrder* DefaultStrategy::useAirlift(Player* player)
 {
 	// Randomly move some troops around
 	auto defend = player->toDefend();
-
 	int index1 = rand() % defend->size();
 	int index2 = rand() % defend->size();
 	return new AirliftOrder(player, 3, defend->at(index1), defend->at(index2));
@@ -278,4 +282,125 @@ DeployOrder* DefaultStrategy::useReinforcement(Player* player)
 	}
 
 	return new DeployOrder(player, 7, territoryWithLeast);
+}
+
+//AggressiveComputerStrategy 
+
+AggressiveComputerStrategy::AggressiveComputerStrategy()
+{
+}
+
+AggressiveComputerStrategy::AggressiveComputerStrategy(const AggressiveComputerStrategy& other)
+{
+}
+
+AggressiveComputerStrategy& AggressiveComputerStrategy::operator=(const AggressiveComputerStrategy& other)
+{
+	return *this;
+}
+
+bool AggressiveComputerStrategy::issueOrder(Player* player)
+{
+	//Reinforcing 
+	const std::vector<Territory*>* playerTerritories = player->getTerritories();
+	int playerSize = player->getTerritories()->size();
+	int maximum = playerTerritories->at(0)->getArmies() + playerTerritories->at(0)->getIncomingArmies();
+	Territory* territoryWithMost = playerTerritories->at(0);
+	for (int i = 0; i < playerSize; i++) {
+		if (playerTerritories->at(i)->getArmies() + playerTerritories->at(i)->getIncomingArmies() > maximum)
+			territoryWithMost = playerTerritories->at(i);
+	}
+	player->getOrdersList()->add(new DeployOrder(player, player->getReinforcements(), territoryWithMost));
+	territoryWithMost->setIncomingArmies(territoryWithMost->getIncomingArmies() + player->getReinforcements());
+
+	// Play cards from hand
+	const std::vector<Card*>* cards = player->getHand()->getCurrentHand();
+	if (cards->size() > 0) {
+		player->getHand()->play(0);
+		return true;
+	}
+
+	//Attack neighboring territories.
+	const std::vector<Territory*>* adjacentTerritories = territoryWithMost->getBorders();
+	std::vector<Territory*> enemyTerritories;
+	std::vector<Territory*> friendlyTerritories;
+	for (int i= 0; i < adjacentTerritories->size(); i++) {
+		if (adjacentTerritories->at(i)->getOwner() != player) {
+			enemyTerritories.push_back(adjacentTerritories->at(i));
+		}
+		else {
+			//TODO - Strongest territory doesn't have immediate enemies
+			friendlyTerritories.push_back(adjacentTerritories->at(i));
+		}
+	}
+	int territoryIterator = 0;
+	while (territoryIterator != enemyTerritories.size()) {
+		player->getOrdersList()->add(new AdvanceOrder(player, territoryWithMost->getArmies(), territoryWithMost, enemyTerritories.at(territoryIterator)));
+	}
+
+	//Fortify strongest territory/ TODO
+	while (territoryIterator != friendlyTerritories.size()) {
+		player->getOrdersList()->add(new AdvanceOrder(player, 1, territoryWithMost, friendlyTerritories.at(territoryIterator)));
+	}
+
+}
+
+const vector<Territory*>* AggressiveComputerStrategy::toDefend(Player* player)
+{
+	return player->getTerritories();
+
+}
+const vector<Territory*> AggressiveComputerStrategy::toAttack(Player* player)
+{
+	vector<Territory*> toAttack = vector<Territory*>();
+
+	for (std::vector<Territory*>::iterator it = player->getTerritories()->begin(); it != player->getTerritories()->end(); it++) {
+		Territory* territory = *it;
+
+		for (std::vector<Territory*>::const_iterator it2 = territory->getBorders()->begin(); it2 != territory->getBorders()->end(); it2++) {
+			Territory* neighbor = *it2;
+
+			if (std::find(toAttack.begin(), toAttack.end(), neighbor) == toAttack.end()) {
+				toAttack.push_back(neighbor);
+			}
+		}
+	}
+	return toAttack;
+
+}
+
+BombOrder* AggressiveComputerStrategy::useBomb(Player* player)
+{
+	// Execute on an enemy territory with the most troops
+	auto enemies = toAttack(player);
+	int maxTroops = enemies.at(0)->getArmies();
+	Territory* territoryWithMaxTroops = enemies.at(0);
+	for (auto it = enemies.begin(); it != enemies.end(); it++) {
+		if ((*it)->getArmies() > maxTroops) {
+			maxTroops = (*it)->getArmies();
+			territoryWithMaxTroops = (*it);
+		}
+	}
+	return new BombOrder(player, territoryWithMaxTroops);
+}
+
+NegotiateOrder* AggressiveComputerStrategy::useDiplomacy(Player* player)
+{
+	return nullptr;
+}
+
+AirliftOrder* AggressiveComputerStrategy::useAirlift(Player* player)
+{
+	return nullptr;
+}
+
+
+BlockadeOrder* AggressiveComputerStrategy::useBlockade(Player* player)
+{
+	return nullptr;
+}
+
+DeployOrder* AggressiveComputerStrategy::useReinforcement(Player* player)
+{
+	//TODO
 }

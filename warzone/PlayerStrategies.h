@@ -53,3 +53,23 @@ public:
 	BlockadeOrder* useBlockade(Player* player);
 	DeployOrder* useReinforcement(Player* player);
 };
+
+class AggressiveComputerStrategy : public PlayerStrategy
+{
+public:
+	AggressiveComputerStrategy();
+	AggressiveComputerStrategy(const AggressiveComputerStrategy& other);
+	AggressiveComputerStrategy& operator= (const AggressiveComputerStrategy& other);
+	friend ostream& operator<< (ostream& output, const AggressiveComputerStrategy& other);
+
+	const vector<Territory*>* toDefend(Player* player);
+	const vector<Territory*> toAttack(Player* player);
+	bool issueOrder(Player* player);
+
+	BombOrder* useBomb(Player* player);
+	NegotiateOrder* useDiplomacy(Player* player);
+	AirliftOrder* useAirlift(Player* player);
+	BlockadeOrder* useBlockade(Player* player);
+	DeployOrder* useReinforcement(Player* player);
+
+};
