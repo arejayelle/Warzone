@@ -38,6 +38,7 @@ const vector<Territory*> HumanPlayerStrategy::toAttack(Player* player)
 			}
 		}
 	}
+
 	return toAttack;
 }
 
@@ -70,9 +71,8 @@ bool HumanPlayerStrategy::issueOrder(Player* player)
 	}
 
 	// play cards from hand
-	char playCards;
 	cout << "Would you like to play a card? (y/n)";
-	playCards = inputYNLoop();
+	char playCards = inputYNLoop();
 
 	if (playCards == 'y') {
 		if (player->getHand()->getNumberOfCardsInHand()>0)
@@ -84,9 +84,9 @@ bool HumanPlayerStrategy::issueOrder(Player* player)
 		}
 	}
 		
-	char advanceArmies;
+	
 	cout << "Would you like to advance your armies? (y/n)";
-	advanceArmies = inputYNLoop();
+	char advanceArmies = inputYNLoop();
 	if (advanceArmies == 'y') return issueAdvanceOrders(player);
 
 	cout << "No longer issuing orders";
@@ -96,7 +96,7 @@ bool HumanPlayerStrategy::issueOrder(Player* player)
 bool HumanPlayerStrategy::issueDeployOrders(Player* player) {
 
 	player->getTerritoriesWithAdvanceOrder()->clear();
-	int reinforcementPool = player->getReinforcements();
+
 	// Select deploy target
 	auto defendableTerritories = toDefend(player);
 	int index = 0;
@@ -109,7 +109,7 @@ bool HumanPlayerStrategy::issueDeployOrders(Player* player) {
 	int territoryIndex = inputIndexLoop(defendableTerritories->size());
 
 	Territory* deployTarget = (*defendableTerritories)[territoryIndex];
-	int numArmies = inputIndexLoop(reinforcementPool);
+	int numArmies = inputIndexLoop(player->getReinforcements());
 
 	player->getOrdersList()->add(new DeployOrder(player, numArmies, deployTarget));
 	deployTarget->setIncomingArmies(deployTarget->getIncomingArmies() + numArmies);
@@ -126,8 +126,11 @@ bool HumanPlayerStrategy::issueCardOrders(Player* player) {
 		int cardIndex = inputIndexLoop(hand->getNumberOfCardsInHand());
 		
 		hand->play(cardIndex);
-		return true;
 	}
+	else {
+		cout << "No cards in hand";
+	}
+	return true;
 }
 
 bool HumanPlayerStrategy::issueAdvanceOrders(Player* player)
@@ -143,7 +146,7 @@ bool HumanPlayerStrategy::issueAdvanceOrders(Player* player)
 
 	Territory* source = (*defendableTerritories)[fromIndex];
 	int totalArmies = source->getArmies() + source->getIncomingArmies();
-	cout << "How many armies? " << source->getName() << " has " << totalArmies << " armies" << endl;
+	cout << "How many armies? (0-" << totalArmies-1 << " armies)" << endl;
 
 	int numArmies = inputIndexLoop(totalArmies);
 
