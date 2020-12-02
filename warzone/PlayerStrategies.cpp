@@ -458,7 +458,7 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 		player->getOrdersList()->add(new AdvanceOrder(player,1,friendlyTerritoryWithMost,weakestTerritories.at(i)));
 		//delete friendlyTerritoryWithMost;
 	}
-	delete playerTerritories;
+
 	return false;
 }
 
