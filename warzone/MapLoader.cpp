@@ -47,7 +47,7 @@ bool MapLoader::validateMapFormatML()
 	std::string myLine;
 	bool valideMap = true;
 
-	int numberOfValidParts;
+	int numberOfValidParts = 0;
 
 	std::cout << "Loading file:  " << *fileName << std::endl;
 
@@ -334,7 +334,7 @@ bool ConquestFileReader::validateMapFormatCQ()
 	std::string myLine;
 	bool valideMap = true;
 
-	int numberOfValidParts;
+	int numberOfValidParts = 0;
 
 	std::cout << "Loading file:  " << *fileName << std::endl;
 
