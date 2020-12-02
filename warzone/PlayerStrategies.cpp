@@ -64,6 +64,11 @@ ostream& operator<<(ostream& output, const DefaultStrategy& other)
 	return output << "DefaultStrategy";
 }
 
+ostream& operator<<(ostream&, const BenevolentComputerStrategy& other)
+{
+	// TODO: insert return statement here
+}
+
 /// <summary>
 /// Compares two territories, i and j, based on lexicographical/alphabetical order.
 /// Returns True if the first territory is smaller than the second.
@@ -326,4 +331,143 @@ DeployOrder* NeutralPlayerStrategy::useReinforcement(Player* player)
 ostream& operator<<(ostream& output, const NeutralPlayerStrategy& other)
 {
 	return output << "Neutral Strategy";
+}
+
+
+//BENEVOLENT COMPUTER STRATEGY 
+
+BenevolentComputerStrategy::BenevolentComputerStrategy()
+{
+	//Empty
+}
+
+BenevolentComputerStrategy::BenevolentComputerStrategy(const BenevolentComputerStrategy& other)
+{
+	//Empty
+}
+
+BenevolentComputerStrategy& BenevolentComputerStrategy::operator=(const BenevolentComputerStrategy& other)
+{
+	return *this;
+}
+ostream& operator<<(ostream& output, const BenevolentComputerStrategy& other)
+{
+	return output << "BenevolentStrategy";
+}
+
+
+const vector<Territory*>* BenevolentComputerStrategy::toDefend(Player* player)
+{
+	return player->getTerritories();
+}
+
+const vector<Territory*> BenevolentComputerStrategy::toAttack(Player* player)
+{
+	vector<Territory*> emptyTerritories;
+	return emptyTerritories;
+}
+
+bool BenevolentComputerStrategy::issueOrder(Player* player)
+{
+	//Reinforcing weakest territories 
+	const std::vector<Territory*>* playerTerritories = player->getTerritories();
+	int territorySize = player->getTerritories()->size();
+	vector<Territory*> weakestTerritories;
+
+	int minimum = playerTerritories->at(0)->getArmies() + playerTerritories->at(0)->getIncomingArmies();
+	Territory* territoryWithLeast = playerTerritories->at(0);
+	for (int i = 0; i < territorySize; i++) {
+		if (playerTerritories->at(i)->getArmies() + playerTerritories->at(i)->getIncomingArmies() < minimum)
+			territoryWithLeast = playerTerritories->at(i);
+		minimum = territoryWithLeast->getArmies();
+	}
+
+	for (int i = 0; i < territorySize; i++) {
+		if (playerTerritories->at(i)->getArmies() == minimum)
+			weakestTerritories.push_back(playerTerritories->at(i));
+	}
+	while (player->getReinforcements() != 0) {
+		for (int i = 0; i < weakestTerritories.size(); i++) {
+			player->getOrdersList()->add(new DeployOrder(player, 1, weakestTerritories.at(i)));
+			player->removeReinforcements(1);
+			weakestTerritories.at(i)->setIncomingArmies(weakestTerritories.at(i)->getIncomingArmies() + 1);
+		}
+	}
+
+	// Play cards from hand
+	const std::vector<Card*>* cards = player->getHand()->getCurrentHand();
+	if (cards->size() > 0) {
+		player->getHand()->play(0);
+		return true;
+	}
+
+	// No Attack
+
+	//Fortify strongest territory 
+
+	//Since the deployment phase could've changed which territory has the least armies, we need
+	// to find the new min. WILL EXTRACT INTO A HELPER FUNCTION IF THIS IS THE CORRECT LOGIC TO FOLLLOW
+	weakestTerritories.empty();
+
+	minimum = playerTerritories->at(0)->getArmies() + playerTerritories->at(0)->getIncomingArmies();
+	territoryWithLeast = playerTerritories->at(0);
+	for (int i = 0; i < territorySize; i++) {
+		if (playerTerritories->at(i)->getArmies() + playerTerritories->at(i)->getIncomingArmies() < minimum)
+			territoryWithLeast = playerTerritories->at(i);
+		minimum = territoryWithLeast->getArmies();
+	}
+	for (int i = 0; i < territorySize; i++) {
+		if (playerTerritories->at(i)->getArmies() == minimum)
+			weakestTerritories.push_back(playerTerritories->at(i));
+	}
+	// Find the strongest neighbor for a given territory and force it to give the weakest some armies
+	vector<Territory*> friendlyTerritories; 
+	for (int i = 0; i < weakestTerritories.size(); i++) {
+		const vector<Territory*>* neighborTerritories = weakestTerritories.at(i)->getBorders();
+		for (int j = 0; j < neighborTerritories->size(); j++) {
+			if (neighborTerritories->at(j)->getOwner() == player) {
+				friendlyTerritories.push_back(neighborTerritories->at(i));  //find all of a territorie's neighbors
+			}
+		}
+		int maximum = friendlyTerritories.at(0)->getArmies() + friendlyTerritories.at(0)->getIncomingArmies();
+		Territory* friendlyTerritoryWithMost = friendlyTerritories.at(0);
+		for (int k = 0; k < friendlyTerritories.size(); i++) {
+			if (friendlyTerritories.at(i)->getArmies() + friendlyTerritories.at(i)->getIncomingArmies() > maximum)
+			{
+				friendlyTerritoryWithMost = friendlyTerritories.at(i);
+				maximum = friendlyTerritoryWithMost->getArmies();  //Find the strongest of the neighboring territories
+			}
+		}
+		//give one army from strongest neighboring territory to the weakest 
+		player->getOrdersList()->add(new AdvanceOrder(player,1,friendlyTerritoryWithMost,weakestTerritories.at(i)));
+	}
+}
+
+BombOrder* BenevolentComputerStrategy::useBomb(Player* player)
+{
+	return nullptr;
+}
+
+NegotiateOrder* BenevolentComputerStrategy::useDiplomacy(Player* player)
+{
+	//TODO
+}
+
+AirliftOrder* BenevolentComputerStrategy::useAirlift(Player* player)
+{
+	return nullptr;
+}
+
+BlockadeOrder* BenevolentComputerStrategy::useBlockade(Player* player)
+{
+	// Blockade a random territory
+	auto defend = player->toDefend();
+	int index = rand() % defend->size();
+	return new BlockadeOrder(player, defend->at(index));
+}
+
+DeployOrder* BenevolentComputerStrategy::useReinforcement(Player* player)
+{
+	//todo
+
 }
