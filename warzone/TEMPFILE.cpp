@@ -1,4 +1,4 @@
-#include "Strategies.h";
+#include "PlayerStrategies.h";
 
 HumanPlayerStrategy::HumanPlayerStrategy()
 {
@@ -25,7 +25,20 @@ const vector<Territory*>* HumanPlayerStrategy::toDefend(Player* player)
 
 const vector<Territory*> HumanPlayerStrategy::toAttack(Player* player)
 {
-	return *player->getTerritories();
+	vector<Territory*> toAttack = vector<Territory*>();
+
+	for (std::vector<Territory*>::iterator it = player->getTerritories()->begin(); it != player->getTerritories()->end(); it++) {
+		Territory* territory = *it;
+
+		for (std::vector<Territory*>::const_iterator it2 = territory->getBorders()->begin(); it2 != territory->getBorders()->end(); it2++) {
+			Territory* neighbor = *it2;
+
+			if (std::find(toAttack.begin(), toAttack.end(), neighbor) == toAttack.end()) {
+				toAttack.push_back(neighbor);
+			}
+		}
+	}
+	return toAttack;
 }
 
 bool HumanPlayerStrategy::issueOrder(Player* player)
