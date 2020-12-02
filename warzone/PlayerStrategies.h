@@ -81,6 +81,7 @@ private:
 	bool issueDeployOrders(Player* player);
 	char inputYNLoop();
 	int inputIndexLoop(int max);
+	int inputValueLoop(int max);
 public:
 	HumanPlayerStrategy();
 	HumanPlayerStrategy(const HumanPlayerStrategy& other);

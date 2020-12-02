@@ -378,17 +378,32 @@ int HumanPlayerStrategy::inputIndexLoop(int max) {
 	while (!isValid) {
 		std::cin >> index;
 		if (index < 0 || index >= max) {
-			std::cout << "Error: enter a valid value"<<endl;
+			std::cout << "Error: enter a valid index" << endl;
 		}
 		else {
 
-		isValid = true;
+			isValid = true;
 		}
 	}
 
 	return index;
 }
+int HumanPlayerStrategy::inputValueLoop(int max) {
+	bool isValid = false;
+	int value;
+	while (!isValid) {
+		std::cin >> value;
+		if (value < 0 || value > max) {
+			std::cout << "Error: enter a valid value (0 -" << max << ")" << endl;
+		}
+		else {
 
+			isValid = true;
+		}
+	}
+
+	return value;
+}
 char HumanPlayerStrategy::inputYNLoop() {
 	bool isValid = false;
 	char result;
@@ -401,36 +416,35 @@ char HumanPlayerStrategy::inputYNLoop() {
 			std::cout << "Error: enter a valid value";
 		}
 	}
-	
+
 }
 
 bool HumanPlayerStrategy::issueOrder(Player* player)
 {
-	
+
 	if (player->getReinforcements() > 0) {
 		return issueDeployOrders(player);
 	}
 
 	// play cards from hand
-	std::cout << "Would you like to play a card? (y/n)";
-	char playCards = inputYNLoop();
 
-	if (playCards == 'y') {
-		if (player->getHand()->getNumberOfCardsInHand() > 0)
-		{
+	if (player->getHand()->getNumberOfCardsInHand() > 0)
+	{
+		std::cout << "Would you like to play a card? (y/n)";
+		char playCards = inputYNLoop();
+		if (playCards == 'y') {
 			return issueCardOrders(player);
 		}
-		else {
-			std::cout << "No more cards in hand" << endl;
-		}
 	}
-
+	else {
+		std::cout << "No cards in hand" << endl;
+	}
 
 	std::cout << "Would you like to advance your armies? (y/n)";
 	char advanceArmies = inputYNLoop();
 	if (advanceArmies == 'y') return issueAdvanceOrders(player);
 
-	std::cout << "No longer issuing orders"<<endl;
+	std::cout << "No longer issuing orders" << endl;
 	player->pass();
 	return false;
 }
@@ -442,17 +456,18 @@ bool HumanPlayerStrategy::issueDeployOrders(Player* player) {
 	// Select deploy target
 	auto defendableTerritories = toDefend(player);
 	int index = 0;
-	std::cout << "printing territories" << endl;
+	std::cout << "Territories" << endl;
 	for (auto it = defendableTerritories->begin(); it != defendableTerritories->end(); it++) {
 		std::cout << index++ << "\t" << *(*it) << endl;
 	}
-	std::cout << "Which territory would you like to add armies to? (0 - " << (index - 1) << ")";
 
+	std::cout << "Which territory would you like to add armies to? (0 - " << (index - 1) << ")";
 	int territoryIndex = inputIndexLoop(defendableTerritories->size());
 
 	Territory* deployTarget = (*defendableTerritories)[territoryIndex];
 	std::cout << "How many armies? (0 - " << player->getReinforcements() << ")";
-	int numArmies = inputIndexLoop(player->getReinforcements()+1);
+	int numArmies = inputValueLoop(player->getReinforcements());
+
 	player->removeReinforcements(numArmies);
 	player->getOrdersList()->add(new DeployOrder(player, numArmies, deployTarget));
 	deployTarget->setIncomingArmies(deployTarget->getIncomingArmies() + numArmies);
@@ -465,13 +480,13 @@ bool HumanPlayerStrategy::issueCardOrders(Player* player) {
 	int size = hand->getNumberOfCardsInHand();
 	if (size > 0) {
 		std::cout << *hand << endl;
-		std::cout << "Enter the index of the card you want to play";
+		std::cout << "Enter the index of the card you want to play: ";
 		int cardIndex = inputIndexLoop(hand->getNumberOfCardsInHand());
 
 		hand->play(cardIndex);
 	}
 	else {
-		std::cout << "No cards in hand";
+		std::cout << "No cards in hand" << endl;
 	}
 	return true;
 }
@@ -489,22 +504,36 @@ bool HumanPlayerStrategy::issueAdvanceOrders(Player* player)
 
 	Territory* source = (*defendableTerritories)[fromIndex];
 	int totalArmies = source->getArmies() + source->getIncomingArmies();
-	std::cout << "How many armies? (0-" << totalArmies << " armies)" << endl;
+	if (totalArmies == 0) {
+		std::cout << source->getName() << " has no armies to advance";
+		return false;
+	}
 
-	int numArmies = inputIndexLoop(totalArmies+1);
-
-	std::cout << "Adjacent Territories to " << source->getName();
+	std::cout << "Adjacent Territories to " << source->getName() << endl;
 	index = 0;
 	auto borders = source->getBorders();
 	for (auto it = borders->begin(); it != borders->end(); it++) {
 		std::cout << index++ << "\t" << *(*it) << endl;
 	}
-	std::cout << "Which territory would you like to move armies to? (0 -" << (borders->size() - 1) << ")";
-
+	std::cout << "Which territory would you like to move armies to? (0 - " << (borders->size() - 1) << ")";
 	int toIndex = inputIndexLoop(borders->size());
-
 	Territory* target = (*borders)[toIndex];
-	player->getOrdersList()->add(new AdvanceOrder(player, numArmies, source, target));
+
+	std::cout << "How many armies? (0 - " << totalArmies << " armies)" << endl;
+	int numAdvancingArmies = inputValueLoop(totalArmies);
+
+	if (numAdvancingArmies > source->getIncomingArmies()) {
+		int remainingArmies = numAdvancingArmies - source->getIncomingArmies();
+		source->setIncomingArmies(0);
+		source->removeArmies(remainingArmies);
+	}
+	else {
+		int remainingArmies = source->getIncomingArmies() - numAdvancingArmies;
+		source->setIncomingArmies(remainingArmies);
+	}
+
+	player->getOrdersList()->add(new AdvanceOrder(player, numAdvancingArmies, source, target));
+	player->getTerritoriesWithAdvanceOrder()->push_back(source);
 
 
 	return true;
@@ -543,17 +572,20 @@ AirliftOrder* HumanPlayerStrategy::useAirlift(Player* player)
 	for (auto it = defendableTerritories->begin(); it != defendableTerritories->end(); it++) {
 		std::cout << index++ << "\t" << *(*it) << endl;
 	}
-	std::cout << "Which territory would you like to move armies from? (0 -" << (index - 1) << ")";
+	std::cout << "Which territory would you like to move armies from? (0 - " << (index - 1) << ")";
 
 	int fromIndex = inputIndexLoop(defendableTerritories->size());
 	Territory* source = (*defendableTerritories)[fromIndex];
-	std::cout << "How many armies? (0 -" << source->getArmies() << ")";
-	int numArmies = inputIndexLoop(source->getArmies());
 
-	std::cout << "Which territory would you like to move armies to? (0 -" << (index - 1) << ")";
+
+
+	std::cout << "Which territory would you like to move armies to? (0 - " << (index - 1) << ")";
 
 	int toIndex = inputIndexLoop(defendableTerritories->size());
 	Territory* target = (*defendableTerritories)[toIndex];
+
+	std::cout << "How many armies? (0 -" << source->getArmies() << ")";
+	int numArmies = inputValueLoop(source->getArmies());
 
 	return new AirliftOrder(player, numArmies, source, target);
 }
@@ -565,7 +597,7 @@ BlockadeOrder* HumanPlayerStrategy::useBlockade(Player* player)
 	for (auto it = defendable.begin(); it != defendable.end(); it++) {
 		std::cout << index++ << "\t" << *(*it) << endl;
 	}
-	std::cout << "Which territory would you like to blockade? (0 -" << (index - 1) << ")";
+	std::cout << "Which territory would you like to blockade? (0 - " << (index - 1) << ")";
 
 	int territoryIndex = inputIndexLoop(defendable.size());
 	return new BlockadeOrder(player, defendable[territoryIndex]);
