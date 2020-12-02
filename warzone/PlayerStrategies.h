@@ -69,7 +69,7 @@ public:
 	NegotiateOrder* useDiplomacy(Player* player);
 	AirliftOrder* useAirlift(Player* player);
 	BlockadeOrder* useBlockade(Player* player);
-	DeployOrder* useReinforcement(Player* player)
+	DeployOrder* useReinforcement(Player* player);
 };
 
 class NeutralPlayerStrategy : public PlayerStrategy

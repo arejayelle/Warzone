@@ -301,9 +301,12 @@ ostream& operator<<(ostream& output, const AggressiveComputerStrategy& other)
 	return output << "AggressiveStrategy";
 }
 
+//Issue Order Phase of Aggressive Computer Strategy.
 bool AggressiveComputerStrategy::issueOrder(Player* player)
 {
-	//Reinforcing 
+	//Reinforcement phase
+
+	//Find territory with most armies
 	const std::vector<Territory*>* playerTerritories = player->getTerritories();
 	int territorySize = player->getTerritories()->size();
 	int maximum = playerTerritories->at(0)->getArmies() + playerTerritories->at(0)->getIncomingArmies();
@@ -314,6 +317,7 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 			maximum = territoryWithMost->getArmies();
 		}
 	}
+	//Assign the player's reinforcement pool to territory
 	player->getOrdersList()->add(new DeployOrder(player, player->getReinforcements(), territoryWithMost));
 	player->removeReinforcements(player->getReinforcements());
 	territoryWithMost->setIncomingArmies(territoryWithMost->getIncomingArmies() + player->getReinforcements());
@@ -334,7 +338,6 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 			enemyTerritories.push_back(adjacentTerritories->at(i));
 		}
 		else {
-			//TODO - Strongest territory doesn't have immediate enemies
 			friendlyTerritories.push_back(adjacentTerritories->at(i));
 		}
 	}
@@ -343,9 +346,10 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 		player->getOrdersList()->add(new AdvanceOrder(player, territoryWithMost->getArmies(), territoryWithMost, enemyTerritories.at(territoryIterator)));
 	}
 
-	//Fortify strongest territory/ TODO
+	//Fortify strongest territory with neighbors armies if they have armies to give 
 	while (territoryIterator != friendlyTerritories.size()) {
-		player->getOrdersList()->add(new AdvanceOrder(player, 1, territoryWithMost, friendlyTerritories.at(territoryIterator)));
+		if(friendlyTerritories.at(territoryIterator)->getArmies()!=0)
+			player->getOrdersList()->add(new AdvanceOrder(player, 1, territoryWithMost, friendlyTerritories.at(territoryIterator)));
 	}
 
 }
