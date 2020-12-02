@@ -64,11 +64,6 @@ ostream& operator<<(ostream& output, const DefaultStrategy& other)
 	return output << "DefaultStrategy";
 }
 
-ostream& operator<<(ostream&, const BenevolentComputerStrategy& other)
-{
-	// TODO: insert return statement here
-}
-
 /// <summary>
 /// Compares two territories, i and j, based on lexicographical/alphabetical order.
 /// Returns True if the first territory is smaller than the second.
@@ -398,6 +393,7 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 			territoryWithLeast = playerTerritories->at(i);
 			minimum = territoryWithLeast->getArmies();
 		}
+		return true;
 	}
 	//add all of the weakest territories 
 	for (int i = 0; i < territorySize; i++) {
@@ -460,7 +456,10 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 		}
 		//give one army from strongest neighboring territory to the weakest 
 		player->getOrdersList()->add(new AdvanceOrder(player,1,friendlyTerritoryWithMost,weakestTerritories.at(i)));
+		delete friendlyTerritoryWithMost;
 	}
+	delete playerTerritories;
+	return false;
 }
 
 BombOrder* BenevolentComputerStrategy::useBomb(Player* player)

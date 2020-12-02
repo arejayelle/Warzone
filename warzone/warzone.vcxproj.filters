@@ -120,9 +120,6 @@
     <ClInclude Include="PlayerStrategies.h">
       <Filter>Header Files\Strategy</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerStrategiesDriver.h">
-      <Filter>Header Files\Strategy</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Map.cpp">
@@ -180,9 +177,6 @@
       <Filter>Source Files\GameLoop</Filter>
     </ClCompile>
     <ClCompile Include="PlayerStrategies.cpp">
-      <Filter>Source Files\Strategy</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerStrategiesDriver.cpp">
       <Filter>Source Files\Strategy</Filter>
     </ClCompile>
   </ItemGroup>
