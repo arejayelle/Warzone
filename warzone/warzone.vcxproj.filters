@@ -117,7 +117,7 @@
     <ClInclude Include="GameObservers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Strategy.h">
+    <ClInclude Include="PlayerStrategies.h">
       <Filter>Header Files\Strategy</Filter>
     </ClInclude>
   </ItemGroup>
@@ -176,7 +176,7 @@
     <ClCompile Include="GameEngine.cpp">
       <Filter>Source Files\GameLoop</Filter>
     </ClCompile>
-    <ClCompile Include="Strategy.cpp">
+    <ClCompile Include="PlayerStrategies.cpp">
       <Filter>Source Files\Strategy</Filter>
     </ClCompile>
   </ItemGroup>
