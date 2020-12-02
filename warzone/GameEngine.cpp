@@ -69,7 +69,7 @@ void GameEngine::startUpPhase() {
 
 	//Map Loading 
 	while (fileInvalid == true) {
-		cout << "What map file would you like?";
+		cout << "What map file would you like? ";
 		cin >> mapFileName;
 		loader = new MapLoader(mapFileName);
 		conqLoader = new ConquestFileReader(mapFileName);

@@ -6,7 +6,7 @@
 
 // MapLoader default constructor
 MapLoader::MapLoader() {
-	this->fileName = NULL;
+	fileName = std::string();
 }
 
 //MapLoader Copy Constructor
@@ -18,14 +18,11 @@ MapLoader::MapLoader(MapLoader* mapL)
 //MapLoader Constructor
 MapLoader::MapLoader(std::string fileName)
 {
-	this->fileName = new std::string(fileName);
+	this->fileName = fileName;
 }
 
 //MapLoader Destructor
-MapLoader::~MapLoader() 
-{
-	delete	fileName;
-}
+MapLoader::~MapLoader() { }
 
 //Assignment operator
 MapLoader* MapLoader::operator=(const MapLoader& mapLoader)
@@ -37,7 +34,7 @@ MapLoader* MapLoader::operator=(const MapLoader& mapLoader)
 //Stream insertion operator
 std::ostream& operator<<(std::ostream& out, const MapLoader& mapLoader)
 {
-	std::string fileName = (std::string)*mapLoader.fileName;
+	std::string fileName = (std::string)mapLoader.fileName;
 	out << fileName;
 	return out;
 }
@@ -49,10 +46,10 @@ bool MapLoader::validateMapFormatML()
 
 	int numberOfValidParts = 0;
 
-	std::cout << "Loading file:  " << *fileName << std::endl;
+	std::cout << "[DOMINATION] Loading file: " << fileName << std::endl;
 
 	// Read from file
-	std::ifstream myReadFile(*fileName);
+	std::ifstream myReadFile(fileName);
 
 	if (!myReadFile) {
 		std::cerr << "Could not open file\n";
@@ -128,7 +125,7 @@ bool MapLoader::validateMapFormatML()
 		return true;
 	}
 	else {
-		std::cout << "Map is not valid, missing either the continents, countries or borders. Please verify the syntax is correct\n";
+		std::cout << "Not a valid Domination map.\n";
 		// Close the file
 		myReadFile.close();
 		return false;
@@ -141,7 +138,7 @@ Map* MapLoader::convertFileToMap()
 	std::string myLine;
 
 	// Read from file
-	std::ifstream myReadFile(*fileName);
+	std::ifstream myReadFile(fileName);
 
 	if (!myReadFile) {
 		std::cerr << "Could not open file\n";
@@ -311,17 +308,14 @@ void MapLoader::createBorder(std::string border, Map* map)
 
 ConquestFileReader::ConquestFileReader(ConquestFileReader* mapL)
 {
-	this->fileName = mapL->fileName;
+	this->fileName = std::string(mapL->fileName);
 }
 
 ConquestFileReader::ConquestFileReader(std::string fileName){
-	this->fileName = new std::string(fileName);
+	this->fileName = std::string(fileName);
 }
 
-ConquestFileReader::~ConquestFileReader()
-{
-	delete fileName;
-}
+ConquestFileReader::~ConquestFileReader() { }
 
 ConquestFileReader& ConquestFileReader::operator=(const ConquestFileReader& reader)
 {
@@ -336,10 +330,10 @@ bool ConquestFileReader::validateMapFormatCQ()
 
 	int numberOfValidParts = 0;
 
-	std::cout << "Loading file:  " << *fileName << std::endl;
+	std::cout << "[CONQUEST] Loading file: " << fileName << std::endl;
 
 	// Read from file
-	std::ifstream myReadFile(*fileName);
+	std::ifstream myReadFile(fileName);
 
 	if (!myReadFile) {
 		std::cerr << "Could not open file\n";
@@ -397,7 +391,7 @@ bool ConquestFileReader::validateMapFormatCQ()
 		return true;
 	}
 	else {
-		std::cout << "Map is not valid, missing either the continents, countries or borders. Please verify the syntax is correct\n";
+		std::cout << "Not a valid Conquest map.\n";
 		// Close the file
 		myReadFile.close();
 		return false;
@@ -410,7 +404,7 @@ Map* ConquestFileReader::convertFileToMap()
 	std::string myLine;
 
 	// Read from file
-	std::ifstream myReadFile(*fileName);
+	std::ifstream myReadFile(fileName);
 
 	if (!myReadFile) {
 		std::cerr << "Could not open file\n";
@@ -453,7 +447,7 @@ Map* ConquestFileReader::convertFileToMap()
 	myReadFile.seekg(0, myReadFile.beg);
 
 	//Call method to rereead the file
-	std::ifstream myReadFile2(*fileName);
+	std::ifstream myReadFile2(fileName);
 
 	// Use a while loop together with the getline() function to read the file line by line
 	while (getline(myReadFile, myLine)) {
@@ -604,7 +598,9 @@ ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReader* cfr) : 
 // Destructor.
 ConquestFileReaderAdapter::~ConquestFileReaderAdapter()
 {
-	delete conquestMapLoader;
+	/*if (conquestMapLoader != nullptr) {
+		delete conquestMapLoader;
+	}*/
 }
 
 // Assignment operator.

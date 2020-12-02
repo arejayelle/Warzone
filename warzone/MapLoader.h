@@ -16,7 +16,7 @@ public:
 	Map* convertFileToMap();
 
 private:
-	std::string* fileName;
+	std::string fileName;
 	bool checkContinents(std::string continent);
 	bool checkTerritory(std::string country);
 	bool checkBorders(std::string border);
@@ -35,7 +35,7 @@ public:
 	bool validateMapFormatCQ();
 	Map* convertFileToMap();
 private:
-	std::string* fileName;
+	std::string fileName;
 	bool checkContinents(std::string continent);
 	bool checkTerritory(std::string country);
 	Continent* createContinent(std::string continent);
