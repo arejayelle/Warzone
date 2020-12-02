@@ -393,7 +393,8 @@ int HumanPlayerStrategy::inputValueLoop(int max) {
 }
 char HumanPlayerStrategy::inputYNLoop() {
 	char result;
-	while (!(std::cin >> result) || result != 'y' || result != 'n') {
+	while (!(std::cin >> result) || (result != 'y' && result != 'n')) {
+
 		cout << "Error: enter a valid value ";
 		std::cin.clear();
 		std::cin.ignore(123, '\n');
