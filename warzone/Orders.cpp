@@ -86,6 +86,11 @@ bool DeployOrder::execute() {
 	return true;
 }
 
+DeployOrder* DeployOrder::clone()
+{
+	return new DeployOrder(*this);
+}
+
 // Used to print information about the order.
 string DeployOrder::toString() const {
 	ostringstream strm;
@@ -150,6 +155,11 @@ bool AdvanceOrder::execute() {
 	}
 
 	return true;
+}
+
+AdvanceOrder* AdvanceOrder::clone()
+{
+	return new AdvanceOrder(*this);
 }
 
 // Decides which armies kill each other and, depending on the outcome, add card to attacker's hand.
@@ -249,6 +259,11 @@ bool BombOrder::execute() {
 	return true;
 }
 
+BombOrder* BombOrder::clone()
+{
+	return new BombOrder(*this);
+}
+
 // Used to print information about the order.
 string BombOrder::toString() const {
 	ostringstream strm;
@@ -302,6 +317,11 @@ bool BlockadeOrder::execute() {
 	this->target->getOwner()->removeTerritory(this->target);
 	this->target->setOwner(nullptr);
 	return true;
+}
+
+BlockadeOrder* BlockadeOrder::clone()
+{
+	return new BlockadeOrder(*this);
 }
 
 // Used to print information about the order.
@@ -362,6 +382,11 @@ bool AirliftOrder::execute() {
 	return true;
 }
 
+AirliftOrder* AirliftOrder::clone()
+{
+	return new AirliftOrder(*this);
+}
+
 // Used to print information about the order.
 string AirliftOrder::toString() const {
 	ostringstream strm;
@@ -417,6 +442,11 @@ bool NegotiateOrder::execute() {
 	return true;
 }
 
+NegotiateOrder* NegotiateOrder::clone()
+{
+	return new NegotiateOrder(*this);
+}
+
 // Used to print information about the order.
 string NegotiateOrder::toString() const {
 	ostringstream strm;
@@ -456,8 +486,8 @@ OrdersList::OrdersList(OrdersList* other) {
 	// We make a new vector with pointers to new Order objects.
 	vector<Order*> newOrders = vector<Order*>();
 	for (int i = 0; i < other->orders.size(); i++) {
-		// TODO
-		// newOrders.push_back(new Order(other->orders.at(i)));
+		Order* newOrder = other->orders.at(i)->clone();
+		newOrders.push_back(newOrder);
 	}
 	// make_heap organizes the element in the vector to respect the heap property (highest priority first)
 	make_heap(newOrders.begin(), newOrders.end(), compareOrders);
