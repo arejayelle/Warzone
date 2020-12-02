@@ -47,7 +47,7 @@ bool MapLoader::validateMapFormatML()
 	std::string myLine;
 	bool valideMap = true;
 
-	int* numberOfValidParts = new int();
+	int numberOfValidParts;
 
 	std::cout << "Loading file:  " << *fileName << std::endl;
 
@@ -78,7 +78,7 @@ bool MapLoader::validateMapFormatML()
 				}
 			}
 			//Confirm that the continent part is good
-			++* numberOfValidParts;
+			++ numberOfValidParts;
 		}
 
 		//Check territory/Countries
@@ -97,7 +97,7 @@ bool MapLoader::validateMapFormatML()
 				}
 			}
 			//Confirm that the territory part is good
-			++* numberOfValidParts;
+			++ numberOfValidParts;
 		}
 
 		//Check borders
@@ -116,23 +116,21 @@ bool MapLoader::validateMapFormatML()
 				}
 			}
 			//Confirm that the borders part is good
-			++* numberOfValidParts;
+			++ numberOfValidParts;
 		}
 	}
 
 	//Check if all 3 components are valid
-	if (valideMap && *numberOfValidParts == 3) {
+	if (valideMap && numberOfValidParts == 3) {
 		std::cout << "Map is valid.\n\n";
 		// Close the file
 		myReadFile.close();
-		delete(numberOfValidParts);
 		return true;
 	}
 	else {
 		std::cout << "Map is not valid, missing either the continents, countries or borders. Please verify the syntax is correct\n";
 		// Close the file
 		myReadFile.close();
-		delete(numberOfValidParts);
 		return false;
 	}
 }
@@ -291,7 +289,7 @@ Territory* MapLoader::createTerritory(std::string territory, Map* map)
 
 void MapLoader::createBorder(std::string border, Map* map)
 {
-	//Declare variables that will be used to store the calues from ss
+	//Declare variables that will be used to store the values from ss
 	unsigned int territoryNumber;
 	unsigned int currentTerritoryId;
 	std::vector<Territory*> neighbors;
@@ -336,7 +334,7 @@ bool ConquestFileReader::validateMapFormatCQ()
 	std::string myLine;
 	bool valideMap = true;
 
-	int* numberOfValidParts = new int();
+	int numberOfValidParts;
 
 	std::cout << "Loading file:  " << *fileName << std::endl;
 
@@ -367,7 +365,7 @@ bool ConquestFileReader::validateMapFormatCQ()
 				}
 			}
 			//Confirm that the continent part is good
-			++* numberOfValidParts;
+			++ numberOfValidParts;
 		}
 
 		//Check territory/Countries
@@ -387,23 +385,21 @@ bool ConquestFileReader::validateMapFormatCQ()
 				}
 			}
 			//Confirm that the territory part is good
-			++* numberOfValidParts;
+			++ numberOfValidParts;
 		}
 	}
 
 	//Check if all 3 components are valid
-	if (valideMap && *numberOfValidParts == 2) {
+	if (valideMap && numberOfValidParts == 2) {
 		std::cout << "Map is valid.\n\n";
 		// Close the file
 		myReadFile.close();
-		delete(numberOfValidParts);
 		return true;
 	}
 	else {
 		std::cout << "Map is not valid, missing either the continents, countries or borders. Please verify the syntax is correct\n";
 		// Close the file
 		myReadFile.close();
-		delete(numberOfValidParts);
 		return false;
 	}
 }
