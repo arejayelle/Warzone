@@ -225,12 +225,18 @@ BombOrder* DefaultStrategy::useBomb(Player* player)
 
 /// <summary>
 /// Creates and returns a NegotiateOrder. This implementation targets the player
-/// that owns the first territory in toAttack.
+/// that owns the first territory in toAttack that has an owner.
 /// </summary>
 NegotiateOrder* DefaultStrategy::useDiplomacy(Player* player)
 {
 	// Use on a player adjacent to us
-	return new NegotiateOrder(player, player->toAttack().at(0)->getOwner());
+	auto adjacent = toAttack(player);
+	for (auto it = adjacent.begin(); it != adjacent.end(); it++) {
+		if ((*it)->getOwner() != nullptr) {
+			return new NegotiateOrder(player, player->toAttack().at(0)->getOwner());
+		}
+	}
+	return nullptr;
 }
 
 /// <summary>
