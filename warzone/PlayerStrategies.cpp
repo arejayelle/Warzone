@@ -313,9 +313,11 @@ ostream& operator<<(ostream& output, const AggressiveComputerStrategy& other)
 //Issue Order Phase of Aggressive Computer Strategy.
 bool AggressiveComputerStrategy::issueOrder(Player* player)
 {
-	//Reinforcement phase
+	//Reinforcement phase. The defend method sorts a vector of territories in ascending order in terms of the armies so 
+	//the first element of the vector it returns is the territory with the most armies.
 	Territory* territoryWithMost = player->toDefend()->at(0);
-	//Find territory with most armies
+	//This section of code is only executed if a player has reinforcements. 
+	//the most powreful territory is deployed all of the player's reinfrocements. 
 	if (player->getReinforcements() > 0) {
 		territoriesAttacked.clear();
 		territoriesDrained.clear();
@@ -332,7 +334,8 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 		return true;
 	}
 
-	//Create enemy and neighboring territories
+	//The strongest territorie's enemy and friendly neighbors are determined by iterating over each neighbor
+	// and determing the owner. 
 	const std::vector<Territory*>* adjacentTerritories = territoryWithMost->getBorders();
 	std::vector<Territory*> enemyTerritories;
 	std::vector<Territory*> friendlyTerritories;
@@ -346,6 +349,7 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 		}
 	}
 
+	//For each neighboring enemy territory, the strongest territory attacks with all of its troops. 
 	for (auto it = enemyTerritories.begin(); it != enemyTerritories.end(); it++) {
 		if (std::find(territoriesAttacked.begin(), territoriesAttacked.end(), *it) == territoriesAttacked.end()) {
 			player->getOrdersList()->add(new AdvanceOrder(player, territoryWithMost->getArmies() + territoryWithMost->getIncomingArmies(), territoryWithMost, *it));
@@ -354,7 +358,8 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 		}
 	}
 
-	//Fortify strongest territory with neighbors armies if they have armies to give
+	//If the strongest territory has neighbors with armies, the neighbors will advance one army each to the 
+	//strongest territory.
 	for (auto it = friendlyTerritories.begin(); it != friendlyTerritories.end(); it++) {
 		if ((*it)->getArmies() + (*it)->getIncomingArmies() == 0) {
 			continue;
@@ -368,17 +373,21 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 	return false;
 }
 
+//comparing territories in descending order. Will return whether a territory i has more enemies than territory j
 bool compareTerritoriesArmiesDescendingOrder(Territory* i, Territory* j)
 {
-	return i->getArmies() > j->getArmies();
+	return i->getArmies() +i->getIncomingArmies() > j->getArmies() + j->getIncomingArmies();
 }
 
+//sorts the player's territories in descending order and returns them
 const vector<Territory*>* AggressiveComputerStrategy::toDefend(Player* player)
 {
 	std::sort(player->getTerritories()->begin(), player->getTerritories()->end(), compareTerritoriesArmiesDescendingOrder);
 	return player->getTerritories();
 
 }
+
+//returns all territories that surround a player's territories and don't belong to them
 const vector<Territory*> AggressiveComputerStrategy::toAttack(Player* player)
 {
 	vector<Territory*> toAttack = vector<Territory*>();
@@ -397,7 +406,10 @@ const vector<Territory*> AggressiveComputerStrategy::toAttack(Player* player)
 	return toAttack;
 
 }
-
+/// <summary>
+/// Create and return a BombOrder. This implementation issues a bomb order to the territory in
+/// toAttack that has the most units in it.
+/// </summary>
 BombOrder* AggressiveComputerStrategy::useBomb(Player* player)
 {
 	// Execute on an enemy territory with the most troops
@@ -412,37 +424,30 @@ BombOrder* AggressiveComputerStrategy::useBomb(Player* player)
 	}
 	return new BombOrder(player, territoryWithMaxTroops);
 }
-
+//Aggressive Computer doesn't believe in diplomacy so doesn't have an order
 NegotiateOrder* AggressiveComputerStrategy::useDiplomacy(Player* player)
 {
 	return nullptr;
 }
-
+//Aggressive Computer doesn't believe in airlifting so doesn't have an order
 AirliftOrder* AggressiveComputerStrategy::useAirlift(Player* player)
 {
 	return nullptr;
 }
 
-
+//Aggressive Computer doesn't believe in blockades so doesn't have an order
 BlockadeOrder* AggressiveComputerStrategy::useBlockade(Player* player)
 {
 	return nullptr;
 }
 
+//Deploys seven territories to the territory with the most ar
 DeployOrder* AggressiveComputerStrategy::useReinforcement(Player* player)
 {
-	const std::vector<Territory*>* playerTerritories = player->getTerritories();
-	int playerSize = player->getTerritories()->size();
-	int maximum = playerTerritories->at(0)->getArmies() + playerTerritories->at(0)->getIncomingArmies();
+	const std::vector<Territory*>* playerTerritories = player->toDefend();
 	Territory* territoryWithMost = playerTerritories->at(0);
-	for (int i = 0; i < playerSize; i++) {
-		if (playerTerritories->at(i)->getArmies() + playerTerritories->at(i)->getIncomingArmies() > maximum)
-			territoryWithMost = playerTerritories->at(i);
-	}
 	return new DeployOrder(player, 7, territoryWithMost);
 }
-
-
 
 
 // NEUTRAL PLAYER
@@ -517,7 +522,7 @@ ostream& operator<<(ostream& output, const BenevolentComputerStrategy& other)
 {
 	return output << "BenevolentStrategy";
 }
-
+//This method sorts the player's territories in ascending order
 const vector<Territory*>* BenevolentComputerStrategy::toDefend(Player* player)
 {
 	std::sort(player->getTerritories()->begin(), player->getTerritories()->end(), compareTerritoriesArmiesAscending);
@@ -543,6 +548,7 @@ const vector<Territory*> BenevolentComputerStrategy::toAttack(Player* player)
 	return toAttack;
 }
 
+//Responsible for issuing orders phase 
 bool BenevolentComputerStrategy::issueOrder(Player* player)
 {
 	//Reinforcing weakest territories 
@@ -550,8 +556,12 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 	//Declaring variables
 	const std::vector<Territory*>* playerTerritories = player->toDefend();
 	int minimum = playerTerritories->at(0)->getArmies() + playerTerritories->at(0)->getIncomingArmies();
+	//Since playerTerritories is sorted in ascending order, the first element is the weakest territory
 	Territory* territoryWithLeast = playerTerritories->at(0);
 
+	//So long as the player has reinforcements, the weakest territory is sent a reinforcement. Note 
+	//that this does not mean that only one territory gets all the reinforcements since the weakest territory 
+	//may change.
 	if (player->getReinforcements() > 0) {
 		territoriesFortified.clear();
 		player->getOrdersList()->add(new DeployOrder(player, 1, territoryWithLeast));
@@ -565,12 +575,13 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 		player->getHand()->play(0);
 		return true;
 	}
-
-	// No Attack
-	vector<Territory*> friendlyTerritories;
 	// Find the strongest neighbor for a given territory and force it to give the weakest some armies
+	vector<Territory*> friendlyTerritories;
+
+
 	if (std::find(territoriesFortified.begin(), territoriesFortified.end(), territoryWithLeast) == territoriesFortified.end()) {
 		const vector<Territory*>* neighborTerritories = territoryWithLeast->getBorders();
+		//Finding all the friendly neighbors surrounding a given territory
 		for (int j = 0; j < neighborTerritories->size(); j++) {
 			if (neighborTerritories->at(j)->getOwner() == player) {
 				friendlyTerritories.push_back(neighborTerritories->at(j));  //find all of a territorie's neighbors
@@ -578,8 +589,10 @@ bool BenevolentComputerStrategy::issueOrder(Player* player)
 		}
 		//give one army from strongest neighboring territory to the weakest 
 		if (friendlyTerritories.size() > 0) {
+			//return strongest territory finds the strongest territory in a vector of territories and returns it
 			Territory* territory = returnStrongestTerritory(friendlyTerritories);
 			if (territory->getArmies() + territory->getIncomingArmies() > territoryWithLeast->getArmies() + territoryWithLeast->getIncomingArmies()) {
+				//Advance 1 army from neighbor to weak territory
 				player->getOrdersList()->add(new AdvanceOrder(player, 1, territory, territoryWithLeast));
 				territoriesFortified.push_back(territoryWithLeast);
 				return true;
@@ -614,31 +627,25 @@ BlockadeOrder* BenevolentComputerStrategy::useBlockade(Player* player)
 
 DeployOrder* BenevolentComputerStrategy::useReinforcement(Player* player)
 {
+	//Reinforce the weakest territory with seven armies
 	auto defendedTerritories = player->toDefend();
-	int minimum = defendedTerritories->at(0)->getArmies() + defendedTerritories->at(0)->getIncomingArmies();
 	Territory* territoryWithLeast = defendedTerritories->at(0);
-	for (int i = 0; i < defendedTerritories->size(); i++) {
-		if (defendedTerritories->at(i)->getArmies() + defendedTerritories->at(i)->getIncomingArmies() < minimum)
-		{
-			territoryWithLeast = defendedTerritories->at(i);
-			minimum = territoryWithLeast->getArmies();
-		}
-	}
 	return new DeployOrder(player, 7, territoryWithLeast);
 }
 
 Territory* BenevolentComputerStrategy::returnStrongestTerritory(vector<Territory*> territory) {
 
-	int minimum = territory.at(0)->getArmies() + territory.at(0)->getIncomingArmies();
-	Territory* territoryWithLeast = territory.at(0);
+	//Returns the strongest territory within a vector of territories
+	int maximum= territory.at(0)->getArmies() + territory.at(0)->getIncomingArmies();
+	Territory* territoryWithMost = territory.at(0);
 	for (int i = 0; i < territory.size(); i++) {
-		if (territory.at(i)->getArmies() + territory.at(i)->getIncomingArmies() < minimum)
+		if (territory.at(i)->getArmies() + territory.at(i)->getIncomingArmies() < maximum)
 		{
-			territoryWithLeast = territory.at(i);
-			minimum = territoryWithLeast->getArmies();
+			territoryWithMost = territory.at(i);
+			maximum = territoryWithMost->getArmies();
 		}
 	}
-	return territoryWithLeast;
+	return territoryWithMost;
 }
 
 
