@@ -83,7 +83,7 @@ int Territory::getIncomingArmies()
 // Stream insertion operator for Territory
 std::ostream& operator<<(std::ostream& out, const Territory& territory)
 {
-	out << territory.name <<  " owned by " << territory.owner << " holding " << territory.armies << " armies.";
+	out << territory.name <<  " owned by " << territory.owner->getName() << " holding " << territory.armies << " armies with "<< territory.incomingArmies<< " incoming";
 	return out;
 }
 
