@@ -357,14 +357,14 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 	return false;
 }
 
-bool compareTerritoriesArmiesDescendingOrder(Territory* i, Territory* j)
+bool compareTerritoriesArmiesAscendingOrder(Territory* i, Territory* j)
 {
 	return i->getArmies() > j->getArmies();
 }
 
 const vector<Territory*>* AggressiveComputerStrategy::toDefend(Player* player)
 {
-	std::sort(player->getTerritories()->begin(), player->getTerritories()->end(), compareTerritoriesArmiesDescendingOrder);
+	std::sort(player->getTerritories()->begin(), player->getTerritories()->end(), compareTerritoriesArmiesAscendingOrder);
 	return player->getTerritories();
 
 }
