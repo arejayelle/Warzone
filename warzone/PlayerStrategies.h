@@ -56,7 +56,6 @@ public:
 
 class BenevolentComputerStrategy : public PlayerStrategy {
 private:
-	vector <Territory*> territoriesDefended;
 	vector <Territory*> territoriesFortified;
 public:
 	BenevolentComputerStrategy();
