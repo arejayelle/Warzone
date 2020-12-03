@@ -336,7 +336,7 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 	std::vector<Territory*> enemyTerritories;
 	std::vector<Territory*> friendlyTerritories;
 
-	for (int i= 0; i < adjacentTerritories->size(); i++) {
+	for (int i = 0; i < adjacentTerritories->size(); i++) {
 		if (adjacentTerritories->at(i)->getOwner() != player) {
 			enemyTerritories.push_back(adjacentTerritories->at(i));
 		}
@@ -444,79 +444,161 @@ DeployOrder* AggressiveComputerStrategy::useReinforcement(Player* player)
 
 
 
-// NEUTRAL PLAYER
+/// <summary>
+/// Neutral strat constructor 
+/// </summary>
 NeutralPlayerStrategy::NeutralPlayerStrategy() : PlayerStrategy()
 {
 }
-
+/// <summary>
+/// copy constructor
+/// </summary>
+/// <param name="other"></param>
 NeutralPlayerStrategy::NeutralPlayerStrategy(const NeutralPlayerStrategy& other) : PlayerStrategy(other)
 {
 }
+/// <summary>
+/// Assignment operator
+/// </summary>
+/// <param name="other"></param>
+/// <returns></returns>
 NeutralPlayerStrategy& NeutralPlayerStrategy::operator=(const NeutralPlayerStrategy& other)
 {
 	return *this;
 }
+/// <summary>
+/// returns the list of passed player's territories
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 const vector<Territory*>* NeutralPlayerStrategy::toDefend(Player* player)
 {
 	return player->getTerritories();
 }
+/// <summary>
+/// Should never be called
+/// returns list of passed player's territories
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 const vector<Territory*> NeutralPlayerStrategy::toAttack(Player* player)
 {
 	return *player->getTerritories();
 }
+/// <summary>
+/// returns false
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 bool NeutralPlayerStrategy::issueOrder(Player* player)
 {
 	player->pass();
 	return false;
 }
+/// <summary>
+/// returns null pointer
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 BombOrder* NeutralPlayerStrategy::useBomb(Player* player)
 {
 	return nullptr;
 }
+/// <summary>
+/// returns null pointer
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 NegotiateOrder* NeutralPlayerStrategy::useDiplomacy(Player* player)
 {
 	return nullptr;
 }
+/// <summary>
+/// returns null pointer
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 AirliftOrder* NeutralPlayerStrategy::useAirlift(Player* player)
 {
 	return nullptr;
 }
+/// <summary>
+/// returns null pointer
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 BlockadeOrder* NeutralPlayerStrategy::useBlockade(Player* player)
 {
 	return nullptr;
 }
+/// <summary>
+/// returns null pointer
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 DeployOrder* NeutralPlayerStrategy::useReinforcement(Player* player)
 {
 	return nullptr;
 }
+/// <summary>
+/// returns "neutral Strategy"
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 ostream& operator<<(ostream& output, const NeutralPlayerStrategy& other)
 {
 	return output << "Neutral Strategy";
 }
 
+/// <summary>
+/// constructor
+/// </summary>
 HumanPlayerStrategy::HumanPlayerStrategy()
 {
 }
-
+/// <summary>
+/// copy constructor
+/// no added properties, does not need to do anything
+/// </summary>
+/// <param name="other"></param>
 HumanPlayerStrategy::HumanPlayerStrategy(const HumanPlayerStrategy& other)
 {
 }
-
+/// <summary>
+/// assignment operator
+/// </summary>
+/// <param name="other"></param>
+/// <returns></returns>
 HumanPlayerStrategy& HumanPlayerStrategy::operator=(const HumanPlayerStrategy& other)
 {
 	return *this;
 }
-
+/// <summary>
+/// stream insertion operator
+/// adds "Human Player "Strategy"" to the stream
+/// </summary>
+/// <param name="output"></param>
+/// <param name="other"></param>
+/// <returns></returns>
 ostream& operator<<(ostream& output, const HumanPlayerStrategy& other)
 {
 	return output << "Human Player \"Strategy\"";
 }
-
+/// <summary>
+/// returns player's territories
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 const vector<Territory*>* HumanPlayerStrategy::toDefend(Player* player)
 {
 	return player->getTerritories();
 }
 
+/// <summary>
+/// returns list of all neighbouring enemy territories
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 const vector<Territory*> HumanPlayerStrategy::toAttack(Player* player)
 {
 	vector<Territory*> toAttack = vector<Territory*>();
@@ -528,14 +610,21 @@ const vector<Territory*> HumanPlayerStrategy::toAttack(Player* player)
 			Territory* neighbor = *it2;
 
 			if (std::find(toAttack.begin(), toAttack.end(), neighbor) == toAttack.end()) {
-				toAttack.push_back(neighbor);
+				if (neighbor->getOwner() == player) {
+
+					toAttack.push_back(neighbor);
+				}
 			}
 		}
 	}
 
 	return toAttack;
 }
-
+/// <summary>
+/// input loop for an index
+/// </summary>
+/// <param name="max">size of array/vector</param>
+/// <returns>valid input</returns>
 int HumanPlayerStrategy::inputIndexLoop(int max) {
 	int index;
 	while (!(std::cin >> index) || index < 0 || index >= max) {
@@ -545,6 +634,11 @@ int HumanPlayerStrategy::inputIndexLoop(int max) {
 	}
 	return index;
 }
+/// <summary>
+/// input loop for a value
+/// </summary>
+/// <param name="max">maximum value</param>
+/// <returns>valid input</returns>
 int HumanPlayerStrategy::inputValueLoop(int max) {
 	bool isValid = false;
 	int value;
@@ -555,6 +649,10 @@ int HumanPlayerStrategy::inputValueLoop(int max) {
 	}
 	return value;
 }
+/// <summary>
+/// input loop for yes/no
+/// </summary>
+/// <returns>valid input</returns>
 char HumanPlayerStrategy::inputYNLoop() {
 	char result;
 	while (!(std::cin >> result) || (result != 'y' && result != 'n')) {
@@ -565,7 +663,16 @@ char HumanPlayerStrategy::inputYNLoop() {
 	}
 	return result;
 }
-
+/// <summary>
+/// Issues orders
+/// if reinforcement pool is not empty, call issueDeployOrder 
+/// else if player hand is not empty and human wants to play cards, play cards
+/// else if human wants to advance troops, issue advance orders
+/// else skip turn for rest of issue orders phase
+/// </summary>
+/// <param name="player"></param>
+/// <returns>true if an order was issued</returns>
+/// <returns>false if an order was not issued</returns>
 bool HumanPlayerStrategy::issueOrder(Player* player)
 {
 
@@ -595,7 +702,11 @@ bool HumanPlayerStrategy::issueOrder(Player* player)
 	player->pass();
 	return false;
 }
-
+/// <summary>
+/// Get human input to deploy
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 bool HumanPlayerStrategy::issueDeployOrders(Player* player) {
 
 	player->getTerritoriesWithAdvanceOrder()->clear();
@@ -621,7 +732,13 @@ bool HumanPlayerStrategy::issueDeployOrders(Player* player) {
 
 	return true;
 }
-
+/// <summary>
+/// Show human player hand
+/// ask human to choose which card to play
+/// </summary>
+/// <param name="player"></param>
+/// <returns>true if a card was played (order was issued)</returns>
+/// <returns>false if a card was not played (if hand is empty) should never reach this state</returns>
 bool HumanPlayerStrategy::issueCardOrders(Player* player) {
 	auto hand = player->getHand();
 	int size = hand->getNumberOfCardsInHand();
@@ -634,10 +751,20 @@ bool HumanPlayerStrategy::issueCardOrders(Player* player) {
 	}
 	else {
 		std::cout << "No cards in hand" << endl;
+		return false;
 	}
 	return true;
 }
-
+/// <summary>
+/// print player's armies
+/// Human to choose source territory
+/// print neighbor territories
+/// human to choose target territory (from neighbours)
+/// human to choose how many armies to send (based on number of armies in source territory)
+/// </summary>
+/// <param name="player"></param>
+/// <returns>true if successfully issued AdvanceOrder </returns>
+/// <returns>false if did not issue AdvanceOrder </returns>
 bool HumanPlayerStrategy::issueAdvanceOrders(Player* player)
 {
 	auto defendableTerritories = toDefend(player);
@@ -685,7 +812,11 @@ bool HumanPlayerStrategy::issueAdvanceOrders(Player* player)
 
 	return true;
 }
-
+/// <summary>
+/// human to choose which country to bomb
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 BombOrder* HumanPlayerStrategy::useBomb(Player* player)
 {
 	auto enemies = toAttack(player);
@@ -698,7 +829,11 @@ BombOrder* HumanPlayerStrategy::useBomb(Player* player)
 
 	return new BombOrder(player, enemies[territoryIndex]);
 }
-
+/// <summary>
+/// human to choose which country to negotiate with
+/// </summary>
+/// <param name="player"></param>
+/// <returns></returns>
 NegotiateOrder* HumanPlayerStrategy::useDiplomacy(Player* player)
 {
 	auto enemies = toAttack(player);
@@ -711,7 +846,13 @@ NegotiateOrder* HumanPlayerStrategy::useDiplomacy(Player* player)
 	int territoryIndex = inputIndexLoop(enemies.size());
 	return new NegotiateOrder(player, enemies[territoryIndex]->getOwner());
 }
-
+/// <summary>
+/// human to choose whihc territory to move armies from
+/// human to choose which territory to move armies to
+/// human to choose how many armies to send
+/// </summary>
+/// <param name="player"></param>
+/// <returns>created airlift order according to user input</returns>
 AirliftOrder* HumanPlayerStrategy::useAirlift(Player* player)
 {
 	auto defendableTerritories = toDefend(player);
@@ -724,8 +865,6 @@ AirliftOrder* HumanPlayerStrategy::useAirlift(Player* player)
 	int fromIndex = inputIndexLoop(defendableTerritories->size());
 	Territory* source = (*defendableTerritories)[fromIndex];
 
-
-
 	std::cout << "Which territory would you like to move armies to? (0 - " << (index - 1) << ")";
 
 	int toIndex = inputIndexLoop(defendableTerritories->size());
@@ -736,7 +875,11 @@ AirliftOrder* HumanPlayerStrategy::useAirlift(Player* player)
 
 	return new AirliftOrder(player, numArmies, source, target);
 }
-
+/// <summary>
+/// human to choose from own territories which to blockade
+/// </summary>
+/// <param name="player"></param>
+/// <returns>blockadeOrder with player and territory to blockade</returns>
 BlockadeOrder* HumanPlayerStrategy::useBlockade(Player* player)
 {
 	auto defendable = *toDefend(player);
