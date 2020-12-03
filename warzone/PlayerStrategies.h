@@ -54,6 +54,25 @@ public:
 	DeployOrder* useReinforcement(Player* player);
 };
 
+class BenevolentComputerStrategy : public PlayerStrategy {
+private:
+	vector <Territory*> territoriesFortified;
+public:
+	BenevolentComputerStrategy();
+	BenevolentComputerStrategy(const BenevolentComputerStrategy& other);
+	BenevolentComputerStrategy& operator= (const BenevolentComputerStrategy& other);
+	friend ostream& operator<<(ostream&, const BenevolentComputerStrategy& other);
+	Territory* returnStrongestTerritory(vector<Territory*> territory);
+	const vector<Territory*>* toDefend(Player* player);
+	const vector<Territory*> toAttack(Player* player);
+	bool issueOrder(Player* player);
+	BombOrder* useBomb(Player* player);
+	NegotiateOrder* useDiplomacy(Player* player);
+	AirliftOrder* useAirlift(Player* player);
+	BlockadeOrder* useBlockade(Player* player);
+	DeployOrder* useReinforcement(Player* player);
+};
+
 class AggressiveComputerStrategy : public PlayerStrategy
 {
 private:

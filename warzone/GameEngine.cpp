@@ -139,9 +139,11 @@ void GameEngine::startUpPhase() {
 		// Select a strategy for the player
 		cout << "Select a strategy for Player " << (i + 1) << endl;
 		cout << "d = Default strategy" << endl;
+		cout << "b = Benevolent computer strategy" << endl;
 		cout << "a = Aggressive Strategy" << endl;
 		cout << "n = Neutral strategy" << endl;
 		cout << "h = Human Player strategy" << endl;
+
 		// Add more strategies here
 		std::string strategy;
 		cin >> strategy;
@@ -151,6 +153,9 @@ void GameEngine::startUpPhase() {
 		// so use an if-else chain instead.
 		if (strategy.compare("d") == 0) {
 			player->setStrategy(new DefaultStrategy());
+		}
+		else if (strategy.compare("b") == 0) {
+			player->setStrategy(new BenevolentComputerStrategy());
 		}
 		else if (strategy.compare("a") == 0) {
 			player->setStrategy(new AggressiveComputerStrategy());
