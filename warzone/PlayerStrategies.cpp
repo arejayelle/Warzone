@@ -336,7 +336,7 @@ ostream& operator<<(ostream& output, const NeutralPlayerStrategy& other)
 	return output << "Neutral Strategy";
 }
 
-/BENEVOLENT COMPUTER STRATEGY 
+// BENEVOLENT COMPUTER STRATEGY
 
 BenevolentComputerStrategy::BenevolentComputerStrategy()
 {
