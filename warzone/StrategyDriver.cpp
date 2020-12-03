@@ -54,10 +54,10 @@ int StrategyDriver::main()
     player1->setStrategy(new HumanPlayerStrategy());
     
     cout << "Player 2 will use benevolent strategy" << endl;
-    player2->setStrategy(new NeutralPlayerStrategy());
+    player2->setStrategy(new BenevolentComputerStrategy());
 
-    cout << "Player 3 will use agressive strategy" << endl;
-    player3->setStrategy(new NeutralPlayerStrategy());
+    cout << "Player 3 will use aggressive strategy" << endl;
+    player3->setStrategy(new AggressiveComputerStrategy());
 
     cout << "Do one game loop with observers on" << endl;
 
@@ -69,7 +69,7 @@ int StrategyDriver::main()
     gameEngine.executeOrdersPhase();
 	
     cout << "Changing human player startegy to neutral player strategy and continue the game" << endl;
-    player1->setStrategy(new DefaultStrategy());
+    player1->setStrategy(new NeutralPlayerStrategy());
 
     gameEngine.mainGameLoop();
     return 0;
