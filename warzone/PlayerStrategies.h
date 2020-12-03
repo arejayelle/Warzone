@@ -56,6 +56,9 @@ public:
 
 class AggressiveComputerStrategy : public PlayerStrategy
 {
+private:
+	vector<Territory*> territoriesAttacked;
+	vector<Territory*> territoriesDrained; 
 public:
 	AggressiveComputerStrategy();
 	AggressiveComputerStrategy(const AggressiveComputerStrategy& other);

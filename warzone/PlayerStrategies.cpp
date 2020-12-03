@@ -286,6 +286,7 @@ DeployOrder* DefaultStrategy::useReinforcement(Player* player)
 
 AggressiveComputerStrategy::AggressiveComputerStrategy()
 {
+
 }
 
 AggressiveComputerStrategy::AggressiveComputerStrategy(const AggressiveComputerStrategy& other)
@@ -334,17 +335,22 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 		}
 	}
 
-	for (int i = 0; i < enemyTerritories.size(); i++) {
-		player->getOrdersList()->add(new AdvanceOrder(player, territoryWithMost->getArmies(), territoryWithMost, enemyTerritories.at(i)));
-		return true;
+	if (territoriesAttacked.size() < enemyTerritories.size()) {
+		for (int i = territoriesAttacked.size(); i < enemyTerritories.size(); i++)
+		{
+			player->getOrdersList()->add(new AdvanceOrder(player, territoryWithMost->getArmies(), territoryWithMost, enemyTerritories.at(i)));
+			territoriesAttacked.push_back(enemyTerritories.at(i));
+			return true;
+		}
 	}
 
-	//Fortify strongest territory with neighbors armies if they have armies to give 
-	for (int i=0;i<friendlyTerritories.size();i++)
-	{
-		if (friendlyTerritories.at(i)->getArmies() > 0)
+	//Fortify strongest territory with neighbors armies if they have armies to give
+
+	if (territoriesDrained.size() < friendlyTerritories.size()) {
+		for (int i = territoriesDrained.size(); i < friendlyTerritories.size(); i++)
 		{
-			player->getOrdersList()->add(new AdvanceOrder(player, 1, territoryWithMost, friendlyTerritories.at(i)));
+			player->getOrdersList()->add(new AdvanceOrder(player, territoryWithMost->getArmies(), territoryWithMost, friendlyTerritories.at(i)));
+			territoriesDrained.push_back(friendlyTerritories.at(i));
 			return true;
 		}
 	}
