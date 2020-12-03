@@ -76,8 +76,8 @@ int GameEngine::inputValueLoop(int min, int max) {
 
 char GameEngine::inputCharLoop() {
 	char result;
-	while (!(std::cin >> result) || (result != 'd' && result != 'h' && result != 'n')) {
-		cout << "Error: enter a valid value (d/n/h)";
+	while (!(std::cin >> result) || (result != 'd' && result != 'h' && result != 'n' && result != 'b' && result != 'a')) {
+		cout << "Error: enter a valid value (d/n/h/a/b)";
 		std::cin.clear();
 		std::cin.ignore(123, '\n');
 	}
@@ -171,11 +171,11 @@ void GameEngine::startUpPhase() {
 		else if (strategy == 'n') {
 			player->setStrategy(new NeutralPlayerStrategy());
 		}
-		else {
-			player->setStrategy(new DefaultStrategy());
-		}
 		else if (strategy == 'a') {
 			player->setStrategy(new AggressiveComputerStrategy());
+		}
+		else {
+			player->setStrategy(new DefaultStrategy());
 		}
 
 		if (numberOfPlayers == 2)
