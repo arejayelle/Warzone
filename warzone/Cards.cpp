@@ -428,12 +428,10 @@ void Hand::play(int index)
 		Card* cardToPlay = this->currentHand->at(index);
 		Order* newOrder = cardToPlay->play(owner);
 
-		if (newOrder == nullptr) {
-			return;
+		if (newOrder != nullptr) {
+			OrdersList* list = owner->getOrdersList();
+			list->add(newOrder);
 		}
-		
-		OrdersList* list = owner->getOrdersList();
-		list->add(newOrder);
 
 		deck->add(cardToPlay);
 		std::vector<Card*>::iterator it = currentHand->begin() + index;

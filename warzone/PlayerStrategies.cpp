@@ -309,16 +309,19 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 	Territory* territoryWithMost = player->toDefend()->at(0);
 	//Find territory with most armies
 	if (player->getReinforcements() > 0) {
+		territoriesAttacked.clear();
+		territoriesDrained.clear();
 		//Assign the player's reinforcement pool to territory
 		player->getOrdersList()->add(new DeployOrder(player, player->getReinforcements(), territoryWithMost));
-		player->removeReinforcements(player->getReinforcements());
 		territoryWithMost->setIncomingArmies(territoryWithMost->getIncomingArmies() + player->getReinforcements());
+		player->removeReinforcements(player->getReinforcements());
 		return true;
 	}
 	// Play cards from hand
 	const std::vector<Card*>* cards = player->getHand()->getCurrentHand();
 	if (cards->size() > 0) {
 		player->getHand()->play(0);
+		return true;
 	}
 
 	//Create enemy and neighboring territories
@@ -335,22 +338,22 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 		}
 	}
 
-	if (territoriesAttacked.size() < enemyTerritories.size()) {
-		for (int i = territoriesAttacked.size(); i < enemyTerritories.size(); i++)
-		{
-			player->getOrdersList()->add(new AdvanceOrder(player, territoryWithMost->getArmies(), territoryWithMost, enemyTerritories.at(i)));
-			territoriesAttacked.push_back(enemyTerritories.at(i));
+	for (auto it = enemyTerritories.begin(); it != enemyTerritories.end(); it++) {
+		if (std::find(territoriesAttacked.begin(), territoriesAttacked.end(), *it) == territoriesAttacked.end()) {
+			player->getOrdersList()->add(new AdvanceOrder(player, territoryWithMost->getArmies() + territoryWithMost->getIncomingArmies(), territoryWithMost, *it));
+			territoriesAttacked.push_back(*it);
 			return true;
 		}
 	}
 
 	//Fortify strongest territory with neighbors armies if they have armies to give
-
-	if (territoriesDrained.size() < friendlyTerritories.size()) {
-		for (int i = territoriesDrained.size(); i < friendlyTerritories.size(); i++)
-		{
-			player->getOrdersList()->add(new AdvanceOrder(player, territoryWithMost->getArmies(), territoryWithMost, friendlyTerritories.at(i)));
-			territoriesDrained.push_back(friendlyTerritories.at(i));
+	for (auto it = friendlyTerritories.begin(); it != friendlyTerritories.end(); it++) {
+		if ((*it)->getArmies() + (*it)->getIncomingArmies() == 0) {
+			continue;
+		}
+		if (std::find(territoriesDrained.begin(), territoriesDrained.end(), *it) == territoriesDrained.end()) {
+			player->getOrdersList()->add(new AdvanceOrder(player, (*it)->getArmies() + (*it)->getIncomingArmies(), *it, territoryWithMost));
+			territoriesDrained.push_back(*it);
 			return true;
 		}
 	}
