@@ -456,7 +456,7 @@ ostream& operator<<(ostream& out, const Hand& hand)
 	int i = 0;
 	for (std::vector<Card*>::iterator it = hand.currentHand->begin(); it != hand.currentHand->end(); ++it) {
 
-		out << *(*it) << endl;
+		out <<i++<<"\t"<< *(*it) << endl;
 	}
 	out << "----end of hand ----" << endl;
 

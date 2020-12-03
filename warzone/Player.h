@@ -60,6 +60,7 @@ public:
 	int getReinforcements(); // Get reinforcements
 	string getName();
 	bool getConqueredTerritoryThisTurn();
+	bool hasPassed();
 
 
 	//Setters
@@ -73,7 +74,8 @@ public:
 	void setConqueredTerritoryThisTurn(bool value);
 	vector<Territory*>* getTerritoriesWithAdvanceOrder();
 	void setStrategy(PlayerStrategy* strategy);
-
+	void resetPassed();
+	void pass();
 private:
 	Hand* hand; //returns player's hand
 	OrdersList* ordersList; //returns player's order list
@@ -84,4 +86,5 @@ private:
 	string name;
 	bool conqueredTerritoryThisTurn;
 	PlayerStrategy* playerStrategy;
+	bool passedTurn;
 };
