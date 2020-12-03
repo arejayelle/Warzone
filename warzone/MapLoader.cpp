@@ -4,6 +4,11 @@
 #include <sstream>
 
 
+// MapLoader default constructor
+MapLoader::MapLoader() {
+	fileName = std::string();
+}
+
 //MapLoader Copy Constructor
 MapLoader::MapLoader(MapLoader* mapL)
 {
@@ -13,14 +18,11 @@ MapLoader::MapLoader(MapLoader* mapL)
 //MapLoader Constructor
 MapLoader::MapLoader(std::string fileName)
 {
-	this->fileName = new std::string(fileName);
+	this->fileName = fileName;
 }
 
 //MapLoader Destructor
-MapLoader::~MapLoader() 
-{
-	delete	fileName;
-}
+MapLoader::~MapLoader() { }
 
 //Assignment operator
 MapLoader* MapLoader::operator=(const MapLoader& mapLoader)
@@ -32,22 +34,22 @@ MapLoader* MapLoader::operator=(const MapLoader& mapLoader)
 //Stream insertion operator
 std::ostream& operator<<(std::ostream& out, const MapLoader& mapLoader)
 {
-	std::string fileName = (std::string)*mapLoader.fileName;
+	std::string fileName = (std::string)mapLoader.fileName;
 	out << fileName;
 	return out;
 }
 
-bool MapLoader::validateMapFormat() 
+bool MapLoader::validateMapFormatML() 
 {
 	std::string myLine;
 	bool valideMap = true;
 
-	int* numberOfValidParts = new int();
+	int numberOfValidParts = 0;
 
-	std::cout << "Loading file:  " << *fileName << std::endl;
+	std::cout << "[DOMINATION] Loading file: " << fileName << std::endl;
 
 	// Read from file
-	std::ifstream myReadFile(*fileName);
+	std::ifstream myReadFile(fileName);
 
 	if (!myReadFile) {
 		std::cerr << "Could not open file\n";
@@ -73,7 +75,7 @@ bool MapLoader::validateMapFormat()
 				}
 			}
 			//Confirm that the continent part is good
-			++* numberOfValidParts;
+			++ numberOfValidParts;
 		}
 
 		//Check territory/Countries
@@ -92,7 +94,7 @@ bool MapLoader::validateMapFormat()
 				}
 			}
 			//Confirm that the territory part is good
-			++* numberOfValidParts;
+			++ numberOfValidParts;
 		}
 
 		//Check borders
@@ -111,23 +113,21 @@ bool MapLoader::validateMapFormat()
 				}
 			}
 			//Confirm that the borders part is good
-			++* numberOfValidParts;
+			++ numberOfValidParts;
 		}
 	}
 
 	//Check if all 3 components are valid
-	if (valideMap && *numberOfValidParts == 3) {
+	if (valideMap && numberOfValidParts == 3) {
 		std::cout << "Map is valid.\n\n";
 		// Close the file
 		myReadFile.close();
-		delete(numberOfValidParts);
 		return true;
 	}
 	else {
-		std::cout << "Map is not valid, missing either the continents, countries or borders. Please verify the syntax is correct\n";
+		std::cout << "Not a valid Domination map.\n";
 		// Close the file
 		myReadFile.close();
-		delete(numberOfValidParts);
 		return false;
 	}
 }
@@ -136,11 +136,9 @@ Map* MapLoader::convertFileToMap()
 {
 	Map* map = new Map();
 	std::string myLine;
-	std::cout << "Loading file:  " << *fileName << std::endl;
-
 
 	// Read from file
-	std::ifstream myReadFile(*fileName);
+	std::ifstream myReadFile(fileName);
 
 	if (!myReadFile) {
 		std::cerr << "Could not open file\n";
@@ -288,7 +286,7 @@ Territory* MapLoader::createTerritory(std::string territory, Map* map)
 
 void MapLoader::createBorder(std::string border, Map* map)
 {
-	//Declare variables that will be used to store the calues from ss
+	//Declare variables that will be used to store the values from ss
 	unsigned int territoryNumber;
 	unsigned int currentTerritoryId;
 	std::vector<Territory*> neighbors;
@@ -306,4 +304,330 @@ void MapLoader::createBorder(std::string border, Map* map)
 
 	//Add the border to the map
 	map->addBorder(--currentTerritoryId, &neighbors);
+}
+
+ConquestFileReader::ConquestFileReader(ConquestFileReader* mapL)
+{
+	this->fileName = std::string(mapL->fileName);
+}
+
+ConquestFileReader::ConquestFileReader(std::string fileName){
+	this->fileName = std::string(fileName);
+}
+
+ConquestFileReader::~ConquestFileReader() { }
+
+ConquestFileReader& ConquestFileReader::operator=(const ConquestFileReader& reader)
+{
+	this->fileName = reader.fileName;
+	return *this;
+}
+
+bool ConquestFileReader::validateMapFormatCQ()
+{
+	std::string myLine;
+	bool valideMap = true;
+
+	int numberOfValidParts = 0;
+
+	std::cout << "[CONQUEST] Loading file: " << fileName << std::endl;
+
+	// Read from file
+	std::ifstream myReadFile(fileName);
+
+	if (!myReadFile) {
+		std::cerr << "Could not open file\n";
+		return false;
+	}
+
+	// Use a while loop together with the getline() function to read the file line by line
+	while (getline(myReadFile, myLine)) {
+
+		//Check continents
+		if (myLine == "[Continents]") {
+			getline(myReadFile, myLine);
+
+			//Loop all the lines that are continents
+			while (myLine != "[Territories]" && !myLine.empty()) {
+				//Check if the continent is good, else exit
+				if (checkContinents(myLine)) {
+					getline(myReadFile, myLine);
+				}
+				else {
+					valideMap = false;
+					throw std::string("Continent not valid");
+				}
+			}
+			//Confirm that the continent part is good
+			++ numberOfValidParts;
+		}
+
+		//Check territory/Countries
+		if (myLine == "[Territories]") {
+			getline(myReadFile, myLine);
+
+			//Loop all the lines that are territory
+			while (myLine != "[borders]" && !myLine.empty()) {
+				//Check if the territory is good, else exit
+				if (checkTerritory(myLine)) {
+					getline(myReadFile, myLine);
+				}
+				else {
+					valideMap = false;
+					std::cout << "Territory not valid";
+					return false;
+				}
+			}
+			//Confirm that the territory part is good
+			++ numberOfValidParts;
+		}
+	}
+
+	//Check if all 3 components are valid
+	if (valideMap && numberOfValidParts == 2) {
+		std::cout << "Map is valid.\n\n";
+		// Close the file
+		myReadFile.close();
+		return true;
+	}
+	else {
+		std::cout << "Not a valid Conquest map.\n";
+		// Close the file
+		myReadFile.close();
+		return false;
+	}
+}
+
+Map* ConquestFileReader::convertFileToMap()
+{
+	Map* map = new Map();
+	std::string myLine;
+
+	// Read from file
+	std::ifstream myReadFile(fileName);
+
+	if (!myReadFile) {
+		std::cerr << "Could not open file\n";
+		return nullptr;
+	}
+
+	// Use a while loop together with the getline() function to read the file line by line
+	while (getline(myReadFile, myLine)) {
+
+		//Create the continents
+		if (myLine == "[Continents]") {
+			getline(myReadFile, myLine);
+
+			//Loop all the lines that are continents
+			while (myLine != "[Territories]" && !myLine.empty()) {
+				//Call the createContinent method which returns a Continent* and then adds it to the map
+				map->addContinent(createContinent(myLine));
+				getline(myReadFile, myLine);
+			}
+		}
+
+		//Create the territories
+		if (myLine == "[Territories]") {
+			getline(myReadFile, myLine);
+
+			//Loop all the lines that are territory
+			while (!myReadFile.eof()) {
+				if (!myLine.empty()) {
+					//Call the createTerritory method which returns a Territory* and then adds it to the map
+					map->addTerritory(createTerritory(myLine, map));
+					
+				}
+				getline(myReadFile, myLine);
+			}
+
+		}
+	}
+	
+	myReadFile.clear();
+	myReadFile.seekg(0, myReadFile.beg);
+
+	//Call method to rereead the file
+	std::ifstream myReadFile2(fileName);
+
+	// Use a while loop together with the getline() function to read the file line by line
+	while (getline(myReadFile, myLine)) {
+		//Create the territories
+		if (myLine == "[Territories]") {
+			getline(myReadFile, myLine);
+
+			//Loop all the lines that are territory
+			while (!myReadFile.eof()) {
+				if (!myLine.empty()) {
+					//Call the createTerritory method which returns a Territory* and then adds it to the map
+					createBorder(myLine, map);
+				}
+				getline(myReadFile, myLine);
+			}
+
+		}
+	}
+	myReadFile.close();
+	return map;
+}
+
+bool ConquestFileReader::checkContinents(std::string line)
+{
+	//Check if theres an = sign and the last char is a digit
+	if (line.find('=') != -1 && isdigit(line.back())) 
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+//Check if the format of the territory is fine
+bool ConquestFileReader::checkTerritory(std::string line)
+{
+	std::stringstream ss(line);
+	std::vector<std::string> result;
+
+	while (ss.good())
+	{
+		std::string substr;
+		getline(ss, substr, ',');
+		result.push_back(substr);
+	}
+	ss.clear();
+
+	if (!isdigit(result.at(1).back()) || !isdigit(result.at(2).back())) {
+
+		return false;
+	}
+
+	if (result.size() >= 5 && result.size() <= 14) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+Continent* ConquestFileReader::createContinent(std::string continent)
+{
+	//Declare variables that will be used to store the calues from ss
+	std::string name;
+	std::string colour = "White";
+	unsigned int value = 0;
+
+	
+	name = continent.substr(0, continent.find('='));
+	value = continent.back() - '0'; //NOICE
+	Continent* myContinent = new Continent(name, colour, value);
+	return myContinent;
+}
+
+Territory* ConquestFileReader::createTerritory(std::string territory, Map* map)
+{
+	// Declare variables that will be used to store the calues from ss
+	std::string name;
+	Continent* continent;
+	unsigned int x;
+	unsigned int y;
+
+	std::stringstream ss(territory);
+	std::vector<std::string> result;
+
+	while (ss.good())
+	{
+		std::string substr;
+		getline(ss, substr, ',');
+		result.push_back(substr);
+	}
+	ss.clear();
+
+	//Put each input into the right variable. The syntax is always the same, thus we can do that
+	name = result.at(0);
+	x = std::stoul(result.at(1));
+	y = std::stoul(result.at(2));
+	continent = map->getContinent(result.at(3));
+
+	Territory* myTerritory = new Territory(name, continent, x, y);
+
+	return myTerritory;
+}
+
+void ConquestFileReader::createBorder(std::string border, Map* map){
+	// Declare variables that will be used to store the calues from ss
+	std::string name;
+	std::vector<Territory*> neighbors;
+	Territory* territory;
+
+	std::stringstream ss(border);
+	std::vector<std::string> result;
+
+	while (ss.good())
+	{
+		std::string substr;
+		getline(ss, substr, ',');
+		result.push_back(substr);
+	}
+	ss.clear();
+
+	name = result.at(0);
+
+	//Find the pointer to territory
+	territory = map->getTerritory(name);
+
+	for (int i = 4; i < result.size(); i++) {
+		neighbors.push_back(map->getTerritory(result.at(i)));
+	}
+
+	int index = map->getTerritoryID(name);
+
+	//Add the border to the map
+	map->addBorder(index, &neighbors);
+}
+
+// Copy constructor.
+ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReaderAdapter* adapter)
+{
+	this->fileName = std::string(adapter->fileName);
+	this->conquestMapLoader = new ConquestFileReader(adapter->conquestMapLoader);
+}
+
+// Param constructor.
+ConquestFileReaderAdapter::ConquestFileReaderAdapter(ConquestFileReader* cfr) : MapLoader(fileName), conquestMapLoader(cfr) { }
+
+// Destructor.
+ConquestFileReaderAdapter::~ConquestFileReaderAdapter()
+{
+	delete conquestMapLoader;
+}
+
+// Assignment operator.
+ConquestFileReaderAdapter& ConquestFileReaderAdapter::operator=(const ConquestFileReaderAdapter& other)
+{
+	this->fileName = std::string(other.fileName);
+	this->conquestMapLoader = new ConquestFileReader("");
+	return *this;
+}
+
+std::ostream& operator<<(std::ostream& out, const ConquestFileReader& reader)
+{
+	out << "File name is " << reader.fileName;
+	return out;
+}
+
+// Stream insertion operator.
+std::ostream& operator<<(std::ostream& out, const ConquestFileReaderAdapter& reader)
+{
+	out << "File name is " << reader.fileName;
+	return out;
+}
+
+bool ConquestFileReaderAdapter::validateMapFormatML()
+{
+	return conquestMapLoader->validateMapFormatCQ();
+}
+
+Map* ConquestFileReaderAdapter::convertFileToMap()
+{
+	return conquestMapLoader->convertFileToMap();
 }

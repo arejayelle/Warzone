@@ -199,6 +199,7 @@ bool DefaultStrategy::issueOrder(Player* player)
 	}
 
 	// Done issuing orders
+	player->pass();
 	return false;
 }
 
@@ -224,12 +225,18 @@ BombOrder* DefaultStrategy::useBomb(Player* player)
 
 /// <summary>
 /// Creates and returns a NegotiateOrder. This implementation targets the player
-/// that owns the first territory in toAttack.
+/// that owns the first territory in toAttack that has an owner.
 /// </summary>
 NegotiateOrder* DefaultStrategy::useDiplomacy(Player* player)
 {
 	// Use on a player adjacent to us
-	return new NegotiateOrder(player, player->toAttack().at(0)->getOwner());
+	auto adjacent = toAttack(player);
+	for (auto it = adjacent.begin(); it != adjacent.end(); it++) {
+		if ((*it)->getOwner() != nullptr) {
+			return new NegotiateOrder(player, player->toAttack().at(0)->getOwner());
+		}
+	}
+	return nullptr;
 }
 
 /// <summary>
@@ -301,6 +308,7 @@ const vector<Territory*> NeutralPlayerStrategy::toAttack(Player* player)
 }
 bool NeutralPlayerStrategy::issueOrder(Player* player)
 {
+	player->pass();
 	return false;
 }
 BombOrder* NeutralPlayerStrategy::useBomb(Player* player)
@@ -328,8 +336,7 @@ ostream& operator<<(ostream& output, const NeutralPlayerStrategy& other)
 	return output << "Neutral Strategy";
 }
 
-
-//BENEVOLENT COMPUTER STRATEGY 
+/BENEVOLENT COMPUTER STRATEGY 
 
 BenevolentComputerStrategy::BenevolentComputerStrategy()
 {
@@ -349,7 +356,6 @@ ostream& operator<<(ostream& output, const BenevolentComputerStrategy& other)
 {
 	return output << "BenevolentStrategy";
 }
-
 
 const vector<Territory*>* BenevolentComputerStrategy::toDefend(Player* player)
 {
@@ -509,4 +515,275 @@ DeployOrder* BenevolentComputerStrategy::useReinforcement(Player* player)
 		}
 	}
 	return new DeployOrder(player, 7, territoryWithLeast);
+}
+
+HumanPlayerStrategy::HumanPlayerStrategy()
+{
+}
+
+HumanPlayerStrategy::HumanPlayerStrategy(const HumanPlayerStrategy& other)
+{
+}
+
+HumanPlayerStrategy& HumanPlayerStrategy::operator=(const HumanPlayerStrategy& other)
+{
+	return *this;
+}
+
+ostream& operator<<(ostream& output, const HumanPlayerStrategy& other)
+{
+	return output << "Human Player \"Strategy\"";
+}
+
+const vector<Territory*>* HumanPlayerStrategy::toDefend(Player* player)
+{
+	return player->getTerritories();
+}
+
+const vector<Territory*> HumanPlayerStrategy::toAttack(Player* player)
+{
+	vector<Territory*> toAttack = vector<Territory*>();
+
+	for (std::vector<Territory*>::iterator it = player->getTerritories()->begin(); it != player->getTerritories()->end(); it++) {
+		Territory* territory = *it;
+
+		for (std::vector<Territory*>::const_iterator it2 = territory->getBorders()->begin(); it2 != territory->getBorders()->end(); it2++) {
+			Territory* neighbor = *it2;
+
+			if (std::find(toAttack.begin(), toAttack.end(), neighbor) == toAttack.end()) {
+				toAttack.push_back(neighbor);
+			}
+		}
+	}
+
+	return toAttack;
+}
+
+int HumanPlayerStrategy::inputIndexLoop(int max) {
+	int index;
+	while (!(std::cin >> index) || index < 0 || index >= max) {
+		cout << "Error: enter a valid index ";
+		std::cin.clear();
+		std::cin.ignore(123, '\n');
+	}
+	return index;
+}
+int HumanPlayerStrategy::inputValueLoop(int max) {
+	bool isValid = false;
+	int value;
+	while (!(std::cin >> value) || value < 0 || value > max) {
+		std::cout << "Error: enter a valid value (0 -" << max << ") " << endl;
+		std::cin.clear();
+		std::cin.ignore(123, '\n');
+	}
+	return value;
+}
+char HumanPlayerStrategy::inputYNLoop() {
+	char result;
+	while (!(std::cin >> result) || (result != 'y' && result != 'n')) {
+
+		cout << "Error: enter a valid value ";
+		std::cin.clear();
+		std::cin.ignore(123, '\n');
+	}
+	return result;
+}
+
+bool HumanPlayerStrategy::issueOrder(Player* player)
+{
+
+	if (player->getReinforcements() > 0) {
+		return issueDeployOrders(player);
+	}
+
+	// play cards from hand
+
+	if (player->getHand()->getNumberOfCardsInHand() > 0)
+	{
+		std::cout << "Would you like to play a card? (y/n)";
+		char playCards = inputYNLoop();
+		if (playCards == 'y') {
+			return issueCardOrders(player);
+		}
+	}
+	else {
+		std::cout << "No cards in hand" << endl;
+	}
+
+	std::cout << "Would you like to advance your armies? (y/n)";
+	char advanceArmies = inputYNLoop();
+	if (advanceArmies == 'y') return issueAdvanceOrders(player);
+
+	std::cout << "No longer issuing orders" << endl;
+	player->pass();
+	return false;
+}
+
+bool HumanPlayerStrategy::issueDeployOrders(Player* player) {
+
+	player->getTerritoriesWithAdvanceOrder()->clear();
+
+	// Select deploy target
+	auto defendableTerritories = toDefend(player);
+	int index = 0;
+	std::cout << "Territories" << endl;
+	for (auto it = defendableTerritories->begin(); it != defendableTerritories->end(); it++) {
+		std::cout << index++ << "\t" << *(*it) << endl;
+	}
+
+	std::cout << "Which territory would you like to add armies to? (0 - " << (index - 1) << ")";
+	int territoryIndex = inputIndexLoop(defendableTerritories->size());
+
+	Territory* deployTarget = (*defendableTerritories)[territoryIndex];
+	std::cout << "How many armies? (0 - " << player->getReinforcements() << ")";
+	int numArmies = inputValueLoop(player->getReinforcements());
+
+	player->removeReinforcements(numArmies);
+	player->getOrdersList()->add(new DeployOrder(player, numArmies, deployTarget));
+	deployTarget->setIncomingArmies(deployTarget->getIncomingArmies() + numArmies);
+
+	return true;
+}
+
+bool HumanPlayerStrategy::issueCardOrders(Player* player) {
+	auto hand = player->getHand();
+	int size = hand->getNumberOfCardsInHand();
+	if (size > 0) {
+		std::cout << *hand << endl;
+		std::cout << "Enter the index of the card you want to play: ";
+		int cardIndex = inputIndexLoop(hand->getNumberOfCardsInHand());
+
+		hand->play(cardIndex);
+	}
+	else {
+		std::cout << "No cards in hand" << endl;
+	}
+	return true;
+}
+
+bool HumanPlayerStrategy::issueAdvanceOrders(Player* player)
+{
+	auto defendableTerritories = toDefend(player);
+	int index = 0;
+	for (auto it = defendableTerritories->begin(); it != defendableTerritories->end(); it++) {
+		std::cout << index++ << "\t" << *(*it) << endl;
+	}
+	std::cout << "Which territory would you like to move armies from? (0 -" << (index - 1) << ")";
+
+	int fromIndex = inputIndexLoop(defendableTerritories->size());
+
+	Territory* source = (*defendableTerritories)[fromIndex];
+	int totalArmies = source->getArmies() + source->getIncomingArmies();
+	if (totalArmies == 0) {
+		std::cout << source->getName() << " has no armies to advance";
+		return false;
+	}
+
+	std::cout << "Adjacent Territories to " << source->getName() << endl;
+	index = 0;
+	auto borders = source->getBorders();
+	for (auto it = borders->begin(); it != borders->end(); it++) {
+		std::cout << index++ << "\t" << *(*it) << endl;
+	}
+	std::cout << "Which territory would you like to move armies to? (0 - " << (borders->size() - 1) << ")";
+	int toIndex = inputIndexLoop(borders->size());
+	Territory* target = (*borders)[toIndex];
+
+	std::cout << "How many armies? (0 - " << totalArmies << " armies)" << endl;
+	int numAdvancingArmies = inputValueLoop(totalArmies);
+
+	if (numAdvancingArmies > source->getIncomingArmies()) {
+		int remainingArmies = numAdvancingArmies - source->getIncomingArmies();
+		source->setIncomingArmies(0);
+		source->removeArmies(remainingArmies);
+	}
+	else {
+		int remainingArmies = source->getIncomingArmies() - numAdvancingArmies;
+		source->setIncomingArmies(remainingArmies);
+	}
+
+	player->getOrdersList()->add(new AdvanceOrder(player, numAdvancingArmies, source, target));
+	player->getTerritoriesWithAdvanceOrder()->push_back(source);
+
+
+	return true;
+}
+
+BombOrder* HumanPlayerStrategy::useBomb(Player* player)
+{
+	auto enemies = toAttack(player);
+	int index = 0;
+	for (auto it = enemies.begin(); it != enemies.end(); it++) {
+		std::cout << index++ << "\t" << *(*it) << endl;
+	}
+	std::cout << "Which territory would you like to target? (0 -" << (index - 1) << ")";
+	int territoryIndex = inputIndexLoop(enemies.size());
+
+	return new BombOrder(player, enemies[territoryIndex]);
+}
+
+NegotiateOrder* HumanPlayerStrategy::useDiplomacy(Player* player)
+{
+	auto enemies = toAttack(player);
+	int index = 0;
+	for (auto it = enemies.begin(); it != enemies.end(); it++) {
+		std::cout << index++ << "\t" << *(*it) << endl;
+	}
+	std::cout << "Which territory would you like to negotiate with? (0 -" << (index - 1) << ")";
+
+	int territoryIndex = inputIndexLoop(enemies.size());
+	return new NegotiateOrder(player, enemies[territoryIndex]->getOwner());
+}
+
+AirliftOrder* HumanPlayerStrategy::useAirlift(Player* player)
+{
+	auto defendableTerritories = toDefend(player);
+	int index = 0;
+	for (auto it = defendableTerritories->begin(); it != defendableTerritories->end(); it++) {
+		std::cout << index++ << "\t" << *(*it) << endl;
+	}
+	std::cout << "Which territory would you like to move armies from? (0 - " << (index - 1) << ")";
+
+	int fromIndex = inputIndexLoop(defendableTerritories->size());
+	Territory* source = (*defendableTerritories)[fromIndex];
+
+
+
+	std::cout << "Which territory would you like to move armies to? (0 - " << (index - 1) << ")";
+
+	int toIndex = inputIndexLoop(defendableTerritories->size());
+	Territory* target = (*defendableTerritories)[toIndex];
+
+	std::cout << "How many armies? (0 -" << source->getArmies() << ")";
+	int numArmies = inputValueLoop(source->getArmies());
+
+	return new AirliftOrder(player, numArmies, source, target);
+}
+
+BlockadeOrder* HumanPlayerStrategy::useBlockade(Player* player)
+{
+	auto defendable = *toDefend(player);
+	int index = 0;
+	for (auto it = defendable.begin(); it != defendable.end(); it++) {
+		std::cout << index++ << "\t" << *(*it) << endl;
+	}
+	std::cout << "Which territory would you like to blockade? (0 - " << (index - 1) << ")";
+
+	int territoryIndex = inputIndexLoop(defendable.size());
+	return new BlockadeOrder(player, defendable[territoryIndex]);
+}
+
+DeployOrder* HumanPlayerStrategy::useReinforcement(Player* player)
+{
+	auto defendable = *toDefend(player);
+	int index = 0;
+	for (auto it = defendable.begin(); it != defendable.end(); it++) {
+		std::cout << index++ << "\t" << *(*it) << endl;
+	}
+
+	std::cout << "Which territory would you like to deploy to? (0 -" << (index - 1) << ")";
+
+	int territoryIndex = inputIndexLoop(defendable.size());
+
+	return new DeployOrder(player, 7, defendable[territoryIndex]);
 }
