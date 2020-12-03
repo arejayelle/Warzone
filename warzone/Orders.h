@@ -21,8 +21,9 @@ public:
 	Order(Order* other);
 	~Order();
 
-	virtual bool execute() = 0;  // execute() is pure virtual.
+	virtual bool execute() = 0;
 	virtual bool validate();
+	virtual Order* clone() = 0;
 	virtual std::string toString() const;
 	virtual int getPriority();
 
@@ -43,6 +44,7 @@ public:
 	
 	bool validate();
 	bool execute();
+	DeployOrder* clone();
 	std::string toString() const;
 	int getPriority();
 
@@ -63,6 +65,7 @@ public:
 
 	bool validate();
 	bool execute();
+	AdvanceOrder* clone();
 	void battle();  // The battle simulation sequence.
 	std::string toString() const;
 	int getPriority();
@@ -86,6 +89,7 @@ public:
 
 	bool validate();
 	bool execute();
+	BombOrder* clone();
 	std::string toString() const;
 	int getPriority();
 
@@ -105,6 +109,7 @@ public:
 
 	bool validate();
 	bool execute();
+	BlockadeOrder* clone();
 	std::string toString() const;
 	int getPriority();
 
@@ -124,6 +129,7 @@ public:
 
 	bool validate();
 	bool execute();
+	AirliftOrder* clone();
 	std::string toString() const;
 	int getPriority();
 
@@ -145,6 +151,7 @@ public:
 
 	bool validate();
 	bool execute();
+	NegotiateOrder* clone();
 	std::string toString() const;
 	int getPriority();
 

@@ -50,6 +50,7 @@ public:
 	const std::vector<Territory*>* getTerritories();
 	friend std::ostream& operator<< (std::ostream& out, const Continent& continent);
 	int getValue();
+	std::string getName();
 
 	Player* getContinentOwner();
 
@@ -72,7 +73,10 @@ public:
 	void addBorder(int territory, std::vector<Territory*>* neighbors);
 
 	Continent* getContinent(int continentId);
+	Continent* getContinent(std::string continentName);
 	Territory* getTerritory(int territoryId);
+	Territory* getTerritory(std::string territoryName);
+	int getTerritoryID(std::string territoryName);
 
 	const std::vector<Continent*>* getContinents();
 	const std::vector<Territory*>* getTerritories();

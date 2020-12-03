@@ -3,28 +3,28 @@
 #include "MapLoaderDriver.h"
 
 int MapLoaderDriver::main() {
-	//Valide Map
-	MapLoader* mapL = new MapLoader("bigeurope.map");
-	mapL->validateMapFormat();
-	Map* myMap = mapL->convertFileToMap();
-	myMap->validate();
+	cout << "Using original reader to read Domination map files:" << endl;
 
-	//Wrong formatted map, continent not valid
-	MapLoader* mapL2 = new MapLoader("bigeuropewrong.map");
-	try {
-		mapL2->validateMapFormat();
-	}
-	catch (std::string exception) {
-		std::cout << "Error occurred, as expected, when loading bigeuropewrong.map: " << exception << std::endl;
+	MapLoader* mapL = new MapLoader("bigeurope.map");
+	if (mapL->validateMapFormatML()) {
+		Map* map1 = mapL->convertFileToMap();
+		map1->validate();
 	}
 	
-	//Random text, territory format should be not valid
-	MapLoader* mapL3 = new MapLoader("randomText.txt");
-	try {
-		mapL3->validateMapFormat();
+	cout << "Using Conquest file reader to read map files:" << endl;
+
+	ConquestFileReader* conq = new ConquestFileReader("Africa.map");
+	if (conq->validateMapFormatCQ()) {
+		Map* map2 = conq->convertFileToMap();
+		map2->validate();
 	}
-	catch (std::string exception) {
-		std::cout << "Error occurred, as expected, when loading randomText.txt: " << exception << std::endl;
+
+	cout << "Using Conquest adapter to read map files:" << endl;
+
+	ConquestFileReaderAdapter* adpt = new ConquestFileReaderAdapter(conq);
+	if (adpt->validateMapFormatML()) {
+		Map* map3 = adpt->convertFileToMap();
+		map3->validate();
 	}
 
 	return 0;
