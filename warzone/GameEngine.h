@@ -21,7 +21,11 @@ public:
 	GameEngine* operator= (const GameEngine& engine);  //assignment operator
 	GameEngine(const GameEngine& Engine);  //copy constructor 
 
-	friend ostream& operator<< (ostream& output, const GameEngine& engine); //stream overloading
+	friend ostream& operator<< (ostream& output, const GameEngine& engine);
+	bool inputYNLoop();
+	int inputValueLoop(int min, int max);
+	char inputCharLoop();
+	//stream overloading
 	void startUpPhase();
 	int mainGameLoop();
 	void reinforcementPhase();
