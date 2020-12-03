@@ -140,6 +140,7 @@ void GameEngine::startUpPhase() {
 		cout << "Select a strategy for Player " << (i + 1) << endl;
 		cout << "d = Default strategy" << endl;
 		cout << "b = Benevolent computer strategy" << endl;
+		cout << "a = Aggressive Strategy" << endl;
 		cout << "n = Neutral strategy" << endl;
 		cout << "h = Human Player strategy" << endl;
 
@@ -155,6 +156,9 @@ void GameEngine::startUpPhase() {
 		}
 		else if (strategy.compare("b") == 0) {
 			player->setStrategy(new BenevolentComputerStrategy());
+		}
+		else if (strategy.compare("a") == 0) {
+			player->setStrategy(new AggressiveComputerStrategy());
 		}
 		else if (strategy.compare("h") == 0) {
 			player->setStrategy(new HumanPlayerStrategy());
