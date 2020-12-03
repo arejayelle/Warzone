@@ -5,7 +5,7 @@ int main()
 {
 	srand((unsigned int)time(NULL));
 
-	return StrategyDriver::main();
+	// return StrategyDriver::main();
 	// return MapLoaderDriver::main();
 	// return OrdersDriver::main();
 	// return GameEngineDriver::main();

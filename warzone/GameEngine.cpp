@@ -165,7 +165,6 @@ void GameEngine::startUpPhase() {
 		char strategy = inputCharLoop();
 
 		if (strategy == 'h') {
-
 			player->setStrategy(new HumanPlayerStrategy());
 		}
 		else if (strategy == 'n') {
@@ -173,6 +172,9 @@ void GameEngine::startUpPhase() {
 		}
 		else if (strategy == 'a') {
 			player->setStrategy(new AggressiveComputerStrategy());
+		}
+		else if (strategy == 'b') {
+			player->setStrategy(new BenevolentComputerStrategy());
 		}
 		else {
 			player->setStrategy(new DefaultStrategy());
