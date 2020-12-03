@@ -305,32 +305,24 @@ ostream& operator<<(ostream& output, const AggressiveComputerStrategy& other)
 bool AggressiveComputerStrategy::issueOrder(Player* player)
 {
 	//Reinforcement phase
-
+	std::sort(player->getTerritories()->begin(), player->getTerritories()->end(), compareTerritoriesArmiesDescendingOrder);
+	const std::vector<Territory*>* sortedPlayerTerritories = player->getTerritories();
+	Territory* territoryWithMost = sortedPlayerTerritories->at(0);
 	//Find territory with most armies
-	const std::vector<Territory*>* playerTerritories = player->getTerritories();
-	int territorySize = player->getTerritories()->size();
-	int maximum = playerTerritories->at(0)->getArmies() + playerTerritories->at(0)->getIncomingArmies();
-	Territory* territoryWithMost = playerTerritories->at(0);
-	for (int i = 0; i < territorySize; i++) {
-		if (playerTerritories->at(i)->getArmies() + playerTerritories->at(i)->getIncomingArmies() > maximum) {
-			territoryWithMost = playerTerritories->at(i);
-			maximum = territoryWithMost->getArmies();
-		}
+	if (player->getReinforcements() > 0) {
+		//Assign the player's reinforcement pool to territory
+		player->getOrdersList()->add(new DeployOrder(player, player->getReinforcements(), territoryWithMost));
+		player->removeReinforcements(player->getReinforcements());
+		territoryWithMost->setIncomingArmies(territoryWithMost->getIncomingArmies() + player->getReinforcements());
 		return true;
 	}
-	//Assign the player's reinforcement pool to territory
-	player->getOrdersList()->add(new DeployOrder(player, player->getReinforcements(), territoryWithMost));
-	player->removeReinforcements(player->getReinforcements());
-	territoryWithMost->setIncomingArmies(territoryWithMost->getIncomingArmies() + player->getReinforcements());
-
 	// Play cards from hand
 	const std::vector<Card*>* cards = player->getHand()->getCurrentHand();
 	if (cards->size() > 0) {
 		player->getHand()->play(0);
-		return true;
 	}
 
-	//Attack neighboring territories.
+	//Create enemy and neighboring territories
 	const std::vector<Territory*>* adjacentTerritories = territoryWithMost->getBorders();
 	std::vector<Territory*> enemyTerritories;
 	std::vector<Territory*> friendlyTerritories;
@@ -342,28 +334,27 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 			friendlyTerritories.push_back(adjacentTerritories->at(i));
 		}
 	}
-	int territoryIterator = 0;
-	while (territoryIterator != enemyTerritories.size()) {
-		player->getOrdersList()->add(new AdvanceOrder(player, territoryWithMost->getArmies(), territoryWithMost, enemyTerritories.at(territoryIterator)));
+
+	for (int i = 0; i < enemyTerritories.size(); i++) {
+		player->getOrdersList()->add(new AdvanceOrder(player, territoryWithMost->getArmies(), territoryWithMost, enemyTerritories.at(i)));
+		return true;
 	}
 
 	//Fortify strongest territory with neighbors armies if they have armies to give 
-	while (territoryIterator != friendlyTerritories.size()) {
-		if(friendlyTerritories.at(territoryIterator)->getArmies()!=0)
-			player->getOrdersList()->add(new AdvanceOrder(player, 1, territoryWithMost, friendlyTerritories.at(territoryIterator)));
-	}
-	delete territoryWithMost;
-	delete playerTerritories;
-	for (int i = 0; i < enemyTerritories.size(); i++)
+	for (int i=0;i<friendlyTerritories.size();i++)
 	{
-		delete enemyTerritories[i];
+		if (friendlyTerritories.at(i)->getArmies() > 0)
+		{
+			player->getOrdersList()->add(new AdvanceOrder(player, 1, territoryWithMost, friendlyTerritories.at(i)));
+			return true;
+		}
 	}
-	for (int i = 0; i < friendlyTerritories.size(); i++)
-	{
-		delete friendlyTerritories[i];
-	}
-	delete adjacentTerritories;
 	return false;
+}
+
+bool AggressiveComputerStrategy::compareTerritoriesArmiesDescendingOrder(Territory* i, Territory* j)
+{
+	return i->getArmies() > j->getArmies();
 }
 
 const vector<Territory*>* AggressiveComputerStrategy::toDefend(Player* player)
