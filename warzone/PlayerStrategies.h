@@ -64,7 +64,6 @@ public:
 	const vector<Territory*>* toDefend(Player* player);
 	const vector<Territory*> toAttack(Player* player);
 	bool issueOrder(Player* player);
-	bool compareTerritoriesArmiesDescendingOrder(Territory* i, Territory* j);
 
 	BombOrder* useBomb(Player* player);
 	NegotiateOrder* useDiplomacy(Player* player);

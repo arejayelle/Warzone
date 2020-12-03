@@ -305,9 +305,7 @@ ostream& operator<<(ostream& output, const AggressiveComputerStrategy& other)
 bool AggressiveComputerStrategy::issueOrder(Player* player)
 {
 	//Reinforcement phase
-	std::sort(player->getTerritories()->begin(), player->getTerritories()->end(), compareTerritoriesArmiesDescendingOrder);
-	const std::vector<Territory*>* sortedPlayerTerritories = player->getTerritories();
-	Territory* territoryWithMost = sortedPlayerTerritories->at(0);
+	Territory* territoryWithMost = player->toDefend()->at(0);
 	//Find territory with most armies
 	if (player->getReinforcements() > 0) {
 		//Assign the player's reinforcement pool to territory
@@ -326,6 +324,7 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 	const std::vector<Territory*>* adjacentTerritories = territoryWithMost->getBorders();
 	std::vector<Territory*> enemyTerritories;
 	std::vector<Territory*> friendlyTerritories;
+
 	for (int i= 0; i < adjacentTerritories->size(); i++) {
 		if (adjacentTerritories->at(i)->getOwner() != player) {
 			enemyTerritories.push_back(adjacentTerritories->at(i));
@@ -352,13 +351,14 @@ bool AggressiveComputerStrategy::issueOrder(Player* player)
 	return false;
 }
 
-bool AggressiveComputerStrategy::compareTerritoriesArmiesDescendingOrder(Territory* i, Territory* j)
+bool compareTerritoriesArmiesDescendingOrder(Territory* i, Territory* j)
 {
 	return i->getArmies() > j->getArmies();
 }
 
 const vector<Territory*>* AggressiveComputerStrategy::toDefend(Player* player)
 {
+	std::sort(player->getTerritories()->begin(), player->getTerritories()->end(), compareTerritoriesArmiesDescendingOrder);
 	return player->getTerritories();
 
 }
