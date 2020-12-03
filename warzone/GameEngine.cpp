@@ -53,7 +53,36 @@ ostream& operator<<(ostream& output, const GameEngine& engine)  //stream overloa
 	return output;
 
 }
+bool GameEngine::inputYNLoop() {
+	char result;
+	while (!(std::cin >> result) || (result != 'y' && result != 'n')) {
 
+		cout << "Error: enter a valid value ";
+		std::cin.clear();
+		std::cin.ignore(123, '\n');
+	}
+	return (result == 'y');
+}
+int GameEngine::inputValueLoop(int min, int max) {
+	bool isValid = false;
+	int value;
+	while (!(std::cin >> value) || value < min || value > max) {
+		std::cout << "Error: enter a valid value (" << min << "-" << max << ") " << endl;
+		std::cin.clear();
+		std::cin.ignore(123, '\n');
+	}
+	return value;
+}
+
+char GameEngine::inputCharLoop() {
+	char result;
+	while (!(std::cin >> result) || (result != 'd' && result != 'h' && result != 'n' && result != 'b' && result != 'a')) {
+		cout << "Error: enter a valid value (d/n/h/a/b)";
+		std::cin.clear();
+		std::cin.ignore(123, '\n');
+	}
+	return result;
+}
 void GameEngine::startUpPhase() {
 
 	// Local Methods for Loop
@@ -79,7 +108,7 @@ void GameEngine::startUpPhase() {
 			fileInvalid = false;
 			map = loader->convertFileToMap();
 		}
-		else if(adapter->validateMapFormatML()) {
+		else if (adapter->validateMapFormatML()) {
 			fileInvalid = false;
 			map = adapter->convertFileToMap();
 		}
@@ -94,24 +123,12 @@ void GameEngine::startUpPhase() {
 
 	//Setting up Observers
 	cout << "Would you like to turn observers on? y/n" << endl;
-	cin >> playerAnswer;
-	if (playerAnswer.compare("y") == 0 || playerAnswer.compare("Y") == 0 || playerAnswer.compare("yes") == 0 || playerAnswer.compare("Yes") == 0)
+	if (inputYNLoop())
 		attachObservers();
 
-
 	//PlayerNumberSetup
-	while (playerInputValid == false) { //Getting number of players
-		cout << "How many players do you want? Please choose a number between 2 - 5 inclusive" << endl;
-		cin >> numberOfPlayers;
-		if (numberOfPlayers < 2 || numberOfPlayers>6)
-		{
-			playerInputValid = false;
-			cout << "Input invalid. Please choose a number between 2 - 5 inclusive";
-
-		}
-		else
-			playerInputValid = true;
-	}
+	cout << "How many players do you want? Please choose a number between 2 - 5 inclusive" << endl;
+	numberOfPlayers = inputValueLoop(2, 5);
 
 	//Populate Deck 
 	for (int i = 0; i < 4; i++)
@@ -145,29 +162,19 @@ void GameEngine::startUpPhase() {
 		cout << "h = Human Player strategy" << endl;
 
 		// Add more strategies here
-		std::string strategy;
-		cin >> strategy;
-		cout << endl;
+		char strategy = inputCharLoop();
 
-		// Cannot use switch statements with strings in C++ without using a hackish solution.
-		// so use an if-else chain instead.
-		if (strategy.compare("d") == 0) {
-			player->setStrategy(new DefaultStrategy());
-		}
-		else if (strategy.compare("b") == 0) {
-			player->setStrategy(new BenevolentComputerStrategy());
-		}
-		else if (strategy.compare("a") == 0) {
-			player->setStrategy(new AggressiveComputerStrategy());
-		}
-		else if (strategy.compare("h") == 0) {
+		if (strategy == 'h') {
+
 			player->setStrategy(new HumanPlayerStrategy());
 		}
-		else if (strategy.compare("n") == 0) {
+		else if (strategy == 'n') {
 			player->setStrategy(new NeutralPlayerStrategy());
 		}
+		else if (strategy == 'a') {
+			player->setStrategy(new AggressiveComputerStrategy());
+		}
 		else {
-			cout << "Unknown strategy. Using Default strategy instead." << endl;
 			player->setStrategy(new DefaultStrategy());
 		}
 
